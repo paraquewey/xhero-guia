@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor Táctico — Bento UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #08090a;
+            --panel-bg: #101114;
+            --surface-elevated: #16181d;
+            --surface-hover: #1d2026;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(255, 255, 255, 0.22);
+
+            --primary: #5e6ad2;
+            --primary-hover: #6e7bf2;
+            --cyan-accent: #828fff;
+            
+            --text-light: #f4f5f8;
+            --text-muted: #8a8f98;
+            --text-dim: #5c6066;
+
+            --danger: #e5484d;
+            --success: #30a46c;
+
+            /* Clases y Facciones */
+            --c-guerrero: #e67e22; --c-mago: #3b82f6; --c-asaltante: #ef4444; --c-curador: #a855f7; --c-ranger: #10b981;
+            --f-caido: #f43f5e; --f-meta: #f97316; --f-tecno: #06b6d4; --f-natural: #22c55e; --f-divino: #c084fc; --f-dios: #eab308;
+
+            /* Rangos */
+            --rank-splus: linear-gradient(135deg, #f43f5e, #fb923c);
+            --rank-s: linear-gradient(135deg, #eab308, #f59e0b);
+            --rank-a: linear-gradient(135deg, #a855f7, #6366f1);
+            --rank-b: linear-gradient(135deg, #0ea5e9, #3b82f6);
+        }
+
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(ellipse 80% 45% at 50% -15%, rgba(94, 106, 210, 0.14), transparent);
+            background-attachment: fixed;
+            color: var(--text-light);
+            padding-bottom: 90px;
+            font-size: 14px;
+        }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 99px; }
+
+        /* HEADER COMPACTO Y ESTRUCTURADO */
+        header {
+            background: rgba(8, 9, 10, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            gap: 12px;
+        }
+
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-light);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .divider-v {
+            width: 1px;
+            height: 18px;
+            background: var(--border-subtle);
+            margin: 0 4px;
+        }
+
+        /* BOTONES */
+        .btn-export, .btn-danger, .btn-add {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-export {
+            background: var(--surface-elevated);
+            color: var(--text-light);
+        }
+        .btn-export:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-focus);
+        }
+        .btn-primary-solid {
+            background: var(--primary) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+            color: #fff !important;
+        }
+        .btn-primary-solid:hover { background: var(--primary-hover) !important; }
+
+        .btn-danger {
+            background: rgba(229, 72, 77, 0.1);
+            color: #ff8589;
+            border-color: rgba(229, 72, 77, 0.25);
+        }
+        .btn-danger:hover {
+            background: rgba(229, 72, 77, 0.22);
+            color: #fff;
+        }
+
+        .view {
+            display: none;
+            padding: 20px 24px;
+            max-width: 1160px;
+            margin: 0 auto;
+        }
+        .view.active { display: block; animation: fadeIn 0.18s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* BARRA DE FILTROS HORIZONTAL COMPACTA */
+        .filter-panel {
+            background: var(--panel-bg);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-groups-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .btn-filter {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+            flex-shrink: 0;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-light);
+            background-color: var(--surface-elevated);
+            transition: all 0.15s ease;
+            opacity: 0.65;
+        }
+        .btn-filter:hover { opacity: 1; border-color: var(--border-focus); }
+        .btn-filter.all {
+            width: auto;
+            padding: 0 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .btn-filter.active {
+            opacity: 1;
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 2px rgba(94, 106, 210, 0.35);
+            color: #fff;
+        }
+        .btn-filter.all.active {
+            background: var(--text-light);
+            color: var(--bg-color);
+        }
+
+        /* Tintes de Clases y Facciones */
+        .bg-guerrero { background-color: rgba(230, 126, 34, 0.18); border-color: rgba(230, 126, 34, 0.4); }
+        .bg-mago { background-color: rgba(59, 130, 246, 0.18); border-color: rgba(59, 130, 246, 0.4); }
+        .bg-asaltante { background-color: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.4); }
+        .bg-curador { background-color: rgba(168, 85, 247, 0.18); border-color: rgba(168, 85, 247, 0.4); }
+        .bg-ranger { background-color: rgba(16, 185, 129, 0.18); border-color: rgba(16, 185, 129, 0.4); }
+        .bg-caido { background-color: rgba(244, 63, 94, 0.18); border-color: rgba(244, 63, 94, 0.4); }
+        .bg-meta { background-color: rgba(249, 115, 22, 0.18); border-color: rgba(249, 115, 22, 0.4); }
+        .bg-tecno { background-color: rgba(6, 182, 212, 0.18); border-color: rgba(6, 182, 212, 0.4); }
+        .bg-natural { background-color: rgba(34, 197, 94, 0.18); border-color: rgba(34, 197, 94, 0.4); }
+        .bg-divino { background-color: rgba(192, 132, 252, 0.18); border-color: rgba(192, 132, 252, 0.4); }
+        .bg-dios { background-color: rgba(234, 179, 8, 0.18); border-color: rgba(234, 179, 8, 0.4); }
+        .bg-rank-splus { background: var(--rank-splus); border: none; }
+        .bg-rank-s { background: var(--rank-s); border: none; color: #000; }
+        .bg-rank-a { background: var(--rank-a); border: none; }
+        .bg-rank-b { background: var(--rank-b); border: none; }
+
+        /* =========================================================
+           NUEVO DISEÑO DE TARJETAS DE HÉROES (ESTILO RETRATO HUD)
+           ========================================================= */
+        .grid-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+            gap: 14px;
+        }
+
+        .hero-card {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-focus);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(94, 106, 210, 0.4);
+        }
+
+        .hero-card img.hero-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .hero-card:hover img.hero-pic { transform: scale(1.04); }
+
+        /* Degradado inferior para legibilidad perfecta */
+        .hero-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8, 9, 10, 0.96) 0%, rgba(8, 9, 10, 0.5) 38%, transparent 68%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 10px;
+            pointer-events: none;
+        }
+
+        .hero-card-title {
+            margin: 0;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-card-sub {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+        }
+
+        /* Píldora agrupada de Facción + Clase */
+        .hero-hud-top-left {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            display: flex;
+            gap: 4px;
+            background: rgba(16, 17, 20, 0.72);
+            backdrop-filter: blur(8px);
+            padding: 3px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            z-index: 5;
+        }
+
+        .mini-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: var(--surface-elevated);
+            color: #fff;
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-weight: 800;
+            color: #fff;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            z-index: 5;
+        }
+
+        /* Tarjetas estándar (Galería / Biblioteca / Picker) */
+        .card {
+            background: var(--panel-bg);
+            border-radius: 10px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all 0.18s ease;
+            position: relative;
+        }
+        .card:hover { background: var(--surface-elevated); border-color: var(--border-focus); transform: translateY(-2px); }
+        .card img.hero-pic { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 7px; display: block; background: #050507; }
+        .card h3 { margin: 6px 0 0 0; font-size: 0.8rem; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .card.multi-selected { border-color: var(--success); background: rgba(48, 164, 108, 0.1); }
+        .card.multi-selected::after {
+            content: '✓';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--success);
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            border: 2px solid var(--bg-color);
+        }
+
+        /* FLOATING DOCK INFERIOR (Estilo macOS / Linear) */
+        .bottom-nav-wrapper {
+            position: fixed;
+            bottom: 16px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+            pointer-events: none;
+            padding: 0 16px;
+        }
+
+        .bottom-nav {
+            pointer-events: auto;
+            background: rgba(22, 24, 29, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            display: flex;
+            gap: 4px;
+            padding: 5px;
+            border-radius: 14px;
+            border: 1px solid var(--border-focus);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75);
+        }
+
+        .nav-item {
+            padding: 8px 16px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+        .nav-item:hover { color: var(--text-light); background: rgba(255, 255, 255, 0.04); }
+        .nav-item.active {
+            color: #fff;
+            background: var(--primary);
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(94, 106, 210, 0.45);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 18px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            background: var(--text-light);
+            color: var(--bg-color);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+            cursor: pointer;
+            z-index: 101;
+            transition: all 0.18s ease;
+        }
+        .fab:hover { transform: scale(1.06); background: #fff; }
+
+        /* MODALES Y BENTO GRID DE PRESENTACIÓN */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            padding: 12px;
+        }
+        .modal.active { display: flex; }
+
+        .modal-content {
+            background: var(--panel-bg);
+            width: 100%;
+            max-width: 560px;
+            max-height: 88vh;
+            border-radius: 14px;
+            border: 1px solid var(--border-focus);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+            animation: modalPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.97) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        .modal-header {
+            padding: 13px 18px;
+            background: var(--panel-bg);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
+        .modal-body { padding: 16px; overflow-y: auto; flex: 1; background: var(--bg-color); }
+        .modal-footer { padding: 12px 18px; background: var(--panel-bg); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+
+        /* BENTO CELLS EN FICHA TÉCNICA */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            padding: 16px;
+        }
+
+        .bento-box {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .col-span-6 { grid-column: span 6; }
+        .col-span-3 { grid-column: span 3; }
+        .col-span-2 { grid-column: span 2; }
+
+        @media (max-width: 480px) {
+            .col-span-3 { grid-column: span 6; }
+            .col-span-2 { grid-column: span 2; }
+        }
+
+        .bento-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Hero Banner dentro de Ficha */
+        .pres-hero-banner {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        .pres-avatar-wrap {
+            position: relative;
+            width: 82px;
+            height: 82px;
+            flex-shrink: 0;
+        }
+        .pres-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid var(--border-focus);
+            background: var(--bg-color);
+        }
+        .pres-meta-pills {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .meta-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* Stats Strip */
+        .pres-stats-box {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+        .pres-stat-item { border-right: 1px solid var(--border-subtle); }
+        .pres-stat-item:last-child { border-right: none; }
+        .pres-stat-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; display: block; }
+        .pres-stat-val { font-size: 0.92rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+        /* Resto de estilos de formulario y matrices */
+        .row-group { background: var(--panel-bg); padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid var(--border-subtle); }
+        .row-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%; padding: 8px 10px; margin-bottom: 10px; border-radius: 7px;
+            border: 1px solid var(--border-subtle); background: var(--bg-color);
+            color: var(--text-light); font-family: 'Inter', sans-serif; font-size: 0.84rem;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(94, 106, 210, 0.2); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-x: auto; }
+        .stats-grid div { display: flex; flex-direction: column; min-width: 58px; }
+        .stats-grid label { font-size: 0.68rem; color: var(--text-muted); margin-bottom: 3px; }
+        .stats-grid input { margin-bottom: 0; font-variant-numeric: tabular-nums; }
+
+        .autocomplete-list { position: absolute; top: 100%; left: 0; width: 100%; background: var(--surface-elevated); border: 1px solid var(--border-focus); border-radius: 8px; z-index: 1000; max-height: 150px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
+        .autocomplete-item { padding: 8px 10px; font-size: 0.78rem; cursor: pointer; border-bottom: 1px solid var(--border-subtle); color: var(--text-muted); }
+        .autocomplete-item:hover { background: var(--primary); color: #fff; }
+        .highlight { color: #fff; font-weight: 600; }
+
+        .visual-picker-btn { display: flex; align-items: center; gap: 10px; background: var(--bg-color); border: 1px dashed var(--border-focus); padding: 8px 10px; border-radius: 8px; cursor: pointer; margin-bottom: 8px; }
+        .visual-picker-btn:hover { background: var(--surface-elevated); border-style: solid; border-color: var(--primary); }
+        .visual-picker-img { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; background: var(--surface-elevated); display: flex; justify-content: center; align-items: center; font-size: 15px; }
+        .visual-picker-text { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
+        .desc-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .desc-row textarea { flex: 1; margin-bottom: 0; font-size: 0.8rem; }
+
+        .bubble-container { display: flex; flex-wrap: wrap; gap: 5px; }
+        .bubble { background: var(--surface-elevated); padding: 3px 9px; border-radius: 6px; font-size: 0.74rem; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--border-subtle); color: var(--text-light); }
+        .bubble span { color: var(--text-muted); cursor: pointer; font-size: 0.68rem; }
+        .bubble span:hover { color: var(--danger); }
+
+        .add-bubble-row { display: flex; gap: 6px; align-items: center; }
+        .add-bubble-row select { flex: 1; margin: 0; }
+        .btn-add { background: var(--surface-elevated); color: var(--text-light); height: 34px; }
+        .btn-add:hover { background: var(--primary); border-color: var(--primary); }
+
+        .target-grid { display: grid; grid-template-columns: repeat(3, 32px); gap: 4px; justify-content: center; margin: 6px 0; }
+        .target-slot { width: 32px; height: 32px; background: var(--bg-color); border: 1px solid var(--border-subtle); border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 600; color: var(--text-dim); cursor: pointer; }
+        .target-slot.enemy { background: rgba(229, 72, 77, 0.18); border-color: var(--danger); color: #ff8589; }
+        .target-slot.ally { background: rgba(48, 164, 108, 0.18); border-color: var(--success); color: #63d49c; }
+
+        .formation-grid { display: grid; grid-template-columns: repeat(3, 48px); gap: 10px; justify-content: center; background: var(--bg-color); padding: 14px; border-radius: 9px; margin-bottom: 12px; border: 1px solid var(--border-subtle); }
+        .roster-slot { width: 48px; height: 48px; background: var(--surface-elevated); border: 1px solid var(--border-focus); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 14px; color: var(--text-muted); position: relative; cursor: pointer; }
+        .roster-slot:hover { border-color: var(--primary); transform: scale(1.05); }
+        .roster-slot img { width: 100%; height: 100%; object-fit: cover; }
+        .slot-label { position: absolute; bottom: 0; right: 0; background: var(--panel-bg); color: var(--text-light); font-size: 9px; font-weight: 700; width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-focus); }
+
+        .pos-slot { width: 48px; height: 48px; background: var(--surface-elevated); border: 1px dashed var(--border-focus); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-weight: 600; cursor: pointer; }
+        .pos-slot.active { background: rgba(48, 164, 108, 0.18); border: 1px solid var(--success); color: #63d49c; }
+
+        .mini-pos-matrix { display: grid; grid-template-columns: repeat(3, 14px); grid-template-rows: repeat(2, 14px); gap: 3px; justify-content: center; }
+        .mini-pos-slot { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--border-subtle); background: var(--bg-color); }
+        .mini-pos-slot.active { background: var(--success); border-color: #63d49c; }
+
+        .hero-multi-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+        .rel-avatar-wrapper { position: relative; width: 38px; height: 38px; }
+        .rel-avatar-wrapper img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-focus); }
+        .rel-avatar-wrapper .remove-btn { position: absolute; top: -4px; right: -4px; background: var(--danger); color: #fff; border-radius: 50%; width: 15px; height: 15px; font-size: 9px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid var(--bg-color); }
+
+        .team-row-header { display: flex; justify-content: space-between; align-items: center; }
+        .preview-eye { cursor: pointer; font-size: 0.9rem; position: relative; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-color); }
+        .preview-popover { display: none; position: absolute; top: -10px; right: 42px; background: var(--surface-elevated); border: 1px solid var(--border-focus); padding: 10px; border-radius: 9px; z-index: 100; box-shadow: 0 12px 30px rgba(0,0,0,0.85); pointer-events: none; }
+        .preview-eye:hover .preview-popover { display: block; }
+        .preview-matrix { display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(2, 34px); gap: 5px; justify-content: center; }
+        .preview-matrix img { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-focus); object-fit: cover; }
+        .empty-slot { width: 34px; height: 34px; border-radius: 50%; border: 1px dashed var(--border-focus); background: var(--bg-color); }
+
+        .pres-art-item { display: flex; align-items: center; gap: 8px; background: var(--bg-color); padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 6px; }
+        .pres-art-item:last-child { margin-bottom: 0; }
+        .pres-art-item img { width: 30px; height: 30px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border-focus); }
+        .pres-talents { display: flex; gap: 8px; flex-wrap: wrap; }
+        .pres-talent-item { width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-focus); overflow: hidden; background: var(--bg-color); }
+        .pres-talent-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        h3.section-heading { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-subtle); padding-bottom: 6px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-title">
+            <span class="brand-dot"></span>
+            <h1>Gestor Táctico</h1>
+        </div>
+        <div class="header-actions">
+            <button class="btn-export" onclick="document.getElementById('import-dic').click()" title="Cargar JSON OCR">📂 OCR</button>
+            <button class="btn-danger" onclick="clearOCR()" title="Vaciar memoria OCR">🧹</button>
+            <input type="file" id="import-dic" webkitdirectory directory multiple style="display:none;" onchange="loadDictionary(event)">
+            
+            <div class="divider-v"></div>
+            
+            <button class="btn-export" onclick="document.getElementById('import-file').click()">Importar</button>
+            <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
+            <button class="btn-export btn-primary-solid" onclick="exportData()">Exportar JSON</button>
+        </div>
+    </header>
+
+    <!-- VISTA HÉROES -->
+    <div id="view-heroes" class="view active">
+        <div class="filter-panel">
+            <div class="filter-groups-wrap">
+                <div class="filter-row" id="filters-rank">
+                    <div class="btn-filter all active" onclick="setFilter('rank', 'ALL', this)">ALL</div>
+                    <div class="btn-filter bg-rank-splus" onclick="setFilter('rank', 'S+', this)"><span style="font-size:11px; font-weight:800;">S+</span></div>
+                    <div class="btn-filter bg-rank-s" onclick="setFilter('rank', 'S', this)"><span style="font-size:11px; font-weight:800;">S</span></div>
+                    <div class="btn-filter bg-rank-a" onclick="setFilter('rank', 'A', this)"><span style="font-size:11px; font-weight:800;">A</span></div>
+                    <div class="btn-filter bg-rank-b" onclick="setFilter('rank', 'B', this)"><span style="font-size:11px; font-weight:800;">B</span></div>
+                </div>
+                <div class="divider-v"></div>
+                <div class="filter-row" id="filters-class"></div>
+                <div class="divider-v"></div>
+                <div class="filter-row" id="filters-faction"></div>
+            </div>
+            <button class="btn-danger" onclick="clearAllData()" style="font-size: 0.72rem; padding: 5px 9px;">🗑️ Resetear</button>
+        </div>
+        <div class="grid-gallery" id="gallery-heroes"></div>
+        <div class="fab" onclick="openHeroModal()" title="Nuevo Héroe">+</div>
+    </div>
+
+    <!-- VISTA GALERÍA -->
+    <div id="view-gallery" class="view">
+        <div class="row-group">
+            <span class="row-title">Subir a la Galería</span>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <select id="gallery-category" style="flex: 1; margin:0;"><option value="heroes">Carpeta Héroes</option><option value="artifacts">Carpeta Artefactos</option><option value="talents">Carpeta Talentos</option></select>
+                <input type="file" id="gallery-upload" accept="image/*" multiple style="flex: 2; margin:0; padding:6px;">
+            </div>
+            <button class="btn-export btn-primary-solid" style="width: 100%;" onclick="uploadToGallery()">Subir Fotos</button>
+        </div>
+
+        <div class="row-group">
+            <span class="row-title">Iconos Personalizados (1x1)</span>
+            <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                <select id="cfg-icon-key" style="flex: 2; min-width: 130px; margin:0;">
+                    <optgroup label="Clases">
+                        <option value="Guerrero">Guerrero 🛡️</option><option value="Mago">Mago 🪄</option><option value="Rangers">Rangers 🏹</option><option value="Asaltantes">Asaltantes 🗡️</option><option value="Curadores">Curadores 💖</option>
+                    </optgroup>
+                    <optgroup label="Facciones">
+                        <option value="Caído">Caído 💀</option><option value="Metahumano">Metahumano 🦸</option><option value="Tecnológico">Tecnológico ⚙️</option><option value="Natural">Natural 🌿</option><option value="Divino">Divino ✨</option><option value="Dios">Dios 👑</option>
+                    </optgroup>
+                </select>
+                <select id="cfg-icon-folder" style="flex: 1; min-width: 100px; margin:0;">
+                    <option value="heroes">Carpeta Héroes</option><option value="artifacts">Carpeta Artefactos</option><option value="talents">Carpeta Talentos</option>
+                </select>
+                <button class="btn-export" onclick="openGalleryPicker(document.getElementById('cfg-icon-folder').value, 'sys-icon')">Asignar Foto</button>
+            </div>
+            <div id="system-icons-preview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 8px; margin-top: 12px;"></div>
+        </div>
+
+        <h3 class="section-heading">Héroes</h3><div class="grid-gallery" id="gallery-grid-heroes"></div>
+        <h3 class="section-heading">Artefactos</h3><div class="grid-gallery" id="gallery-grid-artifacts"></div>
+        <h3 class="section-heading">Talentos</h3><div class="grid-gallery" id="gallery-grid-talents"></div>
+    </div>
+
+    <!-- VISTA BIBLIOTECA -->
+    <div id="view-library" class="view">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+            <div class="row-group">
+                <span class="row-title">Crear Artefacto</span>
+                <div style="display: flex; gap: 8px;">
+                    <select id="lib-art-type" onchange="renderArtForm()" style="flex: 2;"><option value="Gema">Gema</option><option value="Artículo">Artículo</option><option value="Artículo maligno">Maligno</option></select>
+                    <select id="lib-art-level" onchange="toggleCustomArtLvl('lib-art-level', 'lib-art-lvl-custom')" style="flex: 1;"></select>
+                    <input type="number" id="lib-art-lvl-custom" placeholder="Nvl" style="display:none; flex: 1;">
+                </div>
+                <input type="text" id="lib-art-name" placeholder="Nombre del Artefacto">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <span style="font-size:0.75rem; color:var(--text-muted);">Efectos:</span>
+                    <button class="btn-export" style="padding: 3px 8px; font-size: 0.72rem;" onclick="addArtDescRow('lib-art-descs')">+ Efecto</button>
+                </div>
+                <div id="lib-art-descs"></div>
+                <input type="hidden" id="lib-art-img-val">
+                <div class="visual-picker-btn" onclick="openGalleryPicker('artifacts', 'lib-art-img')"><div class="visual-picker-img" id="lib-art-img-preview">🖼️</div><div class="visual-picker-text">Elegir de Galería</div></div>
+                <button class="btn-export btn-primary-solid" style="width: 100%;" onclick="saveArtifact()">Guardar Artefacto</button>
+            </div>
+
+            <div class="row-group">
+                <span class="row-title">Crear Talento</span>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="lib-hab-name" placeholder="Nombre" style="flex: 2;">
+                    <select id="lib-hab-class" style="flex: 1;"><option value="Clase 1">Clase 1</option><option value="Clase 2">Clase 2</option><option value="Clase 3">Clase 3</option><option value="Clase 4">Clase 4</option></select>
+                </div>
+                <textarea id="lib-hab-info" rows="3" placeholder="Descripción del talento..."></textarea>
+                <input type="hidden" id="lib-hab-img-val">
+                <div class="visual-picker-btn" onclick="openGalleryPicker('talents', 'lib-hab-img')"><div class="visual-picker-img" id="lib-hab-img-preview">🖼️</div><div class="visual-picker-text">Elegir de Galería</div></div>
+                <button class="btn-export btn-primary-solid" style="width: 100%;" onclick="saveAbility()">Guardar Talento</button>
+            </div>
+        </div>
+        <h3 class="section-heading">Biblioteca (Clic para editar)</h3>
+        <div class="grid-gallery" id="gallery-library"></div>
+    </div>
+
+    <!-- VISTA EQUIPOS -->
+    <div id="view-teams" class="view">
+        <div class="row-group">
+            <span class="row-title">Armar Formación 2x3</span>
+            <div style="text-align:center; font-size:0.65rem; color:var(--text-muted); font-weight:600; letter-spacing:0.08em; margin-bottom:4px;">FRENTE</div>
+            <div class="formation-grid">
+                <input type="hidden" id="ts-2-val"><div class="roster-slot" id="ts-2" onclick="openHeroPicker('ts-2')">➕<div class="slot-label">2</div></div>
+                <input type="hidden" id="ts-1-val"><div class="roster-slot" id="ts-1" onclick="openHeroPicker('ts-1')">➕<div class="slot-label">1</div></div>
+                <input type="hidden" id="ts-3-val"><div class="roster-slot" id="ts-3" onclick="openHeroPicker('ts-3')">➕<div class="slot-label">3</div></div>
+                <input type="hidden" id="ts-5-val"><div class="roster-slot" id="ts-5" onclick="openHeroPicker('ts-5')">➕<div class="slot-label">5</div></div>
+                <input type="hidden" id="ts-4-val"><div class="roster-slot" id="ts-4" onclick="openHeroPicker('ts-4')">➕<div class="slot-label">4</div></div>
+                <input type="hidden" id="ts-6-val"><div class="roster-slot" id="ts-6" onclick="openHeroPicker('ts-6')">➕<div class="slot-label">6</div></div>
+            </div>
+            <div style="text-align:center; font-size:0.65rem; color:var(--text-muted); font-weight:600; letter-spacing:0.08em; margin-top:-6px; margin-bottom:12px;">ATRÁS</div>
+            <input type="text" id="team-name" placeholder="Nombre de la Formación">
+            <textarea id="team-info" rows="2" placeholder="Estrategia del equipo..."></textarea>
+            <button class="btn-export btn-primary-solid" style="width: 100%;" onclick="saveTeam()">Guardar Equipo</button>
+        </div>
+        <div id="teams-list"></div>
+    </div>
+
+    <!-- FLOATING DOCK -->
+    <div class="bottom-nav-wrapper">
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('heroes', this)">Héroes</div>
+            <div class="nav-item" onclick="switchTab('gallery', this)">Galería</div>
+            <div class="nav-item" onclick="switchTab('library', this)">Biblioteca</div>
+            <div class="nav-item" onclick="switchTab('teams', this)">Equipos</div>
+        </div>
+    </div>
+
+    <!-- MODAL FICHA TÉCNICA (BENTO GRID) -->
+    <div class="modal" id="presentation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span style="font-size:0.72rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">Ficha Técnica</span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div id="pres-edit-btn-container"></div>
+                    <button onclick="closePresentation()" style="background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; padding: 0 4px;">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body" style="padding: 0;" id="pres-content"></div>
+        </div>
+    </div>
+
+    <!-- MODAL CREAR / EDITAR HÉROE -->
+    <div class="modal" id="hero-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="hero-modal-title">Crear Héroe</h2>
+                <button onclick="closeHeroModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="h-edit-id">
+                <div class="row-group">
+                    <span class="row-title">Datos Principales</span>
+                    <input type="hidden" id="h-img-val">
+                    <div class="visual-picker-btn" onclick="openGalleryPicker('heroes', 'h-img')" style="justify-content:center; flex-direction:column; padding:12px;">
+                        <img id="h-img-preview" style="width: 72px; height: 72px; border-radius: 10px; object-fit: cover; display:none;">
+                        <div id="h-img-placeholder" style="font-size:24px;">📸</div><div class="visual-picker-text" style="color:var(--cyan-accent);">Elegir Foto de Galería</div>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top:8px;">
+                        <input type="text" id="h-name" placeholder="Nombre" style="flex: 2;">
+                        <select id="h-rank" onchange="autoSetLevel()" style="flex: 1; font-weight: 600;"><option value="S+">S+</option><option value="S">S</option><option value="A">A</option><option value="B">B</option></select>
+                    </div>
+                    <input type="text" id="h-sub" placeholder="Subtítulo">
+                    <div style="display: flex; gap: 8px;">
+                        <select id="h-faction" style="margin-bottom:0;"><option value="Caído">💀 Caído</option><option value="Metahumano">🦸 Metahumano</option><option value="Tecnológico">⚙️ Tecnológico</option><option value="Natural">🌿 Natural</option><option value="Divino">✨ Divino</option><option value="Dios">👑 Dios</option></select>
+                        <select id="h-class" style="margin-bottom:0;"><option value="Guerrero">🛡️ Guerrero</option><option value="Mago">🪄 Mago</option><option value="Rangers">🏹 Rangers</option><option value="Asaltantes">🗡️ Asaltantes</option><option value="Curadores">💖 Curadores</option></select>
+                    </div>
+                </div>
+
+                <div class="row-group">
+                    <span class="row-title">Rango de Ataque / Habilidades</span>
+                    <div style="display: flex; gap: 8px;">
+                        <div style="flex: 1; background: var(--bg-color); padding: 8px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                            <div style="text-align:center; color:var(--cyan-accent); font-size:0.78rem; font-weight:600; margin-bottom: 4px;">Con Habilidad</div>
+                            <div class="target-grid">
+                                <div class="target-slot" id="slot-skill-2" onclick="toggleTgt('skill', 2)">2</div><div class="target-slot" id="slot-skill-1" onclick="toggleTgt('skill', 1)">1</div><div class="target-slot" id="slot-skill-3" onclick="toggleTgt('skill', 3)">3</div>
+                                <div class="target-slot" id="slot-skill-5" onclick="toggleTgt('skill', 5)">5</div><div class="target-slot" id="slot-skill-4" onclick="toggleTgt('skill', 4)">4</div><div class="target-slot" id="slot-skill-6" onclick="toggleTgt('skill', 6)">6</div>
+                            </div>
+                            <select id="cond-skill" onchange="updateTgtUI('skill')" style="margin-bottom:5px; font-size:0.75rem; padding:4px;">
+                                <option value="default">Default (Fijo)</option><option value="variado">Variados</option><option value="bendicion">Bendición equipo</option>
+                            </select>
+                            <div class="autocomplete-wrapper" style="position:relative;">
+                                <textarea id="desc-skill" rows="2" placeholder="Efecto..." style="display:none; font-size:0.74rem; margin-bottom:0;" oninput="handleAutocomplete(this)"></textarea>
+                                <div class="autocomplete-list"></div>
+                            </div>
+                        </div>
+                        <div style="flex: 1; background: var(--bg-color); padding: 8px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                            <div style="text-align:center; color:var(--text-light); font-size:0.78rem; font-weight:600; margin-bottom: 4px;">Ataque Normal</div>
+                            <div class="target-grid">
+                                <div class="target-slot" id="slot-normal-2" onclick="toggleTgt('normal', 2)">2</div><div class="target-slot" id="slot-normal-1" onclick="toggleTgt('normal', 1)">1</div><div class="target-slot" id="slot-normal-3" onclick="toggleTgt('normal', 3)">3</div>
+                                <div class="target-slot" id="slot-normal-5" onclick="toggleTgt('normal', 5)">5</div><div class="target-slot" id="slot-normal-4" onclick="toggleTgt('normal', 4)">4</div><div class="target-slot" id="slot-normal-6" onclick="toggleTgt('normal', 6)">6</div>
+                            </div>
+                            <select id="cond-normal" onchange="updateTgtUI('normal')" style="margin-bottom:5px; font-size:0.75rem; padding:4px;">
+                                <option value="default">Default (Fijo)</option><option value="variado">Variados</option><option value="bendicion">Bendición equipo</option>
+                            </select>
+                            <div class="autocomplete-wrapper" style="position:relative;">
+                                <textarea id="desc-normal" rows="2" placeholder="Efecto..." style="display:none; font-size:0.74rem; margin-bottom:0;" oninput="handleAutocomplete(this)"></textarea>
+                                <div class="autocomplete-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-group">
+                    <span class="row-title">
+                        Estadísticas Base
+                        <div>
+                            <button class="btn-export" style="font-size:0.7rem; padding: 3px 8px;" onclick="document.getElementById('import-stats-json').click()">📂 JSON Stats</button>
+                            <input type="file" id="import-stats-json" accept=".json" style="display:none;" onchange="importHeroStats(event)">
+                        </div>
+                    </span>
+                    <div class="stats-grid">
+                        <div><label>Nivel</label><input type="number" id="h-lvl" value="340"></div>
+                        <div><label>Poder</label><input type="text" id="h-power" placeholder="50M"></div>
+                        <div><label>ATQ</label><input type="text" id="h-atk" placeholder="150k"></div>
+                        <div><label>Vida (HP)</label><input type="text" id="h-hp" placeholder="2M"></div>
+                        <div><label>Armadura</label><input type="text" id="h-def" placeholder="12k"></div>
+                    </div>
+                </div>
+
+                <div class="row-group">
+                    <span class="row-title">Posición Ideal</span>
+                    <div class="formation-grid" style="padding: 10px;">
+                        <div class="pos-slot" id="pos-2" onclick="toggleIdealPos(2)">2</div><div class="pos-slot" id="pos-1" onclick="toggleIdealPos(1)">1</div><div class="pos-slot" id="pos-3" onclick="toggleIdealPos(3)">3</div>
+                        <div class="pos-slot" id="pos-5" onclick="toggleIdealPos(5)">5</div><div class="pos-slot" id="pos-4" onclick="toggleIdealPos(4)">4</div><div class="pos-slot" id="pos-6" onclick="toggleIdealPos(6)">6</div>
+                    </div>
+                </div>
+
+                <div class="row-group">
+                    <span class="row-title">Formación Recomendada</span>
+                    <div class="formation-grid">
+                        <input type="hidden" id="ht-2-val"><div class="roster-slot" id="ht-2" onclick="openHeroPicker('ht-2', 'single')">➕<div class="slot-label">2</div></div>
+                        <input type="hidden" id="ht-1-val"><div class="roster-slot" id="ht-1" onclick="openHeroPicker('ht-1', 'single')">➕<div class="slot-label">1</div></div>
+                        <input type="hidden" id="ht-3-val"><div class="roster-slot" id="ht-3" onclick="openHeroPicker('ht-3', 'single')">➕<div class="slot-label">3</div></div>
+                        <input type="hidden" id="ht-5-val"><div class="roster-slot" id="ht-5" onclick="openHeroPicker('ht-5', 'single')">➕<div class="slot-label">5</div></div>
+                        <input type="hidden" id="ht-4-val"><div class="roster-slot" id="ht-4" onclick="openHeroPicker('ht-4', 'single')">➕<div class="slot-label">4</div></div>
+                        <input type="hidden" id="ht-6-val"><div class="roster-slot" id="ht-6" onclick="openHeroPicker('ht-6', 'single')">➕<div class="slot-label">6</div></div>
+                    </div>
+                    <textarea id="h-team-desc" rows="2" placeholder="Estrategia..." style="margin-bottom:0;"></textarea>
+                </div>
+
+                <div class="row-group">
+                    <span class="row-title">Relaciones Tácticas</span>
+                    <div class="add-bubble-row"><span style="flex:1; font-size:0.8rem; color:var(--cyan-accent);">Similares</span><button class="btn-add" onclick="openHeroPicker('similars', 'multi')">+ Añadir</button></div>
+                    <div class="hero-multi-list" id="list-similars"></div>
+                    <div class="add-bubble-row" style="margin-top:10px;"><span style="flex:1; font-size:0.8rem; color:#63d49c;">Compañeros</span><button class="btn-add" onclick="openHeroPicker('synergies', 'multi')">+ Añadir</button></div>
+                    <div class="hero-multi-list" id="list-synergies"></div>
+                    <div class="add-bubble-row" style="margin-top:10px;"><span style="flex:1; font-size:0.8rem; color:#ff8589;">Counters</span><button class="btn-add" onclick="openHeroPicker('counters', 'multi')">+ Añadir</button></div>
+                    <div class="hero-multi-list" id="list-counters"></div>
+                </div>
+
+                <div class="row-group">
+                    <span class="row-title">Resumen y Atributos</span>
+                    <div class="add-bubble-row" style="margin-bottom:8px;">
+                        <select id="sel-summary"><option value="Daño recibido">Daño recibido</option><option value="Daño continúo">Daño continúo</option><option value="Daño único">Daño único</option><option value="Control">Control</option><option value="AdE">AdE</option><option value="Daño explosivo">Daño explosivo</option><option value="Mejorar">Mejorar</option><option value="Curar">Curar</option><option value="Acumulación de daño">Acumulación de daño</option><option value="Perjuicio">Perjuicio</option><option value="Asesinar">Asesinar</option></select>
+                        <button class="btn-add" onclick="addBubble('summary')">+</button>
+                    </div>
+                    <div class="bubble-container" id="bubbles-summary" style="margin-bottom:12px;"></div>
+                    <div class="add-bubble-row">
+                        <select id="sel-attribute"><option value="ATQ">ATQ</option><option value="Vida">Vida</option><option value="PEN">PEN de armadura</option><option value="Invulnerabilidad">Invulnerabilidad</option><option value="Acierto">Acierto de efecto</option><option value="DañoHabilidad">Daño de habilidad</option><option value="Armadura">Armadura</option><option value="Crítico">Crítico</option><option value="Velocidad">Velocidad</option><option value="DañoCritico">Daño Crítico</option></select>
+                        <button class="btn-add" onclick="addBubble('attribute')">+</button>
+                    </div>
+                    <div class="bubble-container" id="bubbles-attribute"></div>
+                </div>
+
+                <div class="row-group">
+                    <span class="row-title">Artefactos</span>
+                    <input type="hidden" id="a1-val"><input type="hidden" id="a2-val">
+                    <div class="visual-picker-btn" onclick="openItemPicker('artifact', null, 'a1')"><img id="a1-preview" class="visual-picker-img" style="display:none;"><div id="a1-placeholder" class="visual-picker-img">➕</div><div class="visual-picker-text" id="a1-text">Elegir Artefacto 1...</div></div>
+                    <div class="visual-picker-btn" onclick="openItemPicker('artifact', null, 'a2')" style="margin-bottom:0;"><img id="a2-preview" class="visual-picker-img" style="display:none;"><div id="a2-placeholder" class="visual-picker-img">➕</div><div class="visual-picker-text" id="a2-text">Elegir Artefacto 2...</div></div>
+                </div>
+
+                <div class="row-group" style="margin-bottom:0;">
+                    <span class="row-title">Talentos</span>
+                    <input type="hidden" id="h1-val"><input type="hidden" id="h2-val"><input type="hidden" id="h3-val"><input type="hidden" id="h4-val">
+                    <div class="visual-picker-btn" onclick="openItemPicker('talent', 'Clase 1', 'h1')"><img id="h1-preview" class="visual-picker-img" style="display:none;"><div id="h1-placeholder" class="visual-picker-img">➕</div><div class="visual-picker-text" id="h1-text">Talento Clase 1...</div></div>
+                    <div class="visual-picker-btn" onclick="openItemPicker('talent', 'Clase 2', 'h2')"><img id="h2-preview" class="visual-picker-img" style="display:none;"><div id="h2-placeholder" class="visual-picker-img">➕</div><div class="visual-picker-text" id="h2-text">Talento Clase 2...</div></div>
+                    <div class="visual-picker-btn" onclick="openItemPicker('talent', 'Clase 3', 'h3')"><img id="h3-preview" class="visual-picker-img" style="display:none;"><div id="h3-placeholder" class="visual-picker-img">➕</div><div class="visual-picker-text" id="h3-text">Talento Clase 3...</div></div>
+                    <div class="visual-picker-btn" onclick="openItemPicker('talent', 'Clase 4', 'h4')" style="margin-bottom:0;"><img id="h4-preview" class="visual-picker-img" style="display:none;"><div id="h4-placeholder" class="visual-picker-img">➕</div><div class="visual-picker-text" id="h4-text">Talento Clase 4...</div></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-danger" id="btn-delete-hero" onclick="deleteHero()" style="display:none;">🗑️ Eliminar</button>
+                <div style="flex:1;"></div>
+                <button class="btn-export btn-primary-solid" id="btn-save-hero" onclick="saveHero()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALES AUXILIARES -->
+    <div class="modal" id="edit-lib-modal">
+        <div class="modal-content">
+            <div class="modal-header"><h2>Editar Biblioteca</h2><button onclick="closeEditLibModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;">&times;</button></div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-lib-id"><input type="hidden" id="edit-lib-type">
+                <div class="row-group">
+                    <input type="text" id="edit-lib-name" placeholder="Nombre">
+                    <select id="edit-lib-class" style="display:none;"><option value="Clase 1">Clase 1</option><option value="Clase 2">Clase 2</option><option value="Clase 3">Clase 3</option><option value="Clase 4">Clase 4</option></select>
+                    <div id="edit-lib-art-fields" style="display:none; gap: 8px;"><input type="text" id="edit-lib-art-type" readonly style="flex:1;"><select id="edit-lib-level" onchange="toggleCustomArtLvl('edit-lib-level', 'edit-lib-lvl-custom')" style="flex:1;"></select><input type="number" id="edit-lib-lvl-custom" placeholder="Nvl" style="display:none; flex:1;"></div>
+                </div>
+                <div class="row-group">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><span class="row-title" style="margin:0;">Descripciones</span><button class="btn-export" style="padding:2px 8px; font-size:0.72rem;" id="btn-edit-lib-add-desc" onclick="addArtDescRow('edit-lib-desc-container')">+ Efecto</button></div>
+                    <div id="edit-lib-desc-container"></div>
+                </div>
+                <div class="row-group" style="margin-bottom:0;">
+                    <input type="hidden" id="edit-lib-img-val">
+                    <div class="visual-picker-btn" id="edit-lib-img-btn" style="margin-bottom:0;"><img id="edit-lib-img-preview" class="visual-picker-img" style="display:none;"><div id="edit-lib-img-placeholder" class="visual-picker-img">🖼️</div><div class="visual-picker-text">Elegir de Galería</div></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn-danger" onclick="deleteLibraryItem()">🗑️ Eliminar</button><button class="btn-export btn-primary-solid" onclick="saveLibraryEdit()">Guardar</button></div>
+        </div>
+    </div>
+
+    <div class="modal" id="gallery-picker-modal" style="z-index: 300;"><div class="modal-content"><div class="modal-header"><h2>Seleccionar Foto</h2><button onclick="closeGalleryPicker()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;">&times;</button></div><div class="modal-body"><input type="hidden" id="gp-target"><div class="grid-gallery" id="gp-grid"></div></div></div></div>
+    <div class="modal" id="item-picker-modal" style="z-index: 300;"><div class="modal-content"><div class="modal-header"><h2 id="ip-title">Seleccionar Item</h2><button onclick="closeItemPicker()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;">&times;</button></div><div class="modal-body"><input type="hidden" id="ip-target"><div style="display: flex; flex-direction: column; gap: 8px;" id="ip-list"></div></div></div></div>
+
+    <div class="modal" id="hero-picker-modal" style="z-index: 300;">
+        <div class="modal-content">
+            <div class="modal-header"><h2>Seleccionar Héroe</h2><button onclick="closeHeroPicker()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;">&times;</button></div>
+            <div class="modal-body">
+                <input type="hidden" id="hp-target"><input type="hidden" id="hp-mode" value="single">
+                <div class="filter-panel" style="margin-bottom:12px; padding:10px;">
+                    <div class="filter-row" id="picker-filters-rank"><div class="btn-filter all active" onclick="setPickerFilter('rank', 'ALL', this)">ALL</div><div class="btn-filter bg-rank-splus" onclick="setPickerFilter('rank', 'S+', this)">S+</div><div class="btn-filter bg-rank-s" onclick="setPickerFilter('rank', 'S', this)">S</div><div class="btn-filter bg-rank-a" onclick="setPickerFilter('rank', 'A', this)">A</div><div class="btn-filter bg-rank-b" onclick="setPickerFilter('rank', 'B', this)">B</div></div>
+                    <div class="filter-row" id="picker-filters-class"></div><div class="filter-row" id="picker-filters-faction"></div>
+                </div>
+                <button class="btn-danger" id="btn-remove-single" style="width:100%; margin-bottom:12px;" onclick="handlePickerSelection('', '')">Quitar Héroe de esta Casilla</button>
+                <div class="grid-gallery" id="hp-grid"></div>
+            </div>
+            <div class="modal-footer" id="hp-multi-footer" style="display:none;"><button class="btn-export btn-primary-solid" style="width:100%;" onclick="confirmMultiPicker()">Confirmar Selección</button></div>
+        </div>
+    </div>
+
+    <script>
+        let db = { 
+            heroes: JSON.parse(localStorage.getItem('rpg_heroes')) || [], 
+            teams: JSON.parse(localStorage.getItem('rpg_teams')) || [], 
+            library: JSON.parse(localStorage.getItem('rpg_library')) || { artifacts: [], abilities: [] }, 
+            gallery: JSON.parse(localStorage.getItem('rpg_gallery')) || { heroes: [], artifacts: [], talents: [] },
+            icons: JSON.parse(localStorage.getItem('rpg_icons')) || {} 
+        };
+        
+        let currentSummaries = []; let currentAttributes = [];
+        let currentIdealPositions = []; 
+        let currentSimilars = []; let currentSynergies = []; let currentCounters = [];
+        let draftMultiSelection = []; 
+        let activeTargets = { skill: [], normal: [] };
+
+        let activeRank = 'ALL'; let activeClass = 'ALL'; let activeFaction = 'ALL';
+        let pickerActiveRank = 'ALL'; let pickerActiveClass = 'ALL'; let pickerActiveFaction = 'ALL';
+        let globalDictionary = [];
+
+        const iconData = { "Guerrero": { icon: "🛡️", bg: "bg-guerrero" }, "Mago": { icon: "🪄", bg: "bg-mago" }, "Rangers": { icon: "🏹", bg: "bg-ranger" }, "Asaltantes": { icon: "🗡️", bg: "bg-asaltante" }, "Curadores": { icon: "💖", bg: "bg-curador" }, "Caído": { icon: "💀", bg: "bg-caido" }, "Metahumano": { icon: "🦸", bg: "bg-meta" }, "Tecnológico": { icon: "⚙️", bg: "bg-tecno" }, "Natural": { icon: "🌿", bg: "bg-natural" }, "Divino": { icon: "✨", bg: "bg-divino" }, "Dios": { icon: "👑", bg: "bg-dios" } };
+        const rankColors = { "S+": "var(--rank-splus)", "S": "var(--rank-s)", "A": "var(--rank-a)", "B": "var(--rank-b)" };
+
+        window.onload = function() { checkDBPatch(); renderFilters(); renderSystemIconsPreview(); renderHeroes(); renderArtForm(); renderLibrary(); renderTeamsList(); renderGalleryView(); };
+        
+        function checkDBPatch() { if(!db.gallery) db.gallery = { heroes: [], artifacts: [], talents: [] }; if(!db.icons) db.icons = {}; if(!db.library) db.library = { artifacts: [], abilities: [] }; if(db.library && db.library.abilities) { let patched = false; db.library.abilities.forEach(a => { if(!a.talentClass) { a.talentClass = "Clase 1"; patched = true; }}); if(patched) updateLocalStorage(); } }
+        function updateLocalStorage() { try { localStorage.setItem('rpg_heroes', JSON.stringify(db.heroes)); localStorage.setItem('rpg_teams', JSON.stringify(db.teams)); localStorage.setItem('rpg_library', JSON.stringify(db.library)); localStorage.setItem('rpg_gallery', JSON.stringify(db.gallery)); localStorage.setItem('rpg_icons', JSON.stringify(db.icons)); } catch (e) { alert("⚠️ ¡MEMORIA LLENA! Exporta tu JSON, Limpia la memoria e Importalo de nuevo."); } }
+
+        function importHeroStats(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.poder || data.Poder || data.power) document.getElementById('h-power').value = data.poder || data.Poder || data.power;
+                    if (data.ATQ || data.atq) document.getElementById('h-atk').value = data.ATQ || data.atq;
+                    if (data.HP || data.hp || data.vida) document.getElementById('h-hp').value = data.HP || data.hp || data.vida;
+                    if (data.Armadura || data.armadura || data.defensa) document.getElementById('h-def').value = data.Armadura || data.armadura || data.defensa;
+                    alert("✅ Estadísticas cargadas.");
+                } catch(err) { alert("Error al leer JSON."); }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function closeHeroModal() { const m = document.getElementById('hero-modal'); if(m) m.classList.remove('active'); }
+
+        function getIconContent(key) { if (db.icons && db.icons[key]) { return `<img src="${db.icons[key]}" style="width:100%; height:100%; object-fit:cover; border-radius:5px; display:block;">`; } return iconData[key] ? iconData[key].icon : ''; }
+        function renderFilters() { const classes = ["Guerrero", "Mago", "Rangers", "Asaltantes", "Curadores"]; const factions = ["Caído", "Metahumano", "Tecnológico", "Natural", "Divino", "Dios"]; document.getElementById('filters-class').innerHTML = `<div class="btn-filter all ${activeClass==='ALL'?'active':''}" onclick="setFilter('class', 'ALL', this)">ALL</div>` + classes.map(c => `<div class="btn-filter ${iconData[c].bg} ${activeClass===c?'active':''}" onclick="setFilter('class', '${c}', this)" title="${c}">${getIconContent(c)}</div>`).join(''); document.getElementById('filters-faction').innerHTML = `<div class="btn-filter all ${activeFaction==='ALL'?'active':''}" onclick="setFilter('faction', 'ALL', this)">ALL</div>` + factions.map(f => `<div class="btn-filter ${iconData[f].bg} ${activeFaction===f?'active':''}" onclick="setFilter('faction', '${f}', this)" title="${f}">${getIconContent(f)}</div>`).join(''); document.getElementById('picker-filters-class').innerHTML = `<div class="btn-filter all ${pickerActiveClass==='ALL'?'active':''}" onclick="setPickerFilter('class', 'ALL', this)">ALL</div>` + classes.map(c => `<div class="btn-filter ${iconData[c].bg} ${pickerActiveClass===c?'active':''}" onclick="setPickerFilter('class', '${c}', this)">${getIconContent(c)}</div>`).join(''); document.getElementById('picker-filters-faction').innerHTML = `<div class="btn-filter all ${pickerActiveFaction==='ALL'?'active':''}" onclick="setPickerFilter('faction', 'ALL', this)">ALL</div>` + factions.map(f => `<div class="btn-filter ${iconData[f].bg} ${pickerActiveFaction===f?'active':''}" onclick="setPickerFilter('faction', '${f}', this)">${getIconContent(f)}</div>`).join(''); }
+        function renderSystemIconsPreview() { const keys = ["Guerrero", "Mago", "Rangers", "Asaltantes", "Curadores", "Caído", "Metahumano", "Tecnológico", "Natural", "Divino", "Dios"]; const container = document.getElementById('system-icons-preview'); if(!container) return; container.innerHTML = keys.map(k => { const hasImg = db.icons && db.icons[k]; return `<div style="text-align:center; background:var(--bg-color); padding:6px; border-radius:8px; border:1px solid var(--border-subtle);"><div style="width:28px; height:28px; margin:0 auto 4px auto; display:flex; align-items:center; justify-content:center; border-radius:6px; background:var(--surface-elevated); overflow:hidden;">${getIconContent(k)}</div><div style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${k}</div>${hasImg ? `<span onclick="deleteSystemIcon('${k}')" style="color:var(--danger); font-size:0.6rem; cursor:pointer; display:block; margin-top:2px;">Quitar</span>` : ''}</div>`; }).join(''); }
+        function deleteSystemIcon(key) { if(db.icons && db.icons[key]) { delete db.icons[key]; updateLocalStorage(); renderSystemIconsPreview(); renderFilters(); renderHeroes(); } }
+
+        function loadDictionary(event) { const files = event.target.files; globalDictionary = []; if (!files.length) return; let loaded = 0; let totalJson = 0; for (let file of files) { if (file.name.endsWith('.json')) { totalJson++; const reader = new FileReader(); reader.onload = function(e) { try { const data = JSON.parse(e.target.result); if (data.habilidad) { if (data.habilidad.descripcion_base) globalDictionary.push(data.habilidad.descripcion_base); if (data.habilidad.progresion) Object.values(data.habilidad.progresion).forEach(text => globalDictionary.push(text)); } } catch(err) { } loaded++; if (loaded === totalJson) alert(`📚 Diccionario cargado (${globalDictionary.length} habilidades).`); }; reader.readAsText(file); } } event.target.value = ''; }
+        function clearOCR() { globalDictionary = []; alert("🧹 Memoria OCR vaciada."); }
+        function handleAutocomplete(element) { const row = element.parentElement; const listDiv = row.querySelector('.autocomplete-list'); const val = element.value; if (val.length < 3) { listDiv.style.display = 'none'; return; } const lowerVal = val.toLowerCase().trim(); const matches = globalDictionary.filter(phrase => phrase.toLowerCase().includes(lowerVal)); if (matches.length === 0 || (matches.length === 1 && matches[0] === val)) { listDiv.style.display = 'none'; return; } listDiv.style.display = 'block'; listDiv.innerHTML = ''; matches.slice(0, 10).forEach(match => { const item = document.createElement('div'); item.className = 'autocomplete-item'; const regex = new RegExp(`(${lowerVal})`, "gi"); item.innerHTML = match.replace(regex, "<span class='highlight'>$1</span>"); item.onclick = function() { element.value = match; listDiv.style.display = 'none'; element.focus(); }; listDiv.appendChild(item); }); }
+        document.addEventListener('click', function(e) { if(!e.target.closest('.autocomplete-wrapper')) document.querySelectorAll('.autocomplete-list').forEach(l => l.style.display = 'none'); });
+
+        function toggleTgt(type, pos) { if(activeTargets[type].includes(pos)) { activeTargets[type] = activeTargets[type].filter(p => p !== pos); } else { activeTargets[type].push(pos); } updateTgtUI(type); }
+        function updateTgtUI(type) { const cond = document.getElementById(`cond-${type}`).value; const descArea = document.getElementById(`desc-${type}`); descArea.style.display = (cond === 'default') ? 'none' : 'block'; const isAlly = (cond === 'bendicion'); for(let i=1; i<=6; i++) { const el = document.getElementById(`slot-${type}-${i}`); if(el) { el.className = 'target-slot'; if(activeTargets[type].includes(i)) { el.classList.add(isAlly ? 'ally' : 'enemy'); } } } }
+
+        function importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { try { const importedDb = JSON.parse(e.target.result); if (importedDb.heroes && importedDb.library) { db = importedDb; checkDBPatch(); updateLocalStorage(); renderFilters(); renderSystemIconsPreview(); renderHeroes(); renderLibrary(); renderTeamsList(); renderGalleryView(); alert("✅ Base de datos importada."); } else { alert("Formato inválido."); } } catch (err) { alert("Error al leer JSON."); } event.target.value = ''; }; reader.readAsText(file); }
+        function exportData() { let dbCopy = JSON.parse(JSON.stringify(db)); dbCopy.heroes.forEach(h => delete h.image); if(dbCopy.library) { if(dbCopy.library.artifacts) dbCopy.library.artifacts.forEach(a => delete a.img); if(dbCopy.library.abilities) dbCopy.library.abilities.forEach(a => delete a.img); } delete dbCopy.gallery; delete dbCopy.icons; const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbCopy, null, 2)); const a = document.createElement('a'); a.href = dataStr; a.download = "epic_heroes_db_ligero.json"; document.body.appendChild(a); a.click(); a.remove(); }
+        
+        function switchTab(tab, el) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`view-${tab}`).classList.add('active');
+            if(el) el.classList.add('active');
+        }
+        function setFilter(type, value, element) { const parent = document.getElementById(`filters-${type}`); parent.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active')); element.classList.add('active'); if(type === 'rank') activeRank = value; if(type === 'class') activeClass = value; if(type === 'faction') activeFaction = value; renderHeroes(); }
+        
+        function compressImage(file) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); canvas.width = 200; canvas.height = 240; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, 200, 240); resolve(canvas.toDataURL('image/jpeg', 0.75)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
+        async function uploadToGallery() { const files = document.getElementById('gallery-upload').files; const cat = document.getElementById('gallery-category').value; if(!files.length) return alert("Selecciona fotos"); for(let file of files) { const imgBase64 = await compressImage(file); db.gallery[cat].push({ id: 'img_'+Date.now()+Math.floor(Math.random()*1000), data: imgBase64 }); } updateLocalStorage(); renderGalleryView(); document.getElementById('gallery-upload').value = ''; }
+        function renderGalleryView() { const makeHtml = (cat) => db.gallery[cat].map(img => `<div class="card"><img src="${img.data}" class="hero-pic"><button class="btn-danger" onclick="deleteFromGallery('${cat}', '${img.id}')" style="width:100%; margin-top:6px; padding:4px; font-size:0.7rem;">Borrar</button></div>`).join(''); document.getElementById('gallery-grid-heroes').innerHTML = makeHtml('heroes') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>'; document.getElementById('gallery-grid-artifacts').innerHTML = makeHtml('artifacts') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>'; document.getElementById('gallery-grid-talents').innerHTML = makeHtml('talents') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>'; }
+        function deleteFromGallery(cat, id) { if(!confirm("¿Borrar?")) return; db.gallery[cat] = db.gallery[cat].filter(img => img.id !== id); updateLocalStorage(); renderGalleryView(); }
+        function openGalleryPicker(cat, targetPrefix) { document.getElementById('gp-target').value = targetPrefix; const grid = document.getElementById('gp-grid'); if(db.gallery[cat].length === 0) { grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); grid-column: 1 / -1;">Carpeta vacía.</div>`; } else { grid.innerHTML = db.gallery[cat].map(img => `<div class="card" onclick="selectGalleryImage('${img.data}')"><img src="${img.data}" class="hero-pic"></div>`).join(''); } document.getElementById('gallery-picker-modal').classList.add('active'); }
+        function closeGalleryPicker() { document.getElementById('gallery-picker-modal').classList.remove('active'); }
+        function selectGalleryImage(b64) { const prefix = document.getElementById('gp-target').value; if(prefix === 'sys-icon') { const key = document.getElementById('cfg-icon-key').value; db.icons[key] = b64; updateLocalStorage(); renderSystemIconsPreview(); renderFilters(); renderHeroes(); closeGalleryPicker(); return; } document.getElementById(prefix+'-val').value = b64; const preview = document.getElementById(prefix+'-preview'); const placeholder = document.getElementById(prefix+'-placeholder'); if(preview) { preview.src = b64; preview.style.display = 'block'; } if(placeholder) { placeholder.style.display = 'none'; } closeGalleryPicker(); }
+
+        function setPickerFilter(type, value, element) { const parent = document.getElementById(`picker-filters-${type}`); parent.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active')); element.classList.add('active'); if(type === 'rank') pickerActiveRank = value; if(type === 'class') pickerActiveClass = value; if(type === 'faction') pickerActiveFaction = value; renderHeroPickerGrid(); }
+        function openHeroPicker(targetId, mode = 'single') { document.getElementById('hp-target').value = targetId; document.getElementById('hp-mode').value = mode; pickerActiveRank = 'ALL'; pickerActiveClass = 'ALL'; pickerActiveFaction = 'ALL'; document.querySelectorAll('#hero-picker-modal .filter-row .btn-filter').forEach(btn => btn.classList.remove('active')); document.querySelectorAll('#hero-picker-modal .filter-row .btn-filter.all').forEach(btn => btn.classList.add('active')); if(mode === 'multi') { document.getElementById('btn-remove-single').style.display = 'none'; document.getElementById('hp-multi-footer').style.display = 'flex'; if(targetId === 'similars') draftMultiSelection = [...currentSimilars]; if(targetId === 'synergies') draftMultiSelection = [...currentSynergies]; if(targetId === 'counters') draftMultiSelection = [...currentCounters]; } else { document.getElementById('btn-remove-single').style.display = 'block'; document.getElementById('hp-multi-footer').style.display = 'none'; } renderFilters(); renderHeroPickerGrid(); document.getElementById('hero-picker-modal').classList.add('active'); }
+        function renderHeroPickerGrid() { const grid = document.getElementById('hp-grid'); const mode = document.getElementById('hp-mode').value; const filtered = db.heroes.filter(h => { const mR = pickerActiveRank === 'ALL' || h.rank === pickerActiveRank; const mC = pickerActiveClass === 'ALL' || h.hClass === pickerActiveClass; const mF = pickerActiveFaction === 'ALL' || h.faction === pickerActiveFaction; return mR && mC && mF; }); if(filtered.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);">No hay héroes.</div>'; } else { grid.innerHTML = filtered.map(h => { const isMultiSelected = (mode === 'multi' && draftMultiSelection.includes(h.id)) ? 'multi-selected' : ''; return `<div class="card ${isMultiSelected}" onclick="handlePickerSelection('${h.id}', '${h.image || ''}', this)"><img src="${h.image || ''}" class="hero-pic"><h3>${h.name}</h3></div>`; }).join(''); } }
+        function handlePickerSelection(heroId, heroImg, element = null) { const mode = document.getElementById('hp-mode').value; if(mode === 'single') { const target = document.getElementById('hp-target').value; document.getElementById(target + '-val').value = heroId; const slot = document.getElementById(target); const slotNum = target.split('-')[1]; if(heroId) { slot.innerHTML = `<img src="${heroImg}"><div class="slot-label">${slotNum}</div>`; } else { slot.innerHTML = `➕<div class="slot-label">${slotNum}</div>`; } closeHeroPicker(); } else { if(draftMultiSelection.includes(heroId)) { draftMultiSelection = draftMultiSelection.filter(id => id !== heroId); if(element) element.classList.remove('multi-selected'); } else { draftMultiSelection.push(heroId); if(element) element.classList.add('multi-selected'); } } }
+        function confirmMultiPicker() { const target = document.getElementById('hp-target').value; if(target === 'similars') currentSimilars = [...draftMultiSelection]; if(target === 'synergies') currentSynergies = [...draftMultiSelection]; if(target === 'counters') currentCounters = [...draftMultiSelection]; renderRelLists(); closeHeroPicker(); }
+        function closeHeroPicker() { document.getElementById('hero-picker-modal').classList.remove('active'); }
+        function renderRelLists() { const buildHtml = (arr, listName) => arr.map(id => { const h = db.heroes.find(x => x.id === id); if(!h) return ''; return `<div class="rel-avatar-wrapper"><img src="${h.image || ''}" title="${h.name}"><button class="remove-btn" onclick="removeRel('${listName}', '${id}')">✕</button></div>`; }).join(''); document.getElementById('list-similars').innerHTML = buildHtml(currentSimilars, 'similars') || '<span style="color:var(--text-dim); font-size:0.75rem;">Ninguno</span>'; document.getElementById('list-synergies').innerHTML = buildHtml(currentSynergies, 'synergies') || '<span style="color:var(--text-dim); font-size:0.75rem;">Ninguno</span>'; document.getElementById('list-counters').innerHTML = buildHtml(currentCounters, 'counters') || '<span style="color:var(--text-dim); font-size:0.75rem;">Ninguno</span>'; }
+        function removeRel(listName, heroId) { if(listName === 'similars') currentSimilars = currentSimilars.filter(id => id !== heroId); if(listName === 'synergies') currentSynergies = currentSynergies.filter(id => id !== heroId); if(listName === 'counters') currentCounters = currentCounters.filter(id => id !== heroId); renderRelLists(); }
+
+        function toggleIdealPos(posNum) { const el = document.getElementById('pos-' + posNum); if(currentIdealPositions.includes(posNum)) { currentIdealPositions = currentIdealPositions.filter(p => p !== posNum); el.classList.remove('active'); } else { currentIdealPositions.push(posNum); el.classList.add('active'); } }
+        function renderIdealPositionsUI() { for(let i=1; i<=6; i++) { const el = document.getElementById('pos-' + i); if(el) { if(currentIdealPositions.includes(i)) el.classList.add('active'); else el.classList.remove('active'); } } }
+        function autoSetLevel() { const r = document.getElementById('h-rank').value; const lvlInput = document.getElementById('h-lvl'); if(r === 'S+' || r === 'S') lvlInput.value = 340; else if(r === 'A') lvlInput.value = 180; else if(r === 'B') lvlInput.value = 60; }
+
+        function addArtDescRow(containerId, val = '') { const container = document.getElementById(containerId); const row = document.createElement('div'); row.className = 'desc-row'; row.innerHTML = `<textarea class="art-desc-input" rows="2" placeholder="Efecto...">${val}</textarea><button class="btn-danger" style="padding:5px 9px;" onclick="this.parentElement.remove()">✕</button>`; container.appendChild(row); }
+        function renderArtForm() { const type = document.getElementById('lib-art-type').value; const maxLvl = type === 'Gema' ? 25 : 30; document.getElementById('lib-art-level').innerHTML = `<option value="5">Nivel 5</option><option value="10">Nivel 10</option><option value="20">Nivel 20</option><option value="${maxLvl}" selected>Nivel ${maxLvl} (Max)</option><option value="custom">Personalizado</option>`; toggleCustomArtLvl('lib-art-level', 'lib-art-lvl-custom'); document.getElementById('lib-art-descs').innerHTML = ''; addArtDescRow('lib-art-descs'); }
+        function toggleCustomArtLvl(selectId, inputId) { const val = document.getElementById(selectId).value; document.getElementById(inputId).style.display = val === 'custom' ? 'block' : 'none'; }
+        function saveArtifact() { const type = document.getElementById('lib-art-type').value; const name = document.getElementById('lib-art-name').value; if(!name) return alert("Falta el nombre"); let lvl = document.getElementById('lib-art-level').value; if(lvl === 'custom') lvl = document.getElementById('lib-art-lvl-custom').value || '0'; let descriptions = []; document.querySelectorAll('#lib-art-descs .art-desc-input').forEach(input => { if(input.value.trim()) descriptions.push(input.value.trim()); }); const img = document.getElementById('lib-art-img-val').value; db.library.artifacts.push({ id: 'art_' + Date.now(), type, name, level: lvl, descriptions, img: img }); updateLocalStorage(); renderLibrary(); document.getElementById('lib-art-name').value = ''; selectGalleryImage(''); renderArtForm(); }
+        function saveAbility() { const name = document.getElementById('lib-hab-name').value; const info = document.getElementById('lib-hab-info').value; const talentClass = document.getElementById('lib-hab-class').value; if(!name) return; const img = document.getElementById('lib-hab-img-val').value; db.library.abilities.push({ id: 'hab_' + Date.now(), name, info, talentClass, img: img }); updateLocalStorage(); renderLibrary(); document.getElementById('lib-hab-name').value = ''; document.getElementById('lib-hab-info').value = ''; selectGalleryImage(''); }
+        function renderLibrary() { document.getElementById('gallery-library').innerHTML = db.library.artifacts.map(a => `<div class="card" onclick="editLibraryItem('${a.id}', 'artifact')"><img src="${a.img || ''}" class="hero-pic"><h3>${a.name}</h3><span style="font-size:0.68rem; color:var(--text-muted);">Nv.${a.level}</span></div>`).join('') + db.library.abilities.map(h => `<div class="card" onclick="editLibraryItem('${h.id}', 'talent')"><img src="${h.img || ''}" class="hero-pic"><h3>${h.name}</h3><span style="font-size:0.68rem; color:var(--cyan-accent);">${h.talentClass}</span></div>`).join(''); }
+        function editLibraryItem(id, type) { document.getElementById('edit-lib-id').value = id; document.getElementById('edit-lib-type').value = type; const descContainer = document.getElementById('edit-lib-desc-container'); descContainer.innerHTML = ''; if (type === 'artifact') { const item = db.library.artifacts.find(x => x.id === id); if(!item) return; document.getElementById('edit-lib-name').value = item.name; document.getElementById('edit-lib-class').style.display = 'none'; document.getElementById('edit-lib-art-fields').style.display = 'flex'; document.getElementById('edit-lib-art-type').value = item.type; const maxLvl = item.type === 'Gema' ? 25 : 30; const lvlSelect = document.getElementById('edit-lib-level'); lvlSelect.innerHTML = `<option value="5">Nivel 5</option><option value="10">Nivel 10</option><option value="20">Nivel 20</option><option value="${maxLvl}">Nivel ${maxLvl} (Max)</option><option value="custom">Personalizado</option>`; if ([5, 10, 20, maxLvl].includes(parseInt(item.level))) { lvlSelect.value = item.level; document.getElementById('edit-lib-lvl-custom').style.display = 'none'; } else { lvlSelect.value = 'custom'; document.getElementById('edit-lib-lvl-custom').style.display = 'block'; document.getElementById('edit-lib-lvl-custom').value = item.level; } document.getElementById('btn-edit-lib-add-desc').style.display = 'inline-block'; if (item.descriptions && item.descriptions.length > 0) { item.descriptions.forEach(desc => addArtDescRow('edit-lib-desc-container', desc)); } else { addArtDescRow('edit-lib-desc-container'); } document.getElementById('edit-lib-img-val').value = item.img || ''; const preview = document.getElementById('edit-lib-img-preview'); const placeholder = document.getElementById('edit-lib-img-placeholder'); if(item.img) { preview.src = item.img; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.style.display = 'none'; placeholder.style.display = 'flex'; } document.getElementById('edit-lib-img-btn').onclick = () => openGalleryPicker('artifacts', 'edit-lib-img'); } else { const item = db.library.abilities.find(x => x.id === id); if(!item) return; document.getElementById('edit-lib-name').value = item.name; document.getElementById('edit-lib-class').style.display = 'block'; document.getElementById('edit-lib-class').value = item.talentClass || 'Clase 1'; document.getElementById('edit-lib-art-fields').style.display = 'none'; document.getElementById('btn-edit-lib-add-desc').style.display = 'none'; descContainer.innerHTML = `<textarea id="edit-lib-info" rows="3">${item.info || ''}</textarea>`; document.getElementById('edit-lib-img-val').value = item.img || ''; const preview = document.getElementById('edit-lib-img-preview'); const placeholder = document.getElementById('edit-lib-img-placeholder'); if(item.img) { preview.src = item.img; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.style.display = 'none'; placeholder.style.display = 'flex'; } document.getElementById('edit-lib-img-btn').onclick = () => openGalleryPicker('talents', 'edit-lib-img'); } document.getElementById('edit-lib-modal').classList.add('active'); }
+        function closeEditLibModal() { document.getElementById('edit-lib-modal').classList.remove('active'); }
+        function saveLibraryEdit() { const id = document.getElementById('edit-lib-id').value; const type = document.getElementById('edit-lib-type').value; const name = document.getElementById('edit-lib-name').value; if(!name) return alert("Falta el nombre"); let newImg = document.getElementById('edit-lib-img-val').value; if (type === 'artifact') { let item = db.library.artifacts.find(x => x.id === id); item.name = name; let lvl = document.getElementById('edit-lib-level').value; if(lvl === 'custom') lvl = document.getElementById('edit-lib-lvl-custom').value || '0'; item.level = lvl; let descriptions = []; document.querySelectorAll('#edit-lib-desc-container .art-desc-input').forEach(input => { if(input.value.trim()) descriptions.push(input.value.trim()); }); item.descriptions = descriptions; item.img = newImg; } else { let item = db.library.abilities.find(x => x.id === id); item.name = name; item.talentClass = document.getElementById('edit-lib-class').value; item.info = document.getElementById('edit-lib-info').value; item.img = newImg; } updateLocalStorage(); renderLibrary(); renderHeroes(); closeEditLibModal(); }
+        function deleteLibraryItem() { if(!confirm("¿Eliminar?")) return; const id = document.getElementById('edit-lib-id').value; const type = document.getElementById('edit-lib-type').value; if (type === 'artifact') { db.library.artifacts = db.library.artifacts.filter(x => x.id !== id); db.heroes.forEach(h => { if(h.artifacts) h.artifacts = h.artifacts.filter(artId => artId !== id); }); } else { db.library.abilities = db.library.abilities.filter(x => x.id !== id); db.heroes.forEach(h => { if(h.abilities) h.abilities = h.abilities.filter(talId => talId !== id); }); } updateLocalStorage(); renderLibrary(); renderHeroes(); closeEditLibModal(); }
+
+        function openHeroModal() {
+            document.getElementById('h-edit-id').value = ''; document.getElementById('hero-modal-title').innerText = "Crear Héroe"; document.getElementById('btn-save-hero').innerText = "Guardar Héroe"; document.getElementById('btn-delete-hero').style.display = "none";
+            document.getElementById('h-name').value = ''; document.getElementById('h-sub').value = ''; document.getElementById('h-rank').value = 'S'; document.getElementById('h-faction').value = 'Metahumano'; document.getElementById('h-class').value = 'Guerrero';
+            document.getElementById('h-lvl').value = 340; document.getElementById('h-power').value = ''; document.getElementById('h-atk').value = ''; document.getElementById('h-hp').value = ''; document.getElementById('h-def').value = '';
+            document.getElementById('h-img-val').value = ''; document.getElementById('h-img-preview').style.display = 'none'; document.getElementById('h-img-placeholder').style.display = 'block';
+            currentSummaries = []; currentAttributes = []; currentIdealPositions = []; currentSimilars = []; currentSynergies = []; currentCounters = [];
+            activeTargets = { skill: [], normal: [] };
+            document.getElementById('cond-skill').value = 'default'; document.getElementById('desc-skill').value = ''; updateTgtUI('skill');
+            document.getElementById('cond-normal').value = 'default'; document.getElementById('desc-normal').value = ''; updateTgtUI('normal');
+            renderBubbles(); renderIdealPositionsUI(); renderRelLists();
+            resetVisualPicker('a1', 'Elegir Artefacto 1...'); resetVisualPicker('a2', 'Elegir Artefacto 2...'); resetVisualPicker('h1', 'Talento Clase 1...'); resetVisualPicker('h2', 'Talento Clase 2...'); resetVisualPicker('h3', 'Talento Clase 3...'); resetVisualPicker('h4', 'Talento Clase 4...');
+            for(let i=1; i<=6; i++) { document.getElementById(`ht-${i}-val`).value = ''; document.getElementById(`ht-${i}`).innerHTML = `➕<div class="slot-label">${i}</div>`; }
+            document.getElementById('h-team-desc').value = ''; document.getElementById('hero-modal').classList.add('active');
+        }
+
+        function editHero(id) {
+            closePresentation(); 
+            const h = db.heroes.find(x => x.id === id); if (!h) return;
+            document.getElementById('h-edit-id').value = h.id; document.getElementById('hero-modal-title').innerText = "Editar Héroe"; document.getElementById('btn-save-hero').innerText = "Guardar Cambios"; document.getElementById('btn-delete-hero').style.display = "block";
+            document.getElementById('h-name').value = h.name || ''; document.getElementById('h-sub').value = h.sub || ''; document.getElementById('h-rank').value = h.rank || 'S'; document.getElementById('h-faction').value = h.faction || 'Metahumano'; document.getElementById('h-class').value = h.hClass || 'Guerrero';
+            const stats = h.stats || { level: 340, power: '', atk: '', hp: '', def: '' };
+            document.getElementById('h-lvl').value = stats.level || 340; document.getElementById('h-power').value = stats.power || ''; document.getElementById('h-atk').value = stats.atk || ''; document.getElementById('h-hp').value = stats.hp || ''; document.getElementById('h-def').value = stats.def || '';
+            document.getElementById('h-img-val').value = h.image || '';
+            const preview = document.getElementById('h-img-preview'); const placeholder = document.getElementById('h-img-placeholder');
+            if(h.image) { preview.src = h.image; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.src = ''; preview.style.display = 'none'; placeholder.style.display = 'block'; }
+            const atqSkill = h.atkSkill || { targets: [], cond: 'default', desc: '' }; activeTargets.skill = [...(atqSkill.targets || [])]; document.getElementById('cond-skill').value = atqSkill.cond || 'default'; document.getElementById('desc-skill').value = atqSkill.desc || ''; updateTgtUI('skill');
+            const atqNorm = h.atkNormal || { targets: [], cond: 'default', desc: '' }; activeTargets.normal = [...(atqNorm.targets || [])]; document.getElementById('cond-normal').value = atqNorm.cond || 'default'; document.getElementById('desc-normal').value = atqNorm.desc || ''; updateTgtUI('normal');
+            const artifacts = h.artifacts || []; const abilities = h.abilities || [];
+            populateHeroItemPicker('artifact', artifacts[0], 'a1', 'Elegir Artefacto 1...'); populateHeroItemPicker('artifact', artifacts[1], 'a2', 'Elegir Artefacto 2...');
+            populateHeroItemPicker('talent', abilities[0], 'h1', 'Talento Clase 1...'); populateHeroItemPicker('talent', abilities[1], 'h2', 'Talento Clase 2...'); populateHeroItemPicker('talent', abilities[2], 'h3', 'Talento Clase 3...'); populateHeroItemPicker('talent', abilities[3], 'h4', 'Talento Clase 4...');
+            currentSummaries = [...(h.summaries || [])]; currentAttributes = [...(h.attributes || [])]; renderBubbles();
+            currentIdealPositions = [...(h.idealPositions || [])]; renderIdealPositionsUI();
+            currentSimilars = [...(h.similars || [])]; currentSynergies = [...(h.synergies || [])]; currentCounters = [...(h.counters || [])]; renderRelLists();
+            const recTeam = h.recommendedTeam || [null,null,null,null,null,null];
+            for(let i=1; i<=6; i++) { const tId = recTeam[i-1]; document.getElementById(`ht-${i}-val`).value = tId || ''; const slot = document.getElementById(`ht-${i}`); if(slot) { if(tId) { const teammate = db.heroes.find(x => x.id === tId); slot.innerHTML = (teammate ? `<img src="${teammate.image}">` : '➕') + `<div class="slot-label">${i}</div>`; } else { slot.innerHTML = `➕<div class="slot-label">${i}</div>`; } } }
+            document.getElementById('h-team-desc').value = h.recommendedTeamDesc || ''; document.getElementById('hero-modal').classList.add('active');
+        }
+
+        function saveHero() {
+            try {
+                const name = document.getElementById('h-name').value; if(!name) { alert("Falta Nombre"); return; }
+                const rank = document.getElementById('h-rank').value; let img = document.getElementById('h-img-val').value; const editId = document.getElementById('h-edit-id').value;
+                let recTeam = []; for(let i=1; i<=6; i++) { const valEl = document.getElementById(`ht-${i}-val`); recTeam.push(valEl ? valEl.value : null); }
+                const heroData = {
+                    id: editId || 'hero_' + Date.now(), name: name, sub: document.getElementById('h-sub').value, rank: rank, faction: document.getElementById('h-faction').value, hClass: document.getElementById('h-class').value, 
+                    stats: { level: document.getElementById('h-lvl').value, power: document.getElementById('h-power').value, atk: document.getElementById('h-atk').value, hp: document.getElementById('h-hp').value, def: document.getElementById('h-def').value },
+                    atkSkill: { targets: [...activeTargets.skill], cond: document.getElementById('cond-skill').value, desc: document.getElementById('desc-skill').value.trim() },
+                    atkNormal: { targets: [...activeTargets.normal], cond: document.getElementById('cond-normal').value, desc: document.getElementById('desc-normal').value.trim() },
+                    idealPositions: [...currentIdealPositions], similars: [...currentSimilars], synergies: [...currentSynergies], counters: [...currentCounters],
+                    summaries: [...currentSummaries], attributes: [...currentAttributes],
+                    artifacts: [document.getElementById('a1-val').value, document.getElementById('a2-val').value].filter(Boolean),
+                    abilities: [document.getElementById('h1-val').value, document.getElementById('h2-val').value, document.getElementById('h3-val').value, document.getElementById('h4-val').value].filter(Boolean),
+                    image: img, recommendedTeam: recTeam, recommendedTeamDesc: document.getElementById('h-team-desc').value
+                };
+                if (editId) { const index = db.heroes.findIndex(x => x.id === editId); if(index !== -1) db.heroes[index] = heroData; else db.heroes.push(heroData); } else { db.heroes.push(heroData); }
+                updateLocalStorage(); renderHeroes(); closeHeroModal();
+            } catch (error) { console.error(error); closeHeroModal(); }
+        }
+
+        function deleteHero() { if(!confirm("¿Eliminar Héroe?")) return; const editId = document.getElementById('h-edit-id').value; db.heroes = db.heroes.filter(x => x.id !== editId); db.teams.forEach(t => { t.members = t.members.map(mId => mId === editId ? null : mId); }); db.heroes.forEach(h => { if(h.recommendedTeam) h.recommendedTeam = h.recommendedTeam.map(mId => mId === editId ? null : mId); if(h.similars) h.similars = h.similars.filter(id => id !== editId); if(h.synergies) h.synergies = h.synergies.filter(id => id !== editId); if(h.counters) h.counters = h.counters.filter(id => id !== editId); }); updateLocalStorage(); renderHeroes(); renderTeamsList(); closeHeroModal(); }
+
+        /* RENDER DE TARJETAS VERTICALES CON HUD */
+        function renderHeroes() {
+            const filteredHeroes = db.heroes.filter(h => { const mR = activeRank === 'ALL' || h.rank === activeRank; const mC = activeClass === 'ALL' || h.hClass === activeClass; const mF = activeFaction === 'ALL' || h.faction === activeFaction; return mR && mC && mF; });
+            document.getElementById('gallery-heroes').innerHTML = filteredHeroes.map(h => {
+                const fac = iconData[h.faction] || iconData["Metahumano"];
+                const cls = iconData[h.hClass] || iconData["Guerrero"];
+                const rColor = rankColors[h.rank] || rankColors["S"];
+                return `
+                <div class="hero-card" onclick="openPresentation('${h.id}')">
+                    <div class="hero-hud-top-left">
+                        <span class="mini-icon ${fac.bg}" title="${h.faction}">${getIconContent(h.faction)}</span>
+                        <span class="mini-icon ${cls.bg}" title="${h.hClass}">${getIconContent(h.hClass)}</span>
+                    </div>
+                    <div class="rank-badge" style="background: ${rColor}">${h.rank || 'S'}</div>
+                    <img src="${h.image || ''}" class="hero-pic" alt="${h.name}">
+                    <div class="hero-card-overlay">
+                        <h3 class="hero-card-title">${h.name}</h3>
+                        ${h.sub ? `<div class="hero-card-sub">${h.sub}</div>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function buildMiniMatrixHTML(targetsArr, cond) {
+            if(!targetsArr) targetsArr = [];
+            const isAlly = (cond === 'bendicion');
+            const drawSlot = (num) => {
+                const active = targetsArr.includes(num);
+                let bg = 'var(--bg-color)'; let border = 'var(--border-subtle)';
+                if(active) { bg = isAlly ? 'rgba(48, 164, 108, 0.4)' : 'rgba(229, 72, 77, 0.4)'; border = isAlly ? 'var(--success)' : 'var(--danger)'; }
+                return `<div style="width:14px; height:14px; background:${bg}; border:1px solid ${border}; border-radius:3px;"></div>`;
+            };
+            return `<div style="display:grid; grid-template-columns:repeat(3, 14px); gap:3px; justify-content:center;">${drawSlot(2)}${drawSlot(1)}${drawSlot(3)}${drawSlot(5)}${drawSlot(4)}${drawSlot(6)}</div>`;
+        }
+
+        /* FICHA TÉCNICA CON ARQUITECTURA BENTO GRID */
+        function openPresentation(heroId) {
+            const h = db.heroes.find(x => x.id === heroId); if(!h) return;
+            const fac = iconData[h.faction] || iconData["Metahumano"]; const cls = iconData[h.hClass] || iconData["Guerrero"]; const rColor = rankColors[h.rank] || rankColors["S"];
+            document.getElementById('pres-edit-btn-container').innerHTML = `<button class="btn-export" onclick="editHero('${h.id}')" style="padding: 4px 12px; font-size:0.75rem;">✏️ Editar</button>`;
+
+            const stats = h.stats || { level: '-', power: '-', atk: '-', hp: '-', def: '-' };
+            const skill = h.atkSkill || { targets: [], cond: 'default', desc: '' };
+            const normal = h.atkNormal || { targets: [], cond: 'default', desc: '' };
+            const formatCond = (c) => c === 'variado' ? 'Variado' : (c === 'bendicion' ? 'Bendición' : 'Fijo');
+
+            const drawIdealSlot = (num) => `<div class="mini-pos-slot ${(h.idealPositions||[]).includes(num) ? 'active' : ''}"></div>`;
+
+            const renderBadges = (list) => (list && list.length) ? list.map(i => `<span class="bubble">${i}</span>`).join('') : '<span style="color:var(--text-dim); font-size:0.75rem;">—</span>';
+
+            const renderRels = (arr, label, color) => {
+                if(!arr || arr.length === 0) return '';
+                const avatars = arr.map(id => { const relH = db.heroes.find(x=>x.id===id); return relH ? `<img src="${relH.image||''}" onclick="openPresentation('${relH.id}')" style="width:32px; height:32px; border-radius:8px; border:1px solid ${color}; object-fit:cover; cursor:pointer;" title="Ver ${relH.name}">` : ''; }).join('');
+                return `<div style="margin-bottom:8px;"><span style="font-size:0.7rem; color:${color}; font-weight:600; display:block; margin-bottom:4px;">${label}</span><div style="display:flex; gap:6px; flex-wrap:wrap;">${avatars}</div></div>`;
+            };
+            const relsHtml = renderRels(h.similars, 'Similares', 'var(--cyan-accent)') + renderRels(h.synergies, 'Mejores Compañeros', '#63d49c') + renderRels(h.counters, 'Counters', '#ff8589');
+
+            const artifacts = h.artifacts || []; const abilities = h.abilities || [];
+            const artHtml = artifacts.length ? artifacts.map(artId => { const a = db.library.artifacts.find(x => x.id === artId); return a ? `<div class="pres-art-item"><img src="${a.img || ''}"><div style="flex:1; min-width:0;"><div style="font-size:0.78rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${a.name}</div><div style="font-size:0.68rem; color:var(--cyan-accent);">Nivel ${a.level}</div></div></div>` : ''; }).join('') : '<span style="color:var(--text-dim); font-size:0.75rem;">Sin artefactos</span>';
+            const talHtml = abilities.length ? abilities.map(talId => { const t = db.library.abilities.find(x => x.id === talId); return t ? `<div class="pres-talent-item" title="${t.name}: ${t.info}"><img src="${t.img || ''}"></div>` : ''; }).join('') : '<span style="color:var(--text-dim); font-size:0.75rem;">Sin talentos</span>';
+
+            let recTeamHtml = '';
+            if (h.recommendedTeam && h.recommendedTeam.some(val => val !== null)) {
+                const getHImg = (idx) => { let tId = h.recommendedTeam[idx]; if(!tId) return `<div class="empty-slot"></div>`; let t = db.heroes.find(x => x.id === tId); return t ? `<img src="${t.image || ''}" onclick="openPresentation('${t.id}')" style="cursor:pointer;" title="${t.name}">` : `<div class="empty-slot"></div>`; };
+                recTeamHtml = `
+                <div class="bento-box col-span-6">
+                    <span class="bento-label">Formación Recomendada</span>
+                    <div class="preview-matrix" style="margin:6px auto;">${getHImg(1)}${getHImg(0)}${getHImg(2)}${getHImg(4)}${getHImg(3)}${getHImg(5)}</div>
+                    ${h.recommendedTeamDesc ? `<div style="font-size:0.78rem; color:var(--text-muted); margin-top:8px; text-align:center;">"${h.recommendedTeamDesc}"</div>` : ''}
+                </div>`;
+            }
+
+            document.getElementById('pres-content').innerHTML = `
+                <div class="bento-grid">
+                    <!-- BANNER PRINCIPAL -->
+                    <div class="bento-box col-span-6 pres-hero-banner">
+                        <div class="pres-avatar-wrap">
+                            <div class="rank-badge" style="background:${rColor}; top:-6px; left:-6px; right:auto;">${h.rank || 'S'}</div>
+                            <img src="${h.image || ''}" class="pres-avatar">
+                        </div>
+                        <div style="flex:1; min-width:0;">
+                            <h2 style="margin:0; font-size:1.2rem; font-weight:700; letter-spacing:-0.02em;">${h.name}</h2>
+                            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;">${h.sub || 'Sin subtítulo'}</div>
+                            <div class="pres-meta-pills">
+                                <span class="meta-pill"><span class="mini-icon ${fac.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.faction)}</span> ${h.faction}</span>
+                                <span class="meta-pill"><span class="mini-icon ${cls.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.hClass)}</span> ${h.hClass}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ESTADÍSTICAS -->
+                    <div class="bento-box col-span-6 pres-stats-box">
+                        <div class="pres-stat-item"><span class="pres-stat-lbl">Nivel</span><span class="pres-stat-val">${stats.level || '-'}</span></div>
+                        <div class="pres-stat-item"><span class="pres-stat-lbl">Poder</span><span class="pres-stat-val" style="color:var(--cyan-accent);">${stats.power || '-'}</span></div>
+                        <div class="pres-stat-item"><span class="pres-stat-lbl">ATQ</span><span class="pres-stat-val">${stats.atk || '-'}</span></div>
+                        <div class="pres-stat-item"><span class="pres-stat-lbl">Vida</span><span class="pres-stat-val">${stats.hp || '-'}</span></div>
+                        <div class="pres-stat-item"><span class="pres-stat-lbl">Armadura</span><span class="pres-stat-val">${stats.def || '-'}</span></div>
+                    </div>
+
+                    <!-- MATRICES TÁCTICAS (3 COLUMNAS EN BENTO) -->
+                    <div class="bento-box col-span-2" style="text-align:center;">
+                        <span class="bento-label">Pos. Ideal</span>
+                        <div class="mini-pos-matrix">${drawIdealSlot(2)}${drawIdealSlot(1)}${drawIdealSlot(3)}${drawIdealSlot(5)}${drawIdealSlot(4)}${drawIdealSlot(6)}</div>
+                    </div>
+                    <div class="bento-box col-span-2" style="text-align:center;">
+                        <span class="bento-label" style="color:var(--cyan-accent);">Habilidad</span>
+                        ${buildMiniMatrixHTML(skill.targets, skill.cond)}
+                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:4px;">${formatCond(skill.cond)}</div>
+                    </div>
+                    <div class="bento-box col-span-2" style="text-align:center;">
+                        <span class="bento-label">Básico</span>
+                        ${buildMiniMatrixHTML(normal.targets, normal.cond)}
+                        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:4px;">${formatCond(normal.cond)}</div>
+                    </div>
+
+                    ${(skill.cond !== 'default' && skill.desc) || (normal.cond !== 'default' && normal.desc) ? `
+                    <div class="bento-box col-span-6" style="font-size:0.78rem; color:var(--text-muted);">
+                        ${(skill.cond !== 'default' && skill.desc) ? `<div><strong style="color:var(--cyan-accent);">Habilidad:</strong> ${skill.desc}</div>` : ''}
+                        ${(normal.cond !== 'default' && normal.desc) ? `<div style="margin-top:4px;"><strong style="color:var(--text-light);">Básico:</strong> ${normal.desc}</div>` : ''}
+                    </div>` : ''}
+
+                    <!-- ROL Y ATRIBUTOS -->
+                    <div class="bento-box col-span-3">
+                        <span class="bento-label">Rol / Resumen</span>
+                        <div class="bubble-container">${renderBadges(h.summaries)}</div>
+                    </div>
+                    <div class="bento-box col-span-3">
+                        <span class="bento-label">Atributos Clave</span>
+                        <div class="bubble-container">${renderBadges(h.attributes)}</div>
+                    </div>
+
+                    <!-- ARTEFACTOS Y TALENTOS -->
+                    <div class="bento-box col-span-3">
+                        <span class="bento-label">Artefactos</span>
+                        ${artHtml}
+                    </div>
+                    <div class="bento-box col-span-3">
+                        <span class="bento-label">Talentos</span>
+                        <div class="pres-talents">${talHtml}</div>
+                    </div>
+
+                    ${relsHtml ? `<div class="bento-box col-span-6"><span class="bento-label">Sinergias y Counters</span>${relsHtml}</div>` : ''}
+                    ${recTeamHtml}
+                </div>
+            `;
+            document.getElementById('presentation-modal').classList.add('active');
+        }
+        function closePresentation() { document.getElementById('presentation-modal').classList.remove('active'); }
+
+        /* COMPLEMENTOS */
+        function openItemPicker(type, talentClass, targetPrefix) { document.getElementById('ip-target').value = targetPrefix; const list = document.getElementById('ip-list'); let items = type === 'artifact' ? (db.library.artifacts || []) : (db.library.abilities || []).filter(a => a.talentClass === talentClass); document.getElementById('ip-title').innerText = type === 'artifact' ? "Seleccionar Artefacto" : `Talento (${talentClass})`; list.innerHTML = items.length === 0 ? `<div style="text-align:center; padding:20px; color:var(--text-muted);">No hay elementos.</div>` : items.map(item => `<div class="visual-picker-btn" style="margin-bottom:0;" onclick="selectItem('${item.id}', '${item.name.replace(/'/g, "\\'")}', '${item.img || ''}')"><img src="${item.img || ''}" class="visual-picker-img"><div class="visual-picker-text" style="color:var(--text-light); font-weight:600;">${item.name}</div></div>`).join(''); list.innerHTML += `<div class="visual-picker-btn" style="margin-top:8px; justify-content:center; border-color:rgba(229,72,77,0.4);" onclick="selectItem('', '(Ninguno)', '')"><div class="visual-picker-text" style="color:#ff8589;">Quitar Selección</div></div>`; document.getElementById('item-picker-modal').classList.add('active'); }
+        function closeItemPicker() { document.getElementById('item-picker-modal').classList.remove('active'); }
+        function selectItem(id, name, imgBase64) { const prefix = document.getElementById('ip-target').value; document.getElementById(prefix+'-val').value = id; document.getElementById(prefix+'-text').innerText = name; const preview = document.getElementById(prefix+'-preview'); const placeholder = document.getElementById(prefix+'-placeholder'); if(id && imgBase64) { preview.src = imgBase64; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.style.display = 'none'; placeholder.style.display = 'block'; } closeItemPicker(); }
+        function resetVisualPicker(prefix, placeholderText) { document.getElementById(prefix+'-val').value = ''; document.getElementById(prefix+'-text').innerText = placeholderText; const preview = document.getElementById(prefix+'-preview'); if(preview) preview.style.display = 'none'; const placeholder = document.getElementById(prefix+'-placeholder'); if(placeholder) placeholder.style.display = 'block'; }
+        function populateHeroItemPicker(itemType, idVal, prefix, placeholderText) { if(!idVal) { resetVisualPicker(prefix, placeholderText); return; } let item = itemType === 'artifact' ? db.library.artifacts.find(x => x.id === idVal) : db.library.abilities.find(x => x.id === idVal); if(item) { document.getElementById(prefix+'-val').value = item.id; document.getElementById(prefix+'-text').innerText = item.name; const preview = document.getElementById(prefix+'-preview'); const placeholder = document.getElementById(prefix+'-placeholder'); if(item.img) { preview.src = item.img; preview.style.display = 'block'; placeholder.style.display = 'none'; } } else { resetVisualPicker(prefix, placeholderText); } }
+        function addBubble(type) { const val = document.getElementById(`sel-${type}`).value; if (type === 'summary' && !currentSummaries.includes(val)) currentSummaries.push(val); if (type === 'attribute' && !currentAttributes.includes(val)) currentAttributes.push(val); renderBubbles(); }
+        function removeBubble(type, index) { if (type === 'summary') currentSummaries.splice(index, 1); if (type === 'attribute') currentAttributes.splice(index, 1); renderBubbles(); }
+        function renderBubbles() { document.getElementById('bubbles-summary').innerHTML = currentSummaries.map((s, i) => `<div class="bubble">${s} <span onclick="removeBubble('summary', ${i})">✕</span></div>`).join(''); document.getElementById('bubbles-attribute').innerHTML = currentAttributes.map((a, i) => `<div class="bubble">${a} <span onclick="removeBubble('attribute', ${i})">✕</span></div>`).join(''); }
+
+        function saveTeam() { const name = document.getElementById('team-name').value; const desc = document.getElementById('team-info').value; if(!name) return; let members = []; for(let i=1; i<=6; i++) { members.push(document.getElementById(`ts-${i}-val`).value || null); } db.teams.push({ id: 'team_'+Date.now(), name, info: desc, members }); updateLocalStorage(); renderTeamsList(); document.getElementById('team-name').value = ''; document.getElementById('team-info').value = ''; for(let i=1; i<=6; i++) { document.getElementById(`ts-${i}-val`).value = ''; document.getElementById(`ts-${i}`).innerHTML = `➕<div class="slot-label">${i}</div>`; } }
+        function renderTeamsList() { document.getElementById('teams-list').innerHTML = db.teams.map(t => { const getHImg = (idx) => { let tId = t.members[idx]; if(!tId) return `<div class="empty-slot"></div>`; let hero = db.heroes.find(x => x.id === tId); return hero ? `<img src="${hero.image || ''}">` : `<div class="empty-slot"></div>`; }; let matrixHtml = `<div class="preview-matrix">${getHImg(1)}${getHImg(0)}${getHImg(2)}${getHImg(4)}${getHImg(3)}${getHImg(5)}</div>`; let rawImages = t.members.filter(m => m !== null).map(mId => { let h = db.heroes.find(x => x.id === mId); return h ? `<img src="${h.image || ''}" style="width:38px; height:38px; border-radius:9px; border:1px solid var(--border-focus); object-fit:cover;">` : ''; }).join(' '); return `<div class="row-group"><div class="team-row-header"><strong style="color:var(--text-light); font-size:0.92rem;">${t.name}</strong><div class="preview-eye">👁️<div class="preview-popover">${matrixHtml}</div></div></div><div style="display:flex; gap:6px; margin:8px 0;">${rawImages || '<span style="color:var(--text-dim); font-size:0.78rem;">Equipo vacío</span>'}</div>${t.info ? `<p style="font-size:0.8rem; color:var(--text-muted); margin:0;">"${t.info}"</p>` : ''}</div>`; }).join(''); }
+        function clearAllData() { if (confirm("¿Borrar TODO permanentemente?")) { localStorage.clear(); db = { heroes: [], teams: [], library: { artifacts: [], abilities: [] }, gallery: { heroes: [], artifacts: [], talents: [] }, icons: {} }; renderFilters(); renderSystemIconsPreview(); renderHeroes(); renderLibrary(); renderTeamsList(); renderGalleryView(); } }
+    </script>
+</body>
+</html>
