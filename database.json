@@ -376,6 +376,7 @@
         "hab_1782885461574",
         "hab_1782885937718"
       ],
+      "image": "https://i.ibb.co/5xCKrhjY/Screenshot-20261124-120146-Epic-Heroes.jpg",
       "recommendedTeam": [
         "hero_1782891485557",
         "hero_1782929658059",
@@ -507,6 +508,7 @@
         "hab_1782885661074",
         "hab_1782885984435"
       ],
+      "image": "https://i.ibb.co/SXQqkrVF/Screenshot-20261124-120155-Epic-Heroes.jpg",
       "recommendedTeam": [
         "hero_1782928695033",
         "hero_1782886808099",
@@ -14141,5 +14143,17 @@
     "artifacts": [],
     "talents": []
   },
-  "icons": {}
+  "icons": {
+    "Caído": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/faction-images/1755205575487-dark.jpg",
+    "Metahumano": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/faction-images/1755205608274-superman.jpg",
+    "Tecnológico": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/faction-images/1755205600008-technology.jpg",
+    "Natural": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/faction-images/1755205593966-nature.jpg",
+    "Divino": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/faction-images/1755205614721-universe.jpg",
+    "Dios": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/faction-images/1755205585487-god.jpg",
+    "Curadores": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/role-images/1755205699486-support.png",
+    "Mago": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/role-images/1755205706647-mage.png",
+    "Asaltantes": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/role-images/1755205745242-raider.png",
+    "Rangers": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/role-images/1755205722246-ranger.png",
+    "Guerrero": "https://dlparapsdtyertlxqbfz.supabase.co/storage/v1/object/public/role-images/1755205715006-warrior.png"
+  }
 }
