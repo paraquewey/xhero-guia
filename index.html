@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor Táctico — Bento UI</title>
+    <title>X-Hero Guía — Gestor Táctico</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -57,9 +57,9 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 99px; }
 
-        /* HEADER COMPACTO Y ESTRUCTURADO */
+        /* HEADER */
         header {
-            background: rgba(8, 9, 10, 0.8);
+            background: rgba(8, 9, 10, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             padding: 12px 24px;
@@ -71,40 +71,16 @@
             top: 0;
             z-index: 90;
             gap: 12px;
-        }
-
-        .brand-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .brand-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-        }
-        header h1 {
-            margin: 0;
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: var(--text-light);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 6px;
             flex-wrap: wrap;
         }
-        .divider-v {
-            width: 1px;
-            height: 18px;
-            background: var(--border-subtle);
-            margin: 0 4px;
-        }
+
+        .brand-title { display: flex; align-items: center; gap: 10px; }
+        .brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+        header h1 { margin: 0; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.02em; color: var(--text-light); }
+        .sync-badge { font-size: 0.68rem; padding: 2px 8px; border-radius: 99px; background: var(--surface-elevated); color: var(--text-muted); border: 1px solid var(--border-subtle); }
+
+        .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .divider-v { width: 1px; height: 18px; background: var(--border-subtle); margin: 0 4px; }
 
         /* BOTONES */
         .btn-export, .btn-danger, .btn-add {
@@ -122,41 +98,19 @@
             border: 1px solid var(--border-subtle);
         }
 
-        .btn-export {
-            background: var(--surface-elevated);
-            color: var(--text-light);
-        }
-        .btn-export:hover {
-            background: var(--surface-hover);
-            border-color: var(--border-focus);
-        }
-        .btn-primary-solid {
-            background: var(--primary) !important;
-            border-color: rgba(255, 255, 255, 0.15) !important;
-            color: #fff !important;
-        }
+        .btn-export { background: var(--surface-elevated); color: var(--text-light); }
+        .btn-export:hover { background: var(--surface-hover); border-color: var(--border-focus); }
+        .btn-primary-solid { background: var(--primary) !important; border-color: rgba(255, 255, 255, 0.15) !important; color: #fff !important; }
         .btn-primary-solid:hover { background: var(--primary-hover) !important; }
 
-        .btn-danger {
-            background: rgba(229, 72, 77, 0.1);
-            color: #ff8589;
-            border-color: rgba(229, 72, 77, 0.25);
-        }
-        .btn-danger:hover {
-            background: rgba(229, 72, 77, 0.22);
-            color: #fff;
-        }
+        .btn-danger { background: rgba(229, 72, 77, 0.1); color: #ff8589; border-color: rgba(229, 72, 77, 0.25); }
+        .btn-danger:hover { background: rgba(229, 72, 77, 0.22); color: #fff; }
 
-        .view {
-            display: none;
-            padding: 20px 24px;
-            max-width: 1160px;
-            margin: 0 auto;
-        }
+        .view { display: none; padding: 20px 24px; max-width: 1160px; margin: 0 auto; }
         .view.active { display: block; animation: fadeIn 0.18s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* BARRA DE FILTROS HORIZONTAL COMPACTA */
+        /* FILTROS */
         .filter-panel {
             background: var(--panel-bg);
             padding: 12px 16px;
@@ -169,57 +123,21 @@
             align-items: center;
             justify-content: space-between;
         }
-
-        .filter-groups-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            align-items: center;
-        }
-
-        .filter-row {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-            overflow-x: auto;
-        }
+        .filter-groups-wrap { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+        .filter-row { display: flex; gap: 5px; align-items: center; overflow-x: auto; }
 
         .btn-filter {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            cursor: pointer;
-            flex-shrink: 0;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-light);
-            background-color: var(--surface-elevated);
-            transition: all 0.15s ease;
-            opacity: 0.65;
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 14px; cursor: pointer; flex-shrink: 0;
+            border: 1px solid var(--border-subtle); color: var(--text-light);
+            background-color: var(--surface-elevated); transition: all 0.15s ease; opacity: 0.65;
         }
         .btn-filter:hover { opacity: 1; border-color: var(--border-focus); }
-        .btn-filter.all {
-            width: auto;
-            padding: 0 10px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-        .btn-filter.active {
-            opacity: 1;
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 0 2px rgba(94, 106, 210, 0.35);
-            color: #fff;
-        }
-        .btn-filter.all.active {
-            background: var(--text-light);
-            color: var(--bg-color);
-        }
+        .btn-filter.all { width: auto; padding: 0 10px; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); }
+        .btn-filter.active { opacity: 1; border-color: rgba(255, 255, 255, 0.5); box-shadow: 0 0 0 2px rgba(94, 106, 210, 0.35); color: #fff; }
+        .btn-filter.all.active { background: var(--text-light); color: var(--bg-color); }
 
-        /* Tintes de Clases y Facciones */
         .bg-guerrero { background-color: rgba(230, 126, 34, 0.18); border-color: rgba(230, 126, 34, 0.4); }
         .bg-mago { background-color: rgba(59, 130, 246, 0.18); border-color: rgba(59, 130, 246, 0.4); }
         .bg-asaltante { background-color: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.4); }
@@ -236,14 +154,8 @@
         .bg-rank-a { background: var(--rank-a); border: none; }
         .bg-rank-b { background: var(--rank-b); border: none; }
 
-        /* =========================================================
-           NUEVO DISEÑO DE TARJETAS DE HÉROES (ESTILO RETRATO HUD)
-           ========================================================= */
-        .grid-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
-            gap: 14px;
-        }
+        /* TARJETAS DE HÉROES (RETRATO HUD) */
+        .grid-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 14px; }
 
         .hero-card {
             position: relative;
@@ -256,326 +168,78 @@
             transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
         }
-
-        .hero-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-focus);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(94, 106, 210, 0.4);
-        }
-
-        .hero-card img.hero-pic {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
+        .hero-card:hover { transform: translateY(-4px); border-color: var(--border-focus); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(94, 106, 210, 0.4); }
+        .hero-card img.hero-pic { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; background: #0b0c0e; }
         .hero-card:hover img.hero-pic { transform: scale(1.04); }
 
-        /* Degradado inferior para legibilidad perfecta */
         .hero-card-overlay {
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(to top, rgba(8, 9, 10, 0.96) 0%, rgba(8, 9, 10, 0.5) 38%, transparent 68%);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 10px;
-            pointer-events: none;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; pointer-events: none;
         }
+        .hero-card-title { margin: 0; font-size: 0.86rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .hero-card-sub { font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
 
-        .hero-card-title {
-            margin: 0;
-            font-size: 0.86rem;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            letter-spacing: -0.01em;
-        }
-
-        .hero-card-sub {
-            font-size: 0.68rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 1px;
-        }
-
-        /* Píldora agrupada de Facción + Clase */
         .hero-hud-top-left {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            display: flex;
-            gap: 4px;
-            background: rgba(16, 17, 20, 0.72);
-            backdrop-filter: blur(8px);
-            padding: 3px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            z-index: 5;
+            position: absolute; top: 8px; left: 8px; display: flex; gap: 4px;
+            background: rgba(16, 17, 20, 0.72); backdrop-filter: blur(8px);
+            padding: 3px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.12); z-index: 5;
         }
+        .mini-icon { width: 22px; height: 22px; border-radius: 6px; display: inline-flex; justify-content: center; align-items: center; font-size: 11px; border: 1px solid rgba(255, 255, 255, 0.15); background-color: var(--surface-elevated); color: #fff; }
+        .rank-badge { position: absolute; top: 8px; right: 8px; font-weight: 800; color: #fff; padding: 2px 7px; border-radius: 6px; font-size: 0.7rem; border: 1px solid rgba(255, 255, 255, 0.35); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 5; }
 
-        .mini-icon {
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 11px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background-color: var(--surface-elevated);
-            color: #fff;
-        }
-
-        .rank-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            font-weight: 800;
-            color: #fff;
-            padding: 2px 7px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-            z-index: 5;
-        }
-
-        /* Tarjetas estándar (Galería / Biblioteca / Picker) */
-        .card {
-            background: var(--panel-bg);
-            border-radius: 10px;
-            padding: 8px;
-            text-align: center;
-            border: 1px solid var(--border-subtle);
-            cursor: pointer;
-            transition: all 0.18s ease;
-            position: relative;
-        }
+        /* TARJETAS ESTÁNDAR */
+        .card { background: var(--panel-bg); border-radius: 10px; padding: 8px; text-align: center; border: 1px solid var(--border-subtle); cursor: pointer; transition: all 0.18s ease; position: relative; }
         .card:hover { background: var(--surface-elevated); border-color: var(--border-focus); transform: translateY(-2px); }
         .card img.hero-pic { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 7px; display: block; background: #050507; }
         .card h3 { margin: 6px 0 0 0; font-size: 0.8rem; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
         .card.multi-selected { border-color: var(--success); background: rgba(48, 164, 108, 0.1); }
-        .card.multi-selected::after {
-            content: '✓';
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: var(--success);
-            color: #fff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 11px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 700;
-            border: 2px solid var(--bg-color);
-        }
+        .card.multi-selected::after { content: '✓'; position: absolute; top: -6px; right: -6px; background: var(--success); color: #fff; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; justify-content: center; align-items: center; font-weight: 700; border: 2px solid var(--bg-color); }
 
-        /* FLOATING DOCK INFERIOR (Estilo macOS / Linear) */
-        .bottom-nav-wrapper {
-            position: fixed;
-            bottom: 16px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 100;
-            pointer-events: none;
-            padding: 0 16px;
-        }
-
-        .bottom-nav {
-            pointer-events: auto;
-            background: rgba(22, 24, 29, 0.85);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            display: flex;
-            gap: 4px;
-            padding: 5px;
-            border-radius: 14px;
-            border: 1px solid var(--border-focus);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75);
-        }
-
-        .nav-item {
-            padding: 8px 16px;
-            border-radius: 9px;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            transition: all 0.15s ease;
-            white-space: nowrap;
-        }
+        /* FLOATING DOCK */
+        .bottom-nav-wrapper { position: fixed; bottom: 16px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 100; pointer-events: none; padding: 0 16px; }
+        .bottom-nav { pointer-events: auto; background: rgba(22, 24, 29, 0.85); backdrop-filter: blur(18px); display: flex; gap: 4px; padding: 5px; border-radius: 14px; border: 1px solid var(--border-focus); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75); }
+        .nav-item { padding: 8px 16px; border-radius: 9px; cursor: pointer; font-weight: 500; font-size: 0.8rem; color: var(--text-muted); transition: all 0.15s ease; white-space: nowrap; }
         .nav-item:hover { color: var(--text-light); background: rgba(255, 255, 255, 0.04); }
-        .nav-item.active {
-            color: #fff;
-            background: var(--primary);
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(94, 106, 210, 0.45);
-        }
+        .nav-item.active { color: #fff; background: var(--primary); font-weight: 600; box-shadow: 0 2px 8px rgba(94, 106, 210, 0.45); }
 
-        /* FAB */
-        .fab {
-            position: fixed;
-            bottom: 18px;
-            right: 24px;
-            width: 44px;
-            height: 44px;
-            background: var(--text-light);
-            color: var(--bg-color);
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            font-weight: 600;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
-            cursor: pointer;
-            z-index: 101;
-            transition: all 0.18s ease;
-        }
+        .fab { position: fixed; bottom: 18px; right: 24px; width: 44px; height: 44px; background: var(--text-light); color: var(--bg-color); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 600; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65); cursor: pointer; z-index: 101; transition: all 0.18s ease; }
         .fab:hover { transform: scale(1.06); background: #fff; }
 
-        /* MODALES Y BENTO GRID DE PRESENTACIÓN */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.78);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(8px);
-            padding: 12px;
-        }
+        /* MODALES Y BENTO GRID */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); z-index: 200; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 12px; }
         .modal.active { display: flex; }
-
-        .modal-content {
-            background: var(--panel-bg);
-            width: 100%;
-            max-width: 560px;
-            max-height: 88vh;
-            border-radius: 14px;
-            border: 1px solid var(--border-focus);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
-            animation: modalPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .modal-content { background: var(--panel-bg); width: 100%; max-width: 560px; max-height: 88vh; border-radius: 14px; border: 1px solid var(--border-focus); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); animation: modalPop 0.18s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.97) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-
-        .modal-header {
-            padding: 13px 18px;
-            background: var(--panel-bg);
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .modal-header { padding: 13px 18px; background: var(--panel-bg); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
         .modal-header h2 { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
         .modal-body { padding: 16px; overflow-y: auto; flex: 1; background: var(--bg-color); }
         .modal-footer { padding: 12px 18px; background: var(--panel-bg); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
 
-        /* BENTO CELLS EN FICHA TÉCNICA */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
-            padding: 16px;
-        }
-
-        .bento-box {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            padding: 12px;
-        }
-
+        .bento-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 16px; }
+        .bento-box { background: var(--panel-bg); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 12px; }
         .col-span-6 { grid-column: span 6; }
         .col-span-3 { grid-column: span 3; }
         .col-span-2 { grid-column: span 2; }
+        @media (max-width: 480px) { .col-span-3 { grid-column: span 6; } }
 
-        @media (max-width: 480px) {
-            .col-span-3 { grid-column: span 6; }
-            .col-span-2 { grid-column: span 2; }
-        }
+        .bento-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; display: block; }
+        .pres-hero-banner { display: flex; gap: 14px; align-items: center; }
+        .pres-avatar-wrap { position: relative; width: 82px; height: 82px; flex-shrink: 0; }
+        .pres-avatar { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; border: 1px solid var(--border-focus); background: var(--bg-color); }
+        .pres-meta-pills { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+        .meta-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; background: var(--surface-elevated); border: 1px solid var(--border-subtle); }
 
-        .bento-label {
-            font-size: 0.68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        /* Hero Banner dentro de Ficha */
-        .pres-hero-banner {
-            display: flex;
-            gap: 14px;
-            align-items: center;
-        }
-        .pres-avatar-wrap {
-            position: relative;
-            width: 82px;
-            height: 82px;
-            flex-shrink: 0;
-        }
-        .pres-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 1px solid var(--border-focus);
-            background: var(--bg-color);
-        }
-        .pres-meta-pills {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .meta-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            background: var(--surface-elevated);
-            border: 1px solid var(--border-subtle);
-        }
-
-        /* Stats Strip */
-        .pres-stats-box {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-            text-align: center;
-        }
+        .pres-stats-box { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; text-align: center; }
         .pres-stat-item { border-right: 1px solid var(--border-subtle); }
         .pres-stat-item:last-child { border-right: none; }
         .pres-stat-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; display: block; }
         .pres-stat-val { font-size: 0.92rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 
-        /* Resto de estilos de formulario y matrices */
         .row-group { background: var(--panel-bg); padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid var(--border-subtle); }
         .row-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
 
-        input[type="text"], input[type="number"], select, textarea {
+        input[type="text"], input[type="url"], input[type="number"], select, textarea {
             width: 100%; padding: 8px 10px; margin-bottom: 10px; border-radius: 7px;
             border: 1px solid var(--border-subtle); background: var(--bg-color);
             color: var(--text-light); font-family: 'Inter', sans-serif; font-size: 0.84rem;
@@ -649,6 +313,10 @@
         .pres-talent-item img { width: 100%; height: 100%; object-fit: cover; }
 
         h3.section-heading { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-subtle); padding-bottom: 6px; margin-top: 20px; }
+
+        .url-input-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+        .url-input-row input { margin-bottom: 0; flex: 1; font-size: 0.78rem; }
+        .url-mini-preview { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border-focus); background: var(--bg-color); flex-shrink: 0; }
     </style>
 </head>
 <body>
@@ -656,18 +324,21 @@
     <header>
         <div class="brand-title">
             <span class="brand-dot"></span>
-            <h1>Gestor Táctico</h1>
+            <h1>X-Hero Guía</h1>
+            <span class="sync-badge" id="db-source-badge">Cargando...</span>
         </div>
         <div class="header-actions">
+            <button class="btn-export" onclick="syncFromGitHub(true)" title="Recargar database.json desde GitHub">🔄 Sync GitHub</button>
+            <div class="divider-v"></div>
             <button class="btn-export" onclick="document.getElementById('import-dic').click()" title="Cargar JSON OCR">📂 OCR</button>
             <button class="btn-danger" onclick="clearOCR()" title="Vaciar memoria OCR">🧹</button>
             <input type="file" id="import-dic" webkitdirectory directory multiple style="display:none;" onchange="loadDictionary(event)">
             
             <div class="divider-v"></div>
             
-            <button class="btn-export" onclick="document.getElementById('import-file').click()">Importar</button>
+            <button class="btn-export" onclick="document.getElementById('import-file').click()">Importar JSON</button>
             <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
-            <button class="btn-export btn-primary-solid" onclick="exportData()">Exportar JSON</button>
+            <button class="btn-export btn-primary-solid" onclick="exportData()">Exportar database.json</button>
         </div>
     </header>
 
@@ -693,19 +364,26 @@
         <div class="fab" onclick="openHeroModal()" title="Nuevo Héroe">+</div>
     </div>
 
-    <!-- VISTA GALERÍA -->
+    <!-- VISTA GALERÍA (POR ENLACES / URLs) -->
     <div id="view-gallery" class="view">
         <div class="row-group">
-            <span class="row-title">Subir a la Galería</span>
-            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <select id="gallery-category" style="flex: 1; margin:0;"><option value="heroes">Carpeta Héroes</option><option value="artifacts">Carpeta Artefactos</option><option value="talents">Carpeta Talentos</option></select>
-                <input type="file" id="gallery-upload" accept="image/*" multiple style="flex: 2; margin:0; padding:6px;">
+            <span class="row-title">Añadir Imágenes por Enlace (ImgBB / URLs)</span>
+            <p style="font-size:0.76rem; color:var(--text-muted); margin-top:0; margin-bottom:10px;">
+                Pega enlaces directos o códigos HTML de ImgBB (uno por línea). Se extraen y limpian automáticamente.
+            </p>
+            <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+                <select id="gallery-category" style="flex: 1; margin:0;">
+                    <option value="heroes">Carpeta Héroes</option>
+                    <option value="artifacts">Carpeta Artefactos</option>
+                    <option value="talents">Carpeta Talentos</option>
+                </select>
+                <button class="btn-export btn-primary-solid" onclick="addUrlsToGallery()">+ Guardar Enlaces</button>
             </div>
-            <button class="btn-export btn-primary-solid" style="width: 100%;" onclick="uploadToGallery()">Subir Fotos</button>
+            <textarea id="gallery-url-input" rows="4" placeholder="https://i.ibb.co/ejemplo/heroe1.jpg&#10;https://i.ibb.co/ejemplo/heroe2.jpg" style="margin-bottom:0; font-family:monospace; font-size:0.78rem;"></textarea>
         </div>
 
         <div class="row-group">
-            <span class="row-title">Iconos Personalizados (1x1)</span>
+            <span class="row-title">Iconos Personalizados de Clase / Facción</span>
             <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
                 <select id="cfg-icon-key" style="flex: 2; min-width: 130px; margin:0;">
                     <optgroup label="Clases">
@@ -715,17 +393,16 @@
                         <option value="Caído">Caído 💀</option><option value="Metahumano">Metahumano 🦸</option><option value="Tecnológico">Tecnológico ⚙️</option><option value="Natural">Natural 🌿</option><option value="Divino">Divino ✨</option><option value="Dios">Dios 👑</option>
                     </optgroup>
                 </select>
-                <select id="cfg-icon-folder" style="flex: 1; min-width: 100px; margin:0;">
-                    <option value="heroes">Carpeta Héroes</option><option value="artifacts">Carpeta Artefactos</option><option value="talents">Carpeta Talentos</option>
-                </select>
-                <button class="btn-export" onclick="openGalleryPicker(document.getElementById('cfg-icon-folder').value, 'sys-icon')">Asignar Foto</button>
+                <input type="text" id="cfg-icon-url" placeholder="Pegar URL del icono..." style="flex: 3; min-width: 160px; margin:0;">
+                <button class="btn-export" onclick="assignSystemIconUrl()">Asignar URL</button>
+                <button class="btn-export" onclick="openGalleryPicker('heroes', 'sys-icon')">De Galería</button>
             </div>
             <div id="system-icons-preview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 8px; margin-top: 12px;"></div>
         </div>
 
-        <h3 class="section-heading">Héroes</h3><div class="grid-gallery" id="gallery-grid-heroes"></div>
-        <h3 class="section-heading">Artefactos</h3><div class="grid-gallery" id="gallery-grid-artifacts"></div>
-        <h3 class="section-heading">Talentos</h3><div class="grid-gallery" id="gallery-grid-talents"></div>
+        <h3 class="section-heading">Héroes (<span id="count-gal-heroes">0</span>)</h3><div class="grid-gallery" id="gallery-grid-heroes"></div>
+        <h3 class="section-heading">Artefactos (<span id="count-gal-artifacts">0</span>)</h3><div class="grid-gallery" id="gallery-grid-artifacts"></div>
+        <h3 class="section-heading">Talentos (<span id="count-gal-talents">0</span>)</h3><div class="grid-gallery" id="gallery-grid-talents"></div>
     </div>
 
     <!-- VISTA BIBLIOTECA -->
@@ -744,8 +421,13 @@
                     <button class="btn-export" style="padding: 3px 8px; font-size: 0.72rem;" onclick="addArtDescRow('lib-art-descs')">+ Efecto</button>
                 </div>
                 <div id="lib-art-descs"></div>
-                <input type="hidden" id="lib-art-img-val">
-                <div class="visual-picker-btn" onclick="openGalleryPicker('artifacts', 'lib-art-img')"><div class="visual-picker-img" id="lib-art-img-preview">🖼️</div><div class="visual-picker-text">Elegir de Galería</div></div>
+
+                <div class="url-input-row">
+                    <img id="lib-art-img-preview" class="url-mini-preview" src="" style="display:none;">
+                    <input type="text" id="lib-art-img-val" placeholder="Pegar URL de imagen o elegir..." oninput="syncUrlPreview('lib-art-img')">
+                    <button class="btn-export" style="padding:7px 10px;" onclick="openGalleryPicker('artifacts', 'lib-art-img')" title="Elegir de Galería">🖼️</button>
+                </div>
+
                 <button class="btn-export btn-primary-solid" style="width: 100%;" onclick="saveArtifact()">Guardar Artefacto</button>
             </div>
 
@@ -756,8 +438,13 @@
                     <select id="lib-hab-class" style="flex: 1;"><option value="Clase 1">Clase 1</option><option value="Clase 2">Clase 2</option><option value="Clase 3">Clase 3</option><option value="Clase 4">Clase 4</option></select>
                 </div>
                 <textarea id="lib-hab-info" rows="3" placeholder="Descripción del talento..."></textarea>
-                <input type="hidden" id="lib-hab-img-val">
-                <div class="visual-picker-btn" onclick="openGalleryPicker('talents', 'lib-hab-img')"><div class="visual-picker-img" id="lib-hab-img-preview">🖼️</div><div class="visual-picker-text">Elegir de Galería</div></div>
+
+                <div class="url-input-row">
+                    <img id="lib-hab-img-preview" class="url-mini-preview" src="" style="display:none;">
+                    <input type="text" id="lib-hab-img-val" placeholder="Pegar URL de imagen o elegir..." oninput="syncUrlPreview('lib-hab-img')">
+                    <button class="btn-export" style="padding:7px 10px;" onclick="openGalleryPicker('talents', 'lib-hab-img')" title="Elegir de Galería">🖼️</button>
+                </div>
+
                 <button class="btn-export btn-primary-solid" style="width: 100%;" onclick="saveAbility()">Guardar Talento</button>
             </div>
         </div>
@@ -796,7 +483,7 @@
         </div>
     </div>
 
-    <!-- MODAL FICHA TÉCNICA (BENTO GRID) -->
+    <!-- MODAL FICHA TÉCNICA -->
     <div class="modal" id="presentation-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -821,11 +508,15 @@
                 <input type="hidden" id="h-edit-id">
                 <div class="row-group">
                     <span class="row-title">Datos Principales</span>
-                    <input type="hidden" id="h-img-val">
-                    <div class="visual-picker-btn" onclick="openGalleryPicker('heroes', 'h-img')" style="justify-content:center; flex-direction:column; padding:12px;">
-                        <img id="h-img-preview" style="width: 72px; height: 72px; border-radius: 10px; object-fit: cover; display:none;">
-                        <div id="h-img-placeholder" style="font-size:24px;">📸</div><div class="visual-picker-text" style="color:var(--cyan-accent);">Elegir Foto de Galería</div>
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:10px;">
+                        <img id="h-img-preview" style="width: 76px; height: 96px; border-radius: 10px; object-fit: cover; border: 1px solid var(--border-focus); display:none;">
+                        <div id="h-img-placeholder" style="width: 76px; height: 96px; border-radius: 10px; background:var(--bg-color); border:1px dashed var(--border-focus); display:flex; align-items:center; justify-content:center; font-size:24px;">📸</div>
+                        <div class="url-input-row" style="width:100%; margin-bottom:0;">
+                            <input type="text" id="h-img-val" placeholder="Pegar URL de foto o elegir de galería..." oninput="syncUrlPreview('h-img')">
+                            <button class="btn-export" style="padding:7px 10px;" onclick="openGalleryPicker('heroes', 'h-img')">Galería</button>
+                        </div>
                     </div>
+
                     <div style="display: flex; gap: 8px; margin-top:8px;">
                         <input type="text" id="h-name" placeholder="Nombre" style="flex: 2;">
                         <select id="h-rank" onchange="autoSetLevel()" style="flex: 1; font-weight: 600;"><option value="S+">S+</option><option value="S">S</option><option value="A">A</option><option value="B">B</option></select>
@@ -957,7 +648,7 @@
         </div>
     </div>
 
-    <!-- MODALES AUXILIARES -->
+    <!-- MODAL EDITAR BIBLIOTECA -->
     <div class="modal" id="edit-lib-modal">
         <div class="modal-content">
             <div class="modal-header"><h2>Editar Biblioteca</h2><button onclick="closeEditLibModal()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;">&times;</button></div>
@@ -973,14 +664,19 @@
                     <div id="edit-lib-desc-container"></div>
                 </div>
                 <div class="row-group" style="margin-bottom:0;">
-                    <input type="hidden" id="edit-lib-img-val">
-                    <div class="visual-picker-btn" id="edit-lib-img-btn" style="margin-bottom:0;"><img id="edit-lib-img-preview" class="visual-picker-img" style="display:none;"><div id="edit-lib-img-placeholder" class="visual-picker-img">🖼️</div><div class="visual-picker-text">Elegir de Galería</div></div>
+                    <span class="row-title">Enlace de Imagen (URL)</span>
+                    <div class="url-input-row" style="margin-bottom:0;">
+                        <img id="edit-lib-img-preview" class="url-mini-preview" src="" style="display:none;">
+                        <input type="text" id="edit-lib-img-val" placeholder="Pegar URL de imagen..." oninput="syncUrlPreview('edit-lib-img')">
+                        <button class="btn-export" id="edit-lib-img-btn" style="padding:7px 10px;">Galería</button>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer"><button class="btn-danger" onclick="deleteLibraryItem()">🗑️ Eliminar</button><button class="btn-export btn-primary-solid" onclick="saveLibraryEdit()">Guardar</button></div>
         </div>
     </div>
 
+    <!-- MODALES DE SELECCIÓN -->
     <div class="modal" id="gallery-picker-modal" style="z-index: 300;"><div class="modal-content"><div class="modal-header"><h2>Seleccionar Foto</h2><button onclick="closeGalleryPicker()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;">&times;</button></div><div class="modal-body"><input type="hidden" id="gp-target"><div class="grid-gallery" id="gp-grid"></div></div></div></div>
     <div class="modal" id="item-picker-modal" style="z-index: 300;"><div class="modal-content"><div class="modal-header"><h2 id="ip-title">Seleccionar Item</h2><button onclick="closeItemPicker()" style="background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer;">&times;</button></div><div class="modal-body"><input type="hidden" id="ip-target"><div style="display: flex; flex-direction: column; gap: 8px;" id="ip-list"></div></div></div></div>
 
@@ -1022,10 +718,198 @@
         const iconData = { "Guerrero": { icon: "🛡️", bg: "bg-guerrero" }, "Mago": { icon: "🪄", bg: "bg-mago" }, "Rangers": { icon: "🏹", bg: "bg-ranger" }, "Asaltantes": { icon: "🗡️", bg: "bg-asaltante" }, "Curadores": { icon: "💖", bg: "bg-curador" }, "Caído": { icon: "💀", bg: "bg-caido" }, "Metahumano": { icon: "🦸", bg: "bg-meta" }, "Tecnológico": { icon: "⚙️", bg: "bg-tecno" }, "Natural": { icon: "🌿", bg: "bg-natural" }, "Divino": { icon: "✨", bg: "bg-divino" }, "Dios": { icon: "👑", bg: "bg-dios" } };
         const rankColors = { "S+": "var(--rank-splus)", "S": "var(--rank-s)", "A": "var(--rank-a)", "B": "var(--rank-b)" };
 
-        window.onload = function() { checkDBPatch(); renderFilters(); renderSystemIconsPreview(); renderHeroes(); renderArtForm(); renderLibrary(); renderTeamsList(); renderGalleryView(); };
+        /* EXTRACTOR Y NORMALIZADOR DE ENLACES (ImgBB HTML, URLs directas y Drive) */
+        function normalizeImageUrl(rawUrl) {
+            if (!rawUrl) return '';
+            let url = rawUrl.trim();
+            // Si pegan etiqueta <img src="..."> de ImgBB
+            const imgTagMatch = url.match(/src=["']([^"']+)["']/i);
+            if (imgTagMatch && imgTagMatch[1]) {
+                url = imgTagMatch[1].trim();
+            }
+            // Si pegan enlace de Google Drive
+            const driveMatch = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)([a-zA-Z0-9_-]+)/);
+            if (driveMatch && driveMatch[1]) {
+                return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+            }
+            return url;
+        }
+
+        function syncUrlPreview(prefix) {
+            const input = document.getElementById(prefix + '-val');
+            const preview = document.getElementById(prefix + '-preview');
+            const placeholder = document.getElementById(prefix + '-placeholder');
+            if (!input || !preview) return;
+            const cleanUrl = normalizeImageUrl(input.value);
+            if (cleanUrl) {
+                preview.src = cleanUrl;
+                preview.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+            } else {
+                preview.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'flex';
+            }
+        }
+
+        /* SINCRONIZACIÓN CON GITHUB (database.json) */
+        async function syncFromGitHub(manual = false) {
+            const badge = document.getElementById('db-source-badge');
+            badge.innerText = 'Sincronizando...';
+            try {
+                const res = await fetch('./database.json?t=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const remoteDb = await res.json();
+                    if (remoteDb && Array.isArray(remoteDb.heroes)) {
+                        db = remoteDb;
+                        checkDBPatch();
+                        updateLocalStorage();
+                        badge.innerText = 'Online • GitHub';
+                        badge.style.color = '#63d49c';
+                        badge.style.borderColor = 'rgba(48, 164, 108, 0.4)';
+                        initAppUI();
+                        if (manual) alert("✅ Datos actualizados desde GitHub (database.json).");
+                        return true;
+                    }
+                }
+            } catch (e) {
+                // Sin conexión o en modo archivo local
+            }
+            badge.innerText = 'Caché Local';
+            badge.style.color = 'var(--text-muted)';
+            if (manual) alert("⚠️ No se pudo conectar con ./database.json (usando copia local).");
+            return false;
+        }
+
+        window.onload = async function() {
+            await syncFromGitHub(false);
+            initAppUI();
+        };
+
+        function initAppUI() {
+            checkDBPatch();
+            renderFilters();
+            renderSystemIconsPreview();
+            renderHeroes();
+            renderArtForm();
+            renderLibrary();
+            renderTeamsList();
+            renderGalleryView();
+        }
         
-        function checkDBPatch() { if(!db.gallery) db.gallery = { heroes: [], artifacts: [], talents: [] }; if(!db.icons) db.icons = {}; if(!db.library) db.library = { artifacts: [], abilities: [] }; if(db.library && db.library.abilities) { let patched = false; db.library.abilities.forEach(a => { if(!a.talentClass) { a.talentClass = "Clase 1"; patched = true; }}); if(patched) updateLocalStorage(); } }
-        function updateLocalStorage() { try { localStorage.setItem('rpg_heroes', JSON.stringify(db.heroes)); localStorage.setItem('rpg_teams', JSON.stringify(db.teams)); localStorage.setItem('rpg_library', JSON.stringify(db.library)); localStorage.setItem('rpg_gallery', JSON.stringify(db.gallery)); localStorage.setItem('rpg_icons', JSON.stringify(db.icons)); } catch (e) { alert("⚠️ ¡MEMORIA LLENA! Exporta tu JSON, Limpia la memoria e Importalo de nuevo."); } }
+        function checkDBPatch() {
+            if(!db.gallery) db.gallery = { heroes: [], artifacts: [], talents: [] };
+            if(!db.icons) db.icons = {};
+            if(!db.library) db.library = { artifacts: [], abilities: [] };
+            if(db.library && db.library.abilities) {
+                let patched = false;
+                db.library.abilities.forEach(a => { if(!a.talentClass) { a.talentClass = "Clase 1"; patched = true; }});
+                if(patched) updateLocalStorage();
+            }
+        }
+
+        function updateLocalStorage() {
+            try {
+                localStorage.setItem('rpg_heroes', JSON.stringify(db.heroes));
+                localStorage.setItem('rpg_teams', JSON.stringify(db.teams));
+                localStorage.setItem('rpg_library', JSON.stringify(db.library));
+                localStorage.setItem('rpg_gallery', JSON.stringify(db.gallery));
+                localStorage.setItem('rpg_icons', JSON.stringify(db.icons));
+            } catch (e) {
+                alert("⚠️ Error guardando en memoria local. Exporta tu database.json.");
+            }
+        }
+
+        /* GALERÍA POR URLs */
+        function addUrlsToGallery() {
+            const rawText = document.getElementById('gallery-url-input').value;
+            const cat = document.getElementById('gallery-category').value;
+            const lines = rawText.split(/\r?\n/).map(l => normalizeImageUrl(l)).filter(l => l.startsWith('http'));
+            if (!lines.length) return alert("Pega al menos una URL o código HTML de ImgBB válido.");
+            
+            let added = 0;
+            lines.forEach((url, idx) => {
+                // Evita duplicados exactos en la misma carpeta
+                if (!db.gallery[cat].some(item => item.data === url)) {
+                    db.gallery[cat].push({ id: 'img_' + Date.now() + '_' + idx, data: url });
+                    added++;
+                }
+            });
+            updateLocalStorage();
+            renderGalleryView();
+            document.getElementById('gallery-url-input').value = '';
+            alert(`✅ Se añadieron ${added} enlaces nuevos a la galería.`);
+        }
+
+        function assignSystemIconUrl() {
+            const key = document.getElementById('cfg-icon-key').value;
+            const url = normalizeImageUrl(document.getElementById('cfg-icon-url').value);
+            if (!url) return alert("Pega una URL válida.");
+            db.icons[key] = url;
+            document.getElementById('cfg-icon-url').value = '';
+            updateLocalStorage();
+            renderSystemIconsPreview();
+            renderFilters();
+            renderHeroes();
+        }
+
+        function renderGalleryView() {
+            document.getElementById('count-gal-heroes').innerText = db.gallery.heroes.length;
+            document.getElementById('count-gal-artifacts').innerText = db.gallery.artifacts.length;
+            document.getElementById('count-gal-talents').innerText = db.gallery.talents.length;
+
+            const makeHtml = (cat) => db.gallery[cat].map(img => `
+                <div class="card">
+                    <img src="${img.data}" class="hero-pic" loading="lazy">
+                    <button class="btn-danger" onclick="deleteFromGallery('${cat}', '${img.id}')" style="width:100%; margin-top:6px; padding:4px; font-size:0.7rem;">Borrar</button>
+                </div>`).join('');
+            document.getElementById('gallery-grid-heroes').innerHTML = makeHtml('heroes') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>';
+            document.getElementById('gallery-grid-artifacts').innerHTML = makeHtml('artifacts') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>';
+            document.getElementById('gallery-grid-talents').innerHTML = makeHtml('talents') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>';
+        }
+
+        function deleteFromGallery(cat, id) { if(!confirm("¿Borrar enlace?")) return; db.gallery[cat] = db.gallery[cat].filter(img => img.id !== id); updateLocalStorage(); renderGalleryView(); }
+        function openGalleryPicker(cat, targetPrefix) { document.getElementById('gp-target').value = targetPrefix; const grid = document.getElementById('gp-grid'); if(db.gallery[cat].length === 0) { grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); grid-column: 1 / -1;">Carpeta vacía. Añade URLs en la pestaña Galería.</div>`; } else { grid.innerHTML = db.gallery[cat].map(img => `<div class="card" onclick="selectGalleryImage('${img.data}')"><img src="${img.data}" class="hero-pic" loading="lazy"></div>`).join(''); } document.getElementById('gallery-picker-modal').classList.add('active'); }
+        function closeGalleryPicker() { document.getElementById('gallery-picker-modal').classList.remove('active'); }
+        function selectGalleryImage(url) {
+            const prefix = document.getElementById('gp-target').value;
+            if(prefix === 'sys-icon') {
+                const key = document.getElementById('cfg-icon-key').value;
+                db.icons[key] = url;
+                updateLocalStorage(); renderSystemIconsPreview(); renderFilters(); renderHeroes(); closeGalleryPicker(); return;
+            }
+            document.getElementById(prefix+'-val').value = url;
+            syncUrlPreview(prefix);
+            closeGalleryPicker();
+        }
+
+        /* EXPORTACIÓN COMPLETA CON URLs */
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+            const a = document.createElement('a');
+            a.href = dataStr;
+            a.download = "database.json";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedDb = JSON.parse(e.target.result);
+                    if (importedDb.heroes && importedDb.library) {
+                        db = importedDb;
+                        updateLocalStorage();
+                        initAppUI();
+                        alert("✅ Base de datos importada.");
+                    } else { alert("Formato inválido."); }
+                } catch (err) { alert("Error al leer JSON."); }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
 
         function importHeroStats(event) {
             const file = event.target.files[0]; if (!file) return;
@@ -1059,9 +943,6 @@
         function toggleTgt(type, pos) { if(activeTargets[type].includes(pos)) { activeTargets[type] = activeTargets[type].filter(p => p !== pos); } else { activeTargets[type].push(pos); } updateTgtUI(type); }
         function updateTgtUI(type) { const cond = document.getElementById(`cond-${type}`).value; const descArea = document.getElementById(`desc-${type}`); descArea.style.display = (cond === 'default') ? 'none' : 'block'; const isAlly = (cond === 'bendicion'); for(let i=1; i<=6; i++) { const el = document.getElementById(`slot-${type}-${i}`); if(el) { el.className = 'target-slot'; if(activeTargets[type].includes(i)) { el.classList.add(isAlly ? 'ally' : 'enemy'); } } } }
 
-        function importData(event) { const file = event.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = function(e) { try { const importedDb = JSON.parse(e.target.result); if (importedDb.heroes && importedDb.library) { db = importedDb; checkDBPatch(); updateLocalStorage(); renderFilters(); renderSystemIconsPreview(); renderHeroes(); renderLibrary(); renderTeamsList(); renderGalleryView(); alert("✅ Base de datos importada."); } else { alert("Formato inválido."); } } catch (err) { alert("Error al leer JSON."); } event.target.value = ''; }; reader.readAsText(file); }
-        function exportData() { let dbCopy = JSON.parse(JSON.stringify(db)); dbCopy.heroes.forEach(h => delete h.image); if(dbCopy.library) { if(dbCopy.library.artifacts) dbCopy.library.artifacts.forEach(a => delete a.img); if(dbCopy.library.abilities) dbCopy.library.abilities.forEach(a => delete a.img); } delete dbCopy.gallery; delete dbCopy.icons; const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbCopy, null, 2)); const a = document.createElement('a'); a.href = dataStr; a.download = "epic_heroes_db_ligero.json"; document.body.appendChild(a); a.click(); a.remove(); }
-        
         function switchTab(tab, el) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1069,14 +950,6 @@
             if(el) el.classList.add('active');
         }
         function setFilter(type, value, element) { const parent = document.getElementById(`filters-${type}`); parent.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active')); element.classList.add('active'); if(type === 'rank') activeRank = value; if(type === 'class') activeClass = value; if(type === 'faction') activeFaction = value; renderHeroes(); }
-        
-        function compressImage(file) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); canvas.width = 200; canvas.height = 240; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, 200, 240); resolve(canvas.toDataURL('image/jpeg', 0.75)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
-        async function uploadToGallery() { const files = document.getElementById('gallery-upload').files; const cat = document.getElementById('gallery-category').value; if(!files.length) return alert("Selecciona fotos"); for(let file of files) { const imgBase64 = await compressImage(file); db.gallery[cat].push({ id: 'img_'+Date.now()+Math.floor(Math.random()*1000), data: imgBase64 }); } updateLocalStorage(); renderGalleryView(); document.getElementById('gallery-upload').value = ''; }
-        function renderGalleryView() { const makeHtml = (cat) => db.gallery[cat].map(img => `<div class="card"><img src="${img.data}" class="hero-pic"><button class="btn-danger" onclick="deleteFromGallery('${cat}', '${img.id}')" style="width:100%; margin-top:6px; padding:4px; font-size:0.7rem;">Borrar</button></div>`).join(''); document.getElementById('gallery-grid-heroes').innerHTML = makeHtml('heroes') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>'; document.getElementById('gallery-grid-artifacts').innerHTML = makeHtml('artifacts') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>'; document.getElementById('gallery-grid-talents').innerHTML = makeHtml('talents') || '<p style="color:var(--text-dim); font-size:0.8rem;">Vacío...</p>'; }
-        function deleteFromGallery(cat, id) { if(!confirm("¿Borrar?")) return; db.gallery[cat] = db.gallery[cat].filter(img => img.id !== id); updateLocalStorage(); renderGalleryView(); }
-        function openGalleryPicker(cat, targetPrefix) { document.getElementById('gp-target').value = targetPrefix; const grid = document.getElementById('gp-grid'); if(db.gallery[cat].length === 0) { grid.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); grid-column: 1 / -1;">Carpeta vacía.</div>`; } else { grid.innerHTML = db.gallery[cat].map(img => `<div class="card" onclick="selectGalleryImage('${img.data}')"><img src="${img.data}" class="hero-pic"></div>`).join(''); } document.getElementById('gallery-picker-modal').classList.add('active'); }
-        function closeGalleryPicker() { document.getElementById('gallery-picker-modal').classList.remove('active'); }
-        function selectGalleryImage(b64) { const prefix = document.getElementById('gp-target').value; if(prefix === 'sys-icon') { const key = document.getElementById('cfg-icon-key').value; db.icons[key] = b64; updateLocalStorage(); renderSystemIconsPreview(); renderFilters(); renderHeroes(); closeGalleryPicker(); return; } document.getElementById(prefix+'-val').value = b64; const preview = document.getElementById(prefix+'-preview'); const placeholder = document.getElementById(prefix+'-placeholder'); if(preview) { preview.src = b64; preview.style.display = 'block'; } if(placeholder) { placeholder.style.display = 'none'; } closeGalleryPicker(); }
 
         function setPickerFilter(type, value, element) { const parent = document.getElementById(`picker-filters-${type}`); parent.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('active')); element.classList.add('active'); if(type === 'rank') pickerActiveRank = value; if(type === 'class') pickerActiveClass = value; if(type === 'faction') pickerActiveFaction = value; renderHeroPickerGrid(); }
         function openHeroPicker(targetId, mode = 'single') { document.getElementById('hp-target').value = targetId; document.getElementById('hp-mode').value = mode; pickerActiveRank = 'ALL'; pickerActiveClass = 'ALL'; pickerActiveFaction = 'ALL'; document.querySelectorAll('#hero-picker-modal .filter-row .btn-filter').forEach(btn => btn.classList.remove('active')); document.querySelectorAll('#hero-picker-modal .filter-row .btn-filter.all').forEach(btn => btn.classList.add('active')); if(mode === 'multi') { document.getElementById('btn-remove-single').style.display = 'none'; document.getElementById('hp-multi-footer').style.display = 'flex'; if(targetId === 'similars') draftMultiSelection = [...currentSimilars]; if(targetId === 'synergies') draftMultiSelection = [...currentSynergies]; if(targetId === 'counters') draftMultiSelection = [...currentCounters]; } else { document.getElementById('btn-remove-single').style.display = 'block'; document.getElementById('hp-multi-footer').style.display = 'none'; } renderFilters(); renderHeroPickerGrid(); document.getElementById('hero-picker-modal').classList.add('active'); }
@@ -1091,22 +964,126 @@
         function renderIdealPositionsUI() { for(let i=1; i<=6; i++) { const el = document.getElementById('pos-' + i); if(el) { if(currentIdealPositions.includes(i)) el.classList.add('active'); else el.classList.remove('active'); } } }
         function autoSetLevel() { const r = document.getElementById('h-rank').value; const lvlInput = document.getElementById('h-lvl'); if(r === 'S+' || r === 'S') lvlInput.value = 340; else if(r === 'A') lvlInput.value = 180; else if(r === 'B') lvlInput.value = 60; }
 
+        /* BIBLIOTECA */
         function addArtDescRow(containerId, val = '') { const container = document.getElementById(containerId); const row = document.createElement('div'); row.className = 'desc-row'; row.innerHTML = `<textarea class="art-desc-input" rows="2" placeholder="Efecto...">${val}</textarea><button class="btn-danger" style="padding:5px 9px;" onclick="this.parentElement.remove()">✕</button>`; container.appendChild(row); }
         function renderArtForm() { const type = document.getElementById('lib-art-type').value; const maxLvl = type === 'Gema' ? 25 : 30; document.getElementById('lib-art-level').innerHTML = `<option value="5">Nivel 5</option><option value="10">Nivel 10</option><option value="20">Nivel 20</option><option value="${maxLvl}" selected>Nivel ${maxLvl} (Max)</option><option value="custom">Personalizado</option>`; toggleCustomArtLvl('lib-art-level', 'lib-art-lvl-custom'); document.getElementById('lib-art-descs').innerHTML = ''; addArtDescRow('lib-art-descs'); }
         function toggleCustomArtLvl(selectId, inputId) { const val = document.getElementById(selectId).value; document.getElementById(inputId).style.display = val === 'custom' ? 'block' : 'none'; }
-        function saveArtifact() { const type = document.getElementById('lib-art-type').value; const name = document.getElementById('lib-art-name').value; if(!name) return alert("Falta el nombre"); let lvl = document.getElementById('lib-art-level').value; if(lvl === 'custom') lvl = document.getElementById('lib-art-lvl-custom').value || '0'; let descriptions = []; document.querySelectorAll('#lib-art-descs .art-desc-input').forEach(input => { if(input.value.trim()) descriptions.push(input.value.trim()); }); const img = document.getElementById('lib-art-img-val').value; db.library.artifacts.push({ id: 'art_' + Date.now(), type, name, level: lvl, descriptions, img: img }); updateLocalStorage(); renderLibrary(); document.getElementById('lib-art-name').value = ''; selectGalleryImage(''); renderArtForm(); }
-        function saveAbility() { const name = document.getElementById('lib-hab-name').value; const info = document.getElementById('lib-hab-info').value; const talentClass = document.getElementById('lib-hab-class').value; if(!name) return; const img = document.getElementById('lib-hab-img-val').value; db.library.abilities.push({ id: 'hab_' + Date.now(), name, info, talentClass, img: img }); updateLocalStorage(); renderLibrary(); document.getElementById('lib-hab-name').value = ''; document.getElementById('lib-hab-info').value = ''; selectGalleryImage(''); }
-        function renderLibrary() { document.getElementById('gallery-library').innerHTML = db.library.artifacts.map(a => `<div class="card" onclick="editLibraryItem('${a.id}', 'artifact')"><img src="${a.img || ''}" class="hero-pic"><h3>${a.name}</h3><span style="font-size:0.68rem; color:var(--text-muted);">Nv.${a.level}</span></div>`).join('') + db.library.abilities.map(h => `<div class="card" onclick="editLibraryItem('${h.id}', 'talent')"><img src="${h.img || ''}" class="hero-pic"><h3>${h.name}</h3><span style="font-size:0.68rem; color:var(--cyan-accent);">${h.talentClass}</span></div>`).join(''); }
-        function editLibraryItem(id, type) { document.getElementById('edit-lib-id').value = id; document.getElementById('edit-lib-type').value = type; const descContainer = document.getElementById('edit-lib-desc-container'); descContainer.innerHTML = ''; if (type === 'artifact') { const item = db.library.artifacts.find(x => x.id === id); if(!item) return; document.getElementById('edit-lib-name').value = item.name; document.getElementById('edit-lib-class').style.display = 'none'; document.getElementById('edit-lib-art-fields').style.display = 'flex'; document.getElementById('edit-lib-art-type').value = item.type; const maxLvl = item.type === 'Gema' ? 25 : 30; const lvlSelect = document.getElementById('edit-lib-level'); lvlSelect.innerHTML = `<option value="5">Nivel 5</option><option value="10">Nivel 10</option><option value="20">Nivel 20</option><option value="${maxLvl}">Nivel ${maxLvl} (Max)</option><option value="custom">Personalizado</option>`; if ([5, 10, 20, maxLvl].includes(parseInt(item.level))) { lvlSelect.value = item.level; document.getElementById('edit-lib-lvl-custom').style.display = 'none'; } else { lvlSelect.value = 'custom'; document.getElementById('edit-lib-lvl-custom').style.display = 'block'; document.getElementById('edit-lib-lvl-custom').value = item.level; } document.getElementById('btn-edit-lib-add-desc').style.display = 'inline-block'; if (item.descriptions && item.descriptions.length > 0) { item.descriptions.forEach(desc => addArtDescRow('edit-lib-desc-container', desc)); } else { addArtDescRow('edit-lib-desc-container'); } document.getElementById('edit-lib-img-val').value = item.img || ''; const preview = document.getElementById('edit-lib-img-preview'); const placeholder = document.getElementById('edit-lib-img-placeholder'); if(item.img) { preview.src = item.img; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.style.display = 'none'; placeholder.style.display = 'flex'; } document.getElementById('edit-lib-img-btn').onclick = () => openGalleryPicker('artifacts', 'edit-lib-img'); } else { const item = db.library.abilities.find(x => x.id === id); if(!item) return; document.getElementById('edit-lib-name').value = item.name; document.getElementById('edit-lib-class').style.display = 'block'; document.getElementById('edit-lib-class').value = item.talentClass || 'Clase 1'; document.getElementById('edit-lib-art-fields').style.display = 'none'; document.getElementById('btn-edit-lib-add-desc').style.display = 'none'; descContainer.innerHTML = `<textarea id="edit-lib-info" rows="3">${item.info || ''}</textarea>`; document.getElementById('edit-lib-img-val').value = item.img || ''; const preview = document.getElementById('edit-lib-img-preview'); const placeholder = document.getElementById('edit-lib-img-placeholder'); if(item.img) { preview.src = item.img; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.style.display = 'none'; placeholder.style.display = 'flex'; } document.getElementById('edit-lib-img-btn').onclick = () => openGalleryPicker('talents', 'edit-lib-img'); } document.getElementById('edit-lib-modal').classList.add('active'); }
+        
+        function saveArtifact() {
+            const type = document.getElementById('lib-art-type').value;
+            const name = document.getElementById('lib-art-name').value;
+            if(!name) return alert("Falta el nombre");
+            let lvl = document.getElementById('lib-art-level').value;
+            if(lvl === 'custom') lvl = document.getElementById('lib-art-lvl-custom').value || '0';
+            let descriptions = [];
+            document.querySelectorAll('#lib-art-descs .art-desc-input').forEach(input => { if(input.value.trim()) descriptions.push(input.value.trim()); });
+            const img = normalizeImageUrl(document.getElementById('lib-art-img-val').value);
+            db.library.artifacts.push({ id: 'art_' + Date.now(), type, name, level: lvl, descriptions, img: img });
+            updateLocalStorage();
+            renderLibrary();
+            document.getElementById('lib-art-name').value = '';
+            document.getElementById('lib-art-img-val').value = '';
+            syncUrlPreview('lib-art-img');
+            renderArtForm();
+        }
+
+        function saveAbility() {
+            const name = document.getElementById('lib-hab-name').value;
+            const info = document.getElementById('lib-hab-info').value;
+            const talentClass = document.getElementById('lib-hab-class').value;
+            if(!name) return alert("Falta el nombre");
+            const img = normalizeImageUrl(document.getElementById('lib-hab-img-val').value);
+            db.library.abilities.push({ id: 'hab_' + Date.now(), name, info, talentClass, img: img });
+            updateLocalStorage();
+            renderLibrary();
+            document.getElementById('lib-hab-name').value = '';
+            document.getElementById('lib-hab-info').value = '';
+            document.getElementById('lib-hab-img-val').value = '';
+            syncUrlPreview('lib-hab-img');
+        }
+
+        function renderLibrary() {
+            document.getElementById('gallery-library').innerHTML =
+                db.library.artifacts.map(a => `<div class="card" onclick="editLibraryItem('${a.id}', 'artifact')"><img src="${a.img || ''}" class="hero-pic" loading="lazy"><h3>${a.name}</h3><span style="font-size:0.68rem; color:var(--text-muted);">Nv.${a.level}</span></div>`).join('') +
+                db.library.abilities.map(h => `<div class="card" onclick="editLibraryItem('${h.id}', 'talent')"><img src="${h.img || ''}" class="hero-pic" loading="lazy"><h3>${h.name}</h3><span style="font-size:0.68rem; color:var(--cyan-accent);">${h.talentClass}</span></div>`).join('');
+        }
+
+        function editLibraryItem(id, type) {
+            document.getElementById('edit-lib-id').value = id;
+            document.getElementById('edit-lib-type').value = type;
+            const descContainer = document.getElementById('edit-lib-desc-container');
+            descContainer.innerHTML = '';
+            if (type === 'artifact') {
+                const item = db.library.artifacts.find(x => x.id === id); if(!item) return;
+                document.getElementById('edit-lib-name').value = item.name;
+                document.getElementById('edit-lib-class').style.display = 'none';
+                document.getElementById('edit-lib-art-fields').style.display = 'flex';
+                document.getElementById('edit-lib-art-type').value = item.type;
+                const maxLvl = item.type === 'Gema' ? 25 : 30;
+                const lvlSelect = document.getElementById('edit-lib-level');
+                lvlSelect.innerHTML = `<option value="5">Nivel 5</option><option value="10">Nivel 10</option><option value="20">Nivel 20</option><option value="${maxLvl}">Nivel ${maxLvl} (Max)</option><option value="custom">Personalizado</option>`;
+                if ([5, 10, 20, maxLvl].includes(parseInt(item.level))) {
+                    lvlSelect.value = item.level; document.getElementById('edit-lib-lvl-custom').style.display = 'none';
+                } else {
+                    lvlSelect.value = 'custom'; document.getElementById('edit-lib-lvl-custom').style.display = 'block'; document.getElementById('edit-lib-lvl-custom').value = item.level;
+                }
+                document.getElementById('btn-edit-lib-add-desc').style.display = 'inline-block';
+                if (item.descriptions && item.descriptions.length > 0) item.descriptions.forEach(desc => addArtDescRow('edit-lib-desc-container', desc));
+                else addArtDescRow('edit-lib-desc-container');
+                document.getElementById('edit-lib-img-val').value = item.img || '';
+                syncUrlPreview('edit-lib-img');
+                document.getElementById('edit-lib-img-btn').onclick = () => openGalleryPicker('artifacts', 'edit-lib-img');
+            } else {
+                const item = db.library.abilities.find(x => x.id === id); if(!item) return;
+                document.getElementById('edit-lib-name').value = item.name;
+                document.getElementById('edit-lib-class').style.display = 'block';
+                document.getElementById('edit-lib-class').value = item.talentClass || 'Clase 1';
+                document.getElementById('edit-lib-art-fields').style.display = 'none';
+                document.getElementById('btn-edit-lib-add-desc').style.display = 'none';
+                descContainer.innerHTML = `<textarea id="edit-lib-info" rows="3">${item.info || ''}</textarea>`;
+                document.getElementById('edit-lib-img-val').value = item.img || '';
+                syncUrlPreview('edit-lib-img');
+                document.getElementById('edit-lib-img-btn').onclick = () => openGalleryPicker('talents', 'edit-lib-img');
+            }
+            document.getElementById('edit-lib-modal').classList.add('active');
+        }
+
         function closeEditLibModal() { document.getElementById('edit-lib-modal').classList.remove('active'); }
-        function saveLibraryEdit() { const id = document.getElementById('edit-lib-id').value; const type = document.getElementById('edit-lib-type').value; const name = document.getElementById('edit-lib-name').value; if(!name) return alert("Falta el nombre"); let newImg = document.getElementById('edit-lib-img-val').value; if (type === 'artifact') { let item = db.library.artifacts.find(x => x.id === id); item.name = name; let lvl = document.getElementById('edit-lib-level').value; if(lvl === 'custom') lvl = document.getElementById('edit-lib-lvl-custom').value || '0'; item.level = lvl; let descriptions = []; document.querySelectorAll('#edit-lib-desc-container .art-desc-input').forEach(input => { if(input.value.trim()) descriptions.push(input.value.trim()); }); item.descriptions = descriptions; item.img = newImg; } else { let item = db.library.abilities.find(x => x.id === id); item.name = name; item.talentClass = document.getElementById('edit-lib-class').value; item.info = document.getElementById('edit-lib-info').value; item.img = newImg; } updateLocalStorage(); renderLibrary(); renderHeroes(); closeEditLibModal(); }
+
+        function saveLibraryEdit() {
+            const id = document.getElementById('edit-lib-id').value;
+            const type = document.getElementById('edit-lib-type').value;
+            const name = document.getElementById('edit-lib-name').value;
+            if(!name) return alert("Falta el nombre");
+            let newImg = normalizeImageUrl(document.getElementById('edit-lib-img-val').value);
+            if (type === 'artifact') {
+                let item = db.library.artifacts.find(x => x.id === id);
+                item.name = name;
+                let lvl = document.getElementById('edit-lib-level').value;
+                if(lvl === 'custom') lvl = document.getElementById('edit-lib-lvl-custom').value || '0';
+                item.level = lvl;
+                let descriptions = [];
+                document.querySelectorAll('#edit-lib-desc-container .art-desc-input').forEach(input => { if(input.value.trim()) descriptions.push(input.value.trim()); });
+                item.descriptions = descriptions;
+                item.img = newImg;
+            } else {
+                let item = db.library.abilities.find(x => x.id === id);
+                item.name = name;
+                item.talentClass = document.getElementById('edit-lib-class').value;
+                item.info = document.getElementById('edit-lib-info').value;
+                item.img = newImg;
+            }
+            updateLocalStorage(); renderLibrary(); renderHeroes(); closeEditLibModal();
+        }
+
         function deleteLibraryItem() { if(!confirm("¿Eliminar?")) return; const id = document.getElementById('edit-lib-id').value; const type = document.getElementById('edit-lib-type').value; if (type === 'artifact') { db.library.artifacts = db.library.artifacts.filter(x => x.id !== id); db.heroes.forEach(h => { if(h.artifacts) h.artifacts = h.artifacts.filter(artId => artId !== id); }); } else { db.library.abilities = db.library.abilities.filter(x => x.id !== id); db.heroes.forEach(h => { if(h.abilities) h.abilities = h.abilities.filter(talId => talId !== id); }); } updateLocalStorage(); renderLibrary(); renderHeroes(); closeEditLibModal(); }
 
+        /* HÉROES */
         function openHeroModal() {
             document.getElementById('h-edit-id').value = ''; document.getElementById('hero-modal-title').innerText = "Crear Héroe"; document.getElementById('btn-save-hero').innerText = "Guardar Héroe"; document.getElementById('btn-delete-hero').style.display = "none";
             document.getElementById('h-name').value = ''; document.getElementById('h-sub').value = ''; document.getElementById('h-rank').value = 'S'; document.getElementById('h-faction').value = 'Metahumano'; document.getElementById('h-class').value = 'Guerrero';
             document.getElementById('h-lvl').value = 340; document.getElementById('h-power').value = ''; document.getElementById('h-atk').value = ''; document.getElementById('h-hp').value = ''; document.getElementById('h-def').value = '';
-            document.getElementById('h-img-val').value = ''; document.getElementById('h-img-preview').style.display = 'none'; document.getElementById('h-img-placeholder').style.display = 'block';
+            document.getElementById('h-img-val').value = ''; syncUrlPreview('h-img');
             currentSummaries = []; currentAttributes = []; currentIdealPositions = []; currentSimilars = []; currentSynergies = []; currentCounters = [];
             activeTargets = { skill: [], normal: [] };
             document.getElementById('cond-skill').value = 'default'; document.getElementById('desc-skill').value = ''; updateTgtUI('skill');
@@ -1124,9 +1101,7 @@
             document.getElementById('h-name').value = h.name || ''; document.getElementById('h-sub').value = h.sub || ''; document.getElementById('h-rank').value = h.rank || 'S'; document.getElementById('h-faction').value = h.faction || 'Metahumano'; document.getElementById('h-class').value = h.hClass || 'Guerrero';
             const stats = h.stats || { level: 340, power: '', atk: '', hp: '', def: '' };
             document.getElementById('h-lvl').value = stats.level || 340; document.getElementById('h-power').value = stats.power || ''; document.getElementById('h-atk').value = stats.atk || ''; document.getElementById('h-hp').value = stats.hp || ''; document.getElementById('h-def').value = stats.def || '';
-            document.getElementById('h-img-val').value = h.image || '';
-            const preview = document.getElementById('h-img-preview'); const placeholder = document.getElementById('h-img-placeholder');
-            if(h.image) { preview.src = h.image; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.src = ''; preview.style.display = 'none'; placeholder.style.display = 'block'; }
+            document.getElementById('h-img-val').value = h.image || ''; syncUrlPreview('h-img');
             const atqSkill = h.atkSkill || { targets: [], cond: 'default', desc: '' }; activeTargets.skill = [...(atqSkill.targets || [])]; document.getElementById('cond-skill').value = atqSkill.cond || 'default'; document.getElementById('desc-skill').value = atqSkill.desc || ''; updateTgtUI('skill');
             const atqNorm = h.atkNormal || { targets: [], cond: 'default', desc: '' }; activeTargets.normal = [...(atqNorm.targets || [])]; document.getElementById('cond-normal').value = atqNorm.cond || 'default'; document.getElementById('desc-normal').value = atqNorm.desc || ''; updateTgtUI('normal');
             const artifacts = h.artifacts || []; const abilities = h.abilities || [];
@@ -1143,7 +1118,9 @@
         function saveHero() {
             try {
                 const name = document.getElementById('h-name').value; if(!name) { alert("Falta Nombre"); return; }
-                const rank = document.getElementById('h-rank').value; let img = document.getElementById('h-img-val').value; const editId = document.getElementById('h-edit-id').value;
+                const rank = document.getElementById('h-rank').value;
+                let img = normalizeImageUrl(document.getElementById('h-img-val').value);
+                const editId = document.getElementById('h-edit-id').value;
                 let recTeam = []; for(let i=1; i<=6; i++) { const valEl = document.getElementById(`ht-${i}-val`); recTeam.push(valEl ? valEl.value : null); }
                 const heroData = {
                     id: editId || 'hero_' + Date.now(), name: name, sub: document.getElementById('h-sub').value, rank: rank, faction: document.getElementById('h-faction').value, hClass: document.getElementById('h-class').value, 
@@ -1163,9 +1140,12 @@
 
         function deleteHero() { if(!confirm("¿Eliminar Héroe?")) return; const editId = document.getElementById('h-edit-id').value; db.heroes = db.heroes.filter(x => x.id !== editId); db.teams.forEach(t => { t.members = t.members.map(mId => mId === editId ? null : mId); }); db.heroes.forEach(h => { if(h.recommendedTeam) h.recommendedTeam = h.recommendedTeam.map(mId => mId === editId ? null : mId); if(h.similars) h.similars = h.similars.filter(id => id !== editId); if(h.synergies) h.synergies = h.synergies.filter(id => id !== editId); if(h.counters) h.counters = h.counters.filter(id => id !== editId); }); updateLocalStorage(); renderHeroes(); renderTeamsList(); closeHeroModal(); }
 
-        /* RENDER DE TARJETAS VERTICALES CON HUD */
         function renderHeroes() {
             const filteredHeroes = db.heroes.filter(h => { const mR = activeRank === 'ALL' || h.rank === activeRank; const mC = activeClass === 'ALL' || h.hClass === activeClass; const mF = activeFaction === 'ALL' || h.faction === activeFaction; return mR && mC && mF; });
+            if (filteredHeroes.length === 0) {
+                document.getElementById('gallery-heroes').innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px 20px; color:var(--text-muted); border:1px dashed var(--border-subtle); border-radius:12px;">No hay héroes para mostrar. Pulsa <strong>+</strong> para añadir uno o verifica tu filtro.</div>`;
+                return;
+            }
             document.getElementById('gallery-heroes').innerHTML = filteredHeroes.map(h => {
                 const fac = iconData[h.faction] || iconData["Metahumano"];
                 const cls = iconData[h.hClass] || iconData["Guerrero"];
@@ -1177,7 +1157,7 @@
                         <span class="mini-icon ${cls.bg}" title="${h.hClass}">${getIconContent(h.hClass)}</span>
                     </div>
                     <div class="rank-badge" style="background: ${rColor}">${h.rank || 'S'}</div>
-                    <img src="${h.image || ''}" class="hero-pic" alt="${h.name}">
+                    <img src="${h.image || ''}" class="hero-pic" alt="${h.name}" loading="lazy">
                     <div class="hero-card-overlay">
                         <h3 class="hero-card-title">${h.name}</h3>
                         ${h.sub ? `<div class="hero-card-sub">${h.sub}</div>` : ''}
@@ -1198,7 +1178,6 @@
             return `<div style="display:grid; grid-template-columns:repeat(3, 14px); gap:3px; justify-content:center;">${drawSlot(2)}${drawSlot(1)}${drawSlot(3)}${drawSlot(5)}${drawSlot(4)}${drawSlot(6)}</div>`;
         }
 
-        /* FICHA TÉCNICA CON ARQUITECTURA BENTO GRID */
         function openPresentation(heroId) {
             const h = db.heroes.find(x => x.id === heroId); if(!h) return;
             const fac = iconData[h.faction] || iconData["Metahumano"]; const cls = iconData[h.hClass] || iconData["Guerrero"]; const rColor = rankColors[h.rank] || rankColors["S"];
@@ -1210,7 +1189,6 @@
             const formatCond = (c) => c === 'variado' ? 'Variado' : (c === 'bendicion' ? 'Bendición' : 'Fijo');
 
             const drawIdealSlot = (num) => `<div class="mini-pos-slot ${(h.idealPositions||[]).includes(num) ? 'active' : ''}"></div>`;
-
             const renderBadges = (list) => (list && list.length) ? list.map(i => `<span class="bubble">${i}</span>`).join('') : '<span style="color:var(--text-dim); font-size:0.75rem;">—</span>';
 
             const renderRels = (arr, label, color) => {
@@ -1237,7 +1215,6 @@
 
             document.getElementById('pres-content').innerHTML = `
                 <div class="bento-grid">
-                    <!-- BANNER PRINCIPAL -->
                     <div class="bento-box col-span-6 pres-hero-banner">
                         <div class="pres-avatar-wrap">
                             <div class="rank-badge" style="background:${rColor}; top:-6px; left:-6px; right:auto;">${h.rank || 'S'}</div>
@@ -1253,7 +1230,6 @@
                         </div>
                     </div>
 
-                    <!-- ESTADÍSTICAS -->
                     <div class="bento-box col-span-6 pres-stats-box">
                         <div class="pres-stat-item"><span class="pres-stat-lbl">Nivel</span><span class="pres-stat-val">${stats.level || '-'}</span></div>
                         <div class="pres-stat-item"><span class="pres-stat-lbl">Poder</span><span class="pres-stat-val" style="color:var(--cyan-accent);">${stats.power || '-'}</span></div>
@@ -1262,7 +1238,6 @@
                         <div class="pres-stat-item"><span class="pres-stat-lbl">Armadura</span><span class="pres-stat-val">${stats.def || '-'}</span></div>
                     </div>
 
-                    <!-- MATRICES TÁCTICAS (3 COLUMNAS EN BENTO) -->
                     <div class="bento-box col-span-2" style="text-align:center;">
                         <span class="bento-label">Pos. Ideal</span>
                         <div class="mini-pos-matrix">${drawIdealSlot(2)}${drawIdealSlot(1)}${drawIdealSlot(3)}${drawIdealSlot(5)}${drawIdealSlot(4)}${drawIdealSlot(6)}</div>
@@ -1284,7 +1259,6 @@
                         ${(normal.cond !== 'default' && normal.desc) ? `<div style="margin-top:4px;"><strong style="color:var(--text-light);">Básico:</strong> ${normal.desc}</div>` : ''}
                     </div>` : ''}
 
-                    <!-- ROL Y ATRIBUTOS -->
                     <div class="bento-box col-span-3">
                         <span class="bento-label">Rol / Resumen</span>
                         <div class="bubble-container">${renderBadges(h.summaries)}</div>
@@ -1294,7 +1268,6 @@
                         <div class="bubble-container">${renderBadges(h.attributes)}</div>
                     </div>
 
-                    <!-- ARTEFACTOS Y TALENTOS -->
                     <div class="bento-box col-span-3">
                         <span class="bento-label">Artefactos</span>
                         ${artHtml}
@@ -1315,7 +1288,7 @@
         /* COMPLEMENTOS */
         function openItemPicker(type, talentClass, targetPrefix) { document.getElementById('ip-target').value = targetPrefix; const list = document.getElementById('ip-list'); let items = type === 'artifact' ? (db.library.artifacts || []) : (db.library.abilities || []).filter(a => a.talentClass === talentClass); document.getElementById('ip-title').innerText = type === 'artifact' ? "Seleccionar Artefacto" : `Talento (${talentClass})`; list.innerHTML = items.length === 0 ? `<div style="text-align:center; padding:20px; color:var(--text-muted);">No hay elementos.</div>` : items.map(item => `<div class="visual-picker-btn" style="margin-bottom:0;" onclick="selectItem('${item.id}', '${item.name.replace(/'/g, "\\'")}', '${item.img || ''}')"><img src="${item.img || ''}" class="visual-picker-img"><div class="visual-picker-text" style="color:var(--text-light); font-weight:600;">${item.name}</div></div>`).join(''); list.innerHTML += `<div class="visual-picker-btn" style="margin-top:8px; justify-content:center; border-color:rgba(229,72,77,0.4);" onclick="selectItem('', '(Ninguno)', '')"><div class="visual-picker-text" style="color:#ff8589;">Quitar Selección</div></div>`; document.getElementById('item-picker-modal').classList.add('active'); }
         function closeItemPicker() { document.getElementById('item-picker-modal').classList.remove('active'); }
-        function selectItem(id, name, imgBase64) { const prefix = document.getElementById('ip-target').value; document.getElementById(prefix+'-val').value = id; document.getElementById(prefix+'-text').innerText = name; const preview = document.getElementById(prefix+'-preview'); const placeholder = document.getElementById(prefix+'-placeholder'); if(id && imgBase64) { preview.src = imgBase64; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.style.display = 'none'; placeholder.style.display = 'block'; } closeItemPicker(); }
+        function selectItem(id, name, imgUrl) { const prefix = document.getElementById('ip-target').value; document.getElementById(prefix+'-val').value = id; document.getElementById(prefix+'-text').innerText = name; const preview = document.getElementById(prefix+'-preview'); const placeholder = document.getElementById(prefix+'-placeholder'); if(id && imgUrl) { preview.src = imgUrl; preview.style.display = 'block'; placeholder.style.display = 'none'; } else { preview.style.display = 'none'; placeholder.style.display = 'block'; } closeItemPicker(); }
         function resetVisualPicker(prefix, placeholderText) { document.getElementById(prefix+'-val').value = ''; document.getElementById(prefix+'-text').innerText = placeholderText; const preview = document.getElementById(prefix+'-preview'); if(preview) preview.style.display = 'none'; const placeholder = document.getElementById(prefix+'-placeholder'); if(placeholder) placeholder.style.display = 'block'; }
         function populateHeroItemPicker(itemType, idVal, prefix, placeholderText) { if(!idVal) { resetVisualPicker(prefix, placeholderText); return; } let item = itemType === 'artifact' ? db.library.artifacts.find(x => x.id === idVal) : db.library.abilities.find(x => x.id === idVal); if(item) { document.getElementById(prefix+'-val').value = item.id; document.getElementById(prefix+'-text').innerText = item.name; const preview = document.getElementById(prefix+'-preview'); const placeholder = document.getElementById(prefix+'-placeholder'); if(item.img) { preview.src = item.img; preview.style.display = 'block'; placeholder.style.display = 'none'; } } else { resetVisualPicker(prefix, placeholderText); } }
         function addBubble(type) { const val = document.getElementById(`sel-${type}`).value; if (type === 'summary' && !currentSummaries.includes(val)) currentSummaries.push(val); if (type === 'attribute' && !currentAttributes.includes(val)) currentAttributes.push(val); renderBubbles(); }
@@ -1324,7 +1297,7 @@
 
         function saveTeam() { const name = document.getElementById('team-name').value; const desc = document.getElementById('team-info').value; if(!name) return; let members = []; for(let i=1; i<=6; i++) { members.push(document.getElementById(`ts-${i}-val`).value || null); } db.teams.push({ id: 'team_'+Date.now(), name, info: desc, members }); updateLocalStorage(); renderTeamsList(); document.getElementById('team-name').value = ''; document.getElementById('team-info').value = ''; for(let i=1; i<=6; i++) { document.getElementById(`ts-${i}-val`).value = ''; document.getElementById(`ts-${i}`).innerHTML = `➕<div class="slot-label">${i}</div>`; } }
         function renderTeamsList() { document.getElementById('teams-list').innerHTML = db.teams.map(t => { const getHImg = (idx) => { let tId = t.members[idx]; if(!tId) return `<div class="empty-slot"></div>`; let hero = db.heroes.find(x => x.id === tId); return hero ? `<img src="${hero.image || ''}">` : `<div class="empty-slot"></div>`; }; let matrixHtml = `<div class="preview-matrix">${getHImg(1)}${getHImg(0)}${getHImg(2)}${getHImg(4)}${getHImg(3)}${getHImg(5)}</div>`; let rawImages = t.members.filter(m => m !== null).map(mId => { let h = db.heroes.find(x => x.id === mId); return h ? `<img src="${h.image || ''}" style="width:38px; height:38px; border-radius:9px; border:1px solid var(--border-focus); object-fit:cover;">` : ''; }).join(' '); return `<div class="row-group"><div class="team-row-header"><strong style="color:var(--text-light); font-size:0.92rem;">${t.name}</strong><div class="preview-eye">👁️<div class="preview-popover">${matrixHtml}</div></div></div><div style="display:flex; gap:6px; margin:8px 0;">${rawImages || '<span style="color:var(--text-dim); font-size:0.78rem;">Equipo vacío</span>'}</div>${t.info ? `<p style="font-size:0.8rem; color:var(--text-muted); margin:0;">"${t.info}"</p>` : ''}</div>`; }).join(''); }
-        function clearAllData() { if (confirm("¿Borrar TODO permanentemente?")) { localStorage.clear(); db = { heroes: [], teams: [], library: { artifacts: [], abilities: [] }, gallery: { heroes: [], artifacts: [], talents: [] }, icons: {} }; renderFilters(); renderSystemIconsPreview(); renderHeroes(); renderLibrary(); renderTeamsList(); renderGalleryView(); } }
+        function clearAllData() { if (confirm("¿Borrar TODO permanentemente?")) { localStorage.clear(); db = { heroes: [], teams: [], library: { artifacts: [], abilities: [] }, gallery: { heroes: [], artifacts: [], talents: [] }, icons: {} }; initAppUI(); } }
     </script>
 </body>
 </html>
