@@ -6,7 +6,7 @@
     <title>X-Hero Guía — Gestor Táctico</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #08090a;
@@ -33,10 +33,10 @@
             --f-caido: #f43f5e; --f-meta: #f97316; --f-tecno: #06b6d4; --f-natural: #22c55e; --f-divino: #c084fc; --f-dios: #eab308;
 
             /* Rangos */
-            --rank-splus: linear-gradient(135deg, #f43f5e, #fb923c);
-            --rank-s: linear-gradient(135deg, #eab308, #f59e0b);
-            --rank-a: linear-gradient(135deg, #a855f7, #6366f1);
-            --rank-b: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            --rank-splus: linear-gradient(135deg, #d95d1e 0%, #9b2615 100%);
+            --rank-s: linear-gradient(135deg, #eab308 0%, #b45309 100%);
+            --rank-a: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+            --rank-b: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
         }
 
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -46,7 +46,7 @@
             padding: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(ellipse 80% 45% at 50% -15%, rgba(94, 106, 210, 0.14), transparent);
+            background-image: radial-gradient(ellipse 80% 45% at 50% -15%, rgba(56, 132, 255, 0.14), transparent);
             background-attachment: fixed;
             color: var(--text-light);
             padding-bottom: 90px;
@@ -154,81 +154,213 @@
         .bg-rank-a { background: var(--rank-a); border: none; }
         .bg-rank-b { background: var(--rank-b); border: none; }
 
-        /* TARJETAS DE HÉROES 9:16 (RETRATO VERTICAL COMPLETO) */
-        .grid-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 14px; }
+        /* =====================================================================
+           TARJETAS DE HÉROES 9:16 ESTILO CARTA COLECCIONABLE (REFERENCIA EPIC HEROES)
+           ===================================================================== */
+        .grid-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 16px; }
         @media (max-width: 480px) {
-            .grid-gallery { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
+            .grid-gallery { grid-template-columns: repeat(2, 1fr); gap: 12px; }
         }
 
         .hero-card {
             position: relative;
             aspect-ratio: 9 / 16;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            background: #0b0c0e;
-            border: 1px solid var(--border-subtle);
+            background: #090d16;
+            border: 1.5px solid rgba(110, 185, 255, 0.55);
             cursor: pointer;
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.65),
+                0 0 14px rgba(59, 158, 255, 0.28),
+                inset 0 0 12px rgba(110, 195, 255, 0.22);
         }
+        /* Destello cálido/dorado en esquina superior derecha */
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            right: -18px;
+            width: 85px;
+            height: 85px;
+            background: radial-gradient(circle, rgba(255, 190, 110, 0.55) 0%, rgba(255, 130, 50, 0.18) 45%, transparent 70%);
+            pointer-events: none;
+            z-index: 4;
+        }
+        /* Marco interior luminoso sutil */
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            pointer-events: none;
+            z-index: 6;
+        }
+
         .hero-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-focus);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(94, 106, 210, 0.45);
+            transform: translateY(-5px) scale(1.015);
+            border-color: rgba(155, 215, 255, 0.9);
+            box-shadow:
+                0 16px 34px rgba(0, 0, 0, 0.8),
+                0 0 22px rgba(74, 175, 255, 0.5),
+                inset 0 0 16px rgba(150, 215, 255, 0.35);
         }
+
         .hero-card img.hero-pic {
             width: 100%;
             height: 100%;
             object-fit: cover;
             object-position: center top;
             display: block;
-            transition: transform 0.3s ease;
-            background: #0b0c0e;
+            transition: transform 0.35s ease;
+            background: #090d16;
         }
-        .hero-card:hover img.hero-pic { transform: scale(1.03); }
+        .hero-card:hover img.hero-pic { transform: scale(1.04); }
 
-        .hero-card-overlay {
+        /* Badge de rango superior derecho estilo escudo redondeado */
+        .rank-badge {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to top,
-                rgba(8, 9, 10, 0.96) 0%,
-                rgba(8, 9, 10, 0.65) 18%,
-                transparent 38%
-            );
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 10px 9px 9px 9px;
-            pointer-events: none;
+            top: 9px;
+            right: 9px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            color: #fff;
+            padding: 3px 9px;
+            border-radius: 7px;
+            font-size: 0.78rem;
+            letter-spacing: 0.02em;
+            border: 1px solid rgba(255, 210, 150, 0.55);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.75), 0 0 10px rgba(235, 115, 45, 0.45);
+            z-index: 7;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
         }
+
+        /* Degradado inferior atmosférico azul-oscuro */
+        .hero-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(11, 17, 32, 0.78) 0%,
+        rgba(13, 21, 40, 0.55) 22%,
+        rgba(15, 25, 48, 0.2) 38%,
+        transparent 55%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 12px 12px 11px 12px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+        /* Nombre en Serif elegante */
         .hero-card-title {
             margin: 0;
-            font-size: 0.85rem;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 1.08rem;
             font-weight: 700;
-            color: #fff;
+            line-height: 1.15;
+            color: #ffffff;
+            letter-spacing: 0.01em;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-        }
-        .hero-card-sub {
-            font-size: 0.67rem;
-            color: #b4b9c2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 1px;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
         }
 
-        .hero-hud-top-left {
-            position: absolute; top: 8px; left: 8px; display: flex; gap: 4px;
-            background: rgba(16, 17, 20, 0.78); backdrop-filter: blur(8px);
-            padding: 3px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.14); z-index: 5;
+        /* Separador dorado con diamante central */
+        .hero-card-divider {
+            display: flex;
+            align-items: center;
+            margin: 5px 0 4px 0;
+            width: 82%;
         }
+        .hero-card-divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 110, 0.75) 0%, rgba(212, 175, 110, 0.25) 100%);
+        }
+        .hero-card-divider-star {
+            color: #d8b878;
+            font-size: 8px;
+            line-height: 1;
+            margin-left: 4px;
+            text-shadow: 0 0 6px rgba(235, 195, 115, 0.85);
+        }
+
+        /* Fila inferior: subtítulo a la izquierda y emblemas a la derecha */
+        .hero-card-bottom-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 6px;
+            min-height: 24px;
+        }
+
+        .hero-card-sub {
+            font-family: 'Inter', sans-serif;
+            font-style: italic;
+            font-size: 0.74rem;
+            font-weight: 400;
+            color: #8f9bb3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-bottom: 2px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Emblemas octogonales abajo a la derecha (Facción y Clase) */
+        .hero-hud-bottom-right {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        .oct-badge {
+    position: relative;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    
+    /* Degradado ahumado translúcido tipo placa de vidrio oscuro */
+    background: radial-gradient( circle at 35% 30%, rgba(255, 255, 255, 0.23) 0%, rgb(0, 0, 0) 60%, rgba(12, 18, 34, 0.66) 100% );
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    
+    /* Borde fino sutil y difuminado (sin anillo blanco grueso) */
+    border: 1px solid rgba(170, 205, 255, 0.18);
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.35),
+        inset 0 0 6px rgba(130, 180, 255, 0.12);
+    
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.oct-badge img {
+    width: 82%;
+    height: 82%;
+    object-fit: contain;
+    border-radius: 50%;
+    
+    /* Vuelve transparente el fondo oscuro/negro de las URLs */
+    mix-blend-mode: lighten;
+    
+    /* Difumina suavemente los bordes de la imagen para que no haya corte brusco */
+    -webkit-mask-image: radial-gradient(circle, #000 58%, transparent 96%);
+    mask-image: radial-gradient(circle, #000 58%, transparent 96%);
+    filter: contrast(1.15) brightness(1.08);
+}
+
         .mini-icon { width: 22px; height: 22px; border-radius: 6px; display: inline-flex; justify-content: center; align-items: center; font-size: 11px; border: 1px solid rgba(255, 255, 255, 0.15); background-color: var(--surface-elevated); color: #fff; }
-        .rank-badge { position: absolute; top: 8px; right: 8px; font-weight: 800; color: #fff; padding: 2px 7px; border-radius: 6px; font-size: 0.7rem; border: 1px solid rgba(255, 255, 255, 0.35); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65); z-index: 5; }
 
         /* TARJETAS ESTÁNDAR Y GALERÍA 9:16 PARA HÉROES */
         .card { background: var(--panel-bg); border-radius: 10px; padding: 8px; text-align: center; border: 1px solid var(--border-subtle); cursor: pointer; transition: all 0.18s ease; position: relative; }
@@ -280,7 +412,7 @@
         .pres-hero-banner { display: flex; gap: 16px; align-items: stretch; }
         .pres-avatar-wrap {
             position: relative;
-            width: 102px;
+            width: 104px;
             aspect-ratio: 9 / 16;
             flex-shrink: 0;
             cursor: zoom-in;
@@ -288,12 +420,12 @@
         .pres-avatar {
             width: 100%;
             height: 100%;
-            border-radius: 11px;
+            border-radius: 12px;
             object-fit: cover;
             object-position: center top;
-            border: 1px solid var(--border-focus);
+            border: 1.5px solid rgba(110, 185, 255, 0.6);
             background: var(--bg-color);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65), 0 0 12px rgba(59, 158, 255, 0.25);
             display: block;
         }
         .pres-hero-info {
@@ -409,7 +541,7 @@
         .url-input-row input { margin-bottom: 0; flex: 1; font-size: 0.78rem; }
         .url-mini-preview { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border-focus); background: var(--bg-color); flex-shrink: 0; }
 
-        /* VISOR DE CAPTURA COMPLETA (AL HACER CLIC EN EL RETRATO DE INSPECCIÓN) */
+        /* VISOR DE CAPTURA COMPLETA */
         .full-img-modal {
             display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
             z-index: 400; justify-content: center; align-items: center; padding: 16px;
@@ -1040,7 +1172,7 @@
 
         function closeHeroModal() { const m = document.getElementById('hero-modal'); if(m) m.classList.remove('active'); }
 
-        function getIconContent(key) { if (db.icons && db.icons[key]) { return `<img src="${db.icons[key]}" style="width:100%; height:100%; object-fit:cover; border-radius:5px; display:block;">`; } return iconData[key] ? iconData[key].icon : ''; }
+        function getIconContent(key) { if (db.icons && db.icons[key]) { return `<img src="${db.icons[key]}" style="width:100%; height:100%; object-fit:cover; display:block;">`; } return iconData[key] ? iconData[key].icon : ''; }
         function renderFilters() { const classes = ["Guerrero", "Mago", "Rangers", "Asaltantes", "Curadores"]; const factions = ["Caído", "Metahumano", "Tecnológico", "Natural", "Divino", "Dios"]; document.getElementById('filters-class').innerHTML = `<div class="btn-filter all ${activeClass==='ALL'?'active':''}" onclick="setFilter('class', 'ALL', this)">ALL</div>` + classes.map(c => `<div class="btn-filter ${iconData[c].bg} ${activeClass===c?'active':''}" onclick="setFilter('class', '${c}', this)" title="${c}">${getIconContent(c)}</div>`).join(''); document.getElementById('filters-faction').innerHTML = `<div class="btn-filter all ${activeFaction==='ALL'?'active':''}" onclick="setFilter('faction', 'ALL', this)">ALL</div>` + factions.map(f => `<div class="btn-filter ${iconData[f].bg} ${activeFaction===f?'active':''}" onclick="setFilter('faction', '${f}', this)" title="${f}">${getIconContent(f)}</div>`).join(''); document.getElementById('picker-filters-class').innerHTML = `<div class="btn-filter all ${pickerActiveClass==='ALL'?'active':''}" onclick="setPickerFilter('class', 'ALL', this)">ALL</div>` + classes.map(c => `<div class="btn-filter ${iconData[c].bg} ${pickerActiveClass===c?'active':''}" onclick="setPickerFilter('class', '${c}', this)">${getIconContent(c)}</div>`).join(''); document.getElementById('picker-filters-faction').innerHTML = `<div class="btn-filter all ${pickerActiveFaction==='ALL'?'active':''}" onclick="setPickerFilter('faction', 'ALL', this)">ALL</div>` + factions.map(f => `<div class="btn-filter ${iconData[f].bg} ${pickerActiveFaction===f?'active':''}" onclick="setPickerFilter('faction', '${f}', this)">${getIconContent(f)}</div>`).join(''); }
         function renderSystemIconsPreview() { const keys = ["Guerrero", "Mago", "Rangers", "Asaltantes", "Curadores", "Caído", "Metahumano", "Tecnológico", "Natural", "Divino", "Dios"]; const container = document.getElementById('system-icons-preview'); if(!container) return; container.innerHTML = keys.map(k => { const hasImg = db.icons && db.icons[k]; return `<div style="text-align:center; background:var(--bg-color); padding:6px; border-radius:8px; border:1px solid var(--border-subtle);"><div style="width:28px; height:28px; margin:0 auto 4px auto; display:flex; align-items:center; justify-content:center; border-radius:6px; background:var(--surface-elevated); overflow:hidden;">${getIconContent(k)}</div><div style="font-size:0.65rem; color:var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${k}</div>${hasImg ? `<span onclick="deleteSystemIcon('${k}')" style="color:var(--danger); font-size:0.6rem; cursor:pointer; display:block; margin-top:2px;">Quitar</span>` : ''}</div>`; }).join(''); }
         function deleteSystemIcon(key) { if(db.icons && db.icons[key]) { delete db.icons[key]; updateLocalStorage(); renderSystemIconsPreview(); renderFilters(); renderHeroes(); } }
@@ -1257,20 +1389,24 @@
                 return;
             }
             document.getElementById('gallery-heroes').innerHTML = filteredHeroes.map(h => {
-                const fac = iconData[h.faction] || iconData["Metahumano"];
-                const cls = iconData[h.hClass] || iconData["Guerrero"];
                 const rColor = rankColors[h.rank] || rankColors["S"];
                 return `
                 <div class="hero-card" onclick="openPresentation('${h.id}')">
-                    <div class="hero-hud-top-left">
-                        <span class="mini-icon ${fac.bg}" title="${h.faction}">${getIconContent(h.faction)}</span>
-                        <span class="mini-icon ${cls.bg}" title="${h.hClass}">${getIconContent(h.hClass)}</span>
-                    </div>
                     <div class="rank-badge" style="background: ${rColor}">${h.rank || 'S'}</div>
                     <img src="${h.image || ''}" class="hero-pic" alt="${h.name}" loading="lazy">
                     <div class="hero-card-overlay">
                         <h3 class="hero-card-title">${h.name}</h3>
-                        ${h.sub ? `<div class="hero-card-sub">${h.sub}</div>` : ''}
+                        <div class="hero-card-divider">
+                            <span class="hero-card-divider-line"></span>
+                            <span class="hero-card-divider-star">✦</span>
+                        </div>
+                        <div class="hero-card-bottom-row">
+                            <div class="hero-card-sub">${h.sub || ''}</div>
+                            <div class="hero-hud-bottom-right">
+                                <span class="oct-badge" title="${h.faction}">${getIconContent(h.faction)}</span>
+                                <span class="oct-badge" title="${h.hClass}">${getIconContent(h.hClass)}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>`;
             }).join('');
@@ -1327,16 +1463,16 @@
                 <div class="bento-grid">
                     <div class="bento-box col-span-6 pres-hero-banner">
                         <div class="pres-avatar-wrap" onclick="openFullImage('${h.image || ''}')" title="Clic para ampliar captura 9:16">
-                            <div class="rank-badge" style="background:${rColor}; top:6px; left:6px; right:auto;">${h.rank || 'S'}</div>
+                            <div class="rank-badge" style="background:${rColor}; top:6px; right:6px;">${h.rank || 'S'}</div>
                             <img src="${h.image || ''}" class="pres-avatar">
                         </div>
                         <div class="pres-hero-info">
                             <div>
-                                <h2 style="margin:0; font-size:1.25rem; font-weight:700; letter-spacing:-0.02em;">${h.name}</h2>
-                                <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;">${h.sub || 'Sin subtítulo'}</div>
+                                <h2 style="margin:0; font-family:'Cinzel', serif; font-size:1.3rem; font-weight:700; letter-spacing:0.01em;">${h.name}</h2>
+                                <div style="font-size:0.82rem; font-style:italic; color:#8f9bb3; margin-top:2px;">${h.sub || 'Sin subtítulo'}</div>
                                 <div class="pres-meta-pills">
-                                    <span class="meta-pill"><span class="mini-icon ${fac.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.faction)}</span> ${h.faction}</span>
-                                    <span class="meta-pill"><span class="mini-icon ${cls.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.hClass)}</span> ${h.hClass}</span>
+                                    <span class="meta-pill"><span class="oct-badge" style="width:18px; height:18px; font-size:10px;">${getIconContent(h.faction)}</span> ${h.faction}</span>
+                                    <span class="meta-pill"><span class="oct-badge" style="width:18px; height:18px; font-size:10px;">${getIconContent(h.hClass)}</span> ${h.hClass}</span>
                                 </div>
                             </div>
 
