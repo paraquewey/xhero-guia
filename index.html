@@ -154,44 +154,95 @@
         .bg-rank-a { background: var(--rank-a); border: none; }
         .bg-rank-b { background: var(--rank-b); border: none; }
 
-        /* TARJETAS DE HÉROES (RETRATO HUD) */
-        .grid-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 14px; }
+        /* TARJETAS DE HÉROES 9:16 (RETRATO VERTICAL COMPLETO) */
+        .grid-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 14px; }
+        @media (max-width: 480px) {
+            .grid-gallery { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
+        }
 
         .hero-card {
             position: relative;
-            aspect-ratio: 3 / 4;
+            aspect-ratio: 9 / 16;
             border-radius: 12px;
             overflow: hidden;
-            background: var(--panel-bg);
+            background: #0b0c0e;
             border: 1px solid var(--border-subtle);
             cursor: pointer;
             transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
         }
-        .hero-card:hover { transform: translateY(-4px); border-color: var(--border-focus); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(94, 106, 210, 0.4); }
-        .hero-card img.hero-pic { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; background: #0b0c0e; }
-        .hero-card:hover img.hero-pic { transform: scale(1.04); }
+        .hero-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-focus);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(94, 106, 210, 0.45);
+        }
+        .hero-card img.hero-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            transition: transform 0.3s ease;
+            background: #0b0c0e;
+        }
+        .hero-card:hover img.hero-pic { transform: scale(1.03); }
 
         .hero-card-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(8, 9, 10, 0.96) 0%, rgba(8, 9, 10, 0.5) 38%, transparent 68%);
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; pointer-events: none;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(8, 9, 10, 0.96) 0%,
+                rgba(8, 9, 10, 0.65) 18%,
+                transparent 38%
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 10px 9px 9px 9px;
+            pointer-events: none;
         }
-        .hero-card-title { margin: 0; font-size: 0.86rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .hero-card-sub { font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+        .hero-card-title {
+            margin: 0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+        }
+        .hero-card-sub {
+            font-size: 0.67rem;
+            color: #b4b9c2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 1px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+        }
 
         .hero-hud-top-left {
             position: absolute; top: 8px; left: 8px; display: flex; gap: 4px;
-            background: rgba(16, 17, 20, 0.72); backdrop-filter: blur(8px);
-            padding: 3px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.12); z-index: 5;
+            background: rgba(16, 17, 20, 0.78); backdrop-filter: blur(8px);
+            padding: 3px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.14); z-index: 5;
         }
         .mini-icon { width: 22px; height: 22px; border-radius: 6px; display: inline-flex; justify-content: center; align-items: center; font-size: 11px; border: 1px solid rgba(255, 255, 255, 0.15); background-color: var(--surface-elevated); color: #fff; }
-        .rank-badge { position: absolute; top: 8px; right: 8px; font-weight: 800; color: #fff; padding: 2px 7px; border-radius: 6px; font-size: 0.7rem; border: 1px solid rgba(255, 255, 255, 0.35); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); z-index: 5; }
+        .rank-badge { position: absolute; top: 8px; right: 8px; font-weight: 800; color: #fff; padding: 2px 7px; border-radius: 6px; font-size: 0.7rem; border: 1px solid rgba(255, 255, 255, 0.35); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65); z-index: 5; }
 
-        /* TARJETAS ESTÁNDAR */
+        /* TARJETAS ESTÁNDAR Y GALERÍA 9:16 PARA HÉROES */
         .card { background: var(--panel-bg); border-radius: 10px; padding: 8px; text-align: center; border: 1px solid var(--border-subtle); cursor: pointer; transition: all 0.18s ease; position: relative; }
         .card:hover { background: var(--surface-elevated); border-color: var(--border-focus); transform: translateY(-2px); }
         .card img.hero-pic { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 7px; display: block; background: #050507; }
+        
+        /* Capturas 9:16 en carpeta Héroes de Galería y Selector */
+        #gallery-grid-heroes .card img.hero-pic,
+        #gp-grid .card img.hero-pic,
+        #hp-grid .card img.hero-pic {
+            aspect-ratio: 9 / 16;
+            object-position: center top;
+        }
+
         .card h3 { margin: 6px 0 0 0; font-size: 0.8rem; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card.multi-selected { border-color: var(--success); background: rgba(48, 164, 108, 0.1); }
         .card.multi-selected::after { content: '✓'; position: absolute; top: -6px; right: -6px; background: var(--success); color: #fff; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; justify-content: center; align-items: center; font-weight: 700; border: 2px solid var(--bg-color); }
@@ -209,7 +260,7 @@
         /* MODALES Y BENTO GRID */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); z-index: 200; justify-content: center; align-items: center; backdrop-filter: blur(8px); padding: 12px; }
         .modal.active { display: flex; }
-        .modal-content { background: var(--panel-bg); width: 100%; max-width: 560px; max-height: 88vh; border-radius: 14px; border: 1px solid var(--border-focus); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); animation: modalPop 0.18s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-content { background: var(--panel-bg); width: 100%; max-width: 580px; max-height: 90vh; border-radius: 14px; border: 1px solid var(--border-focus); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85); animation: modalPop 0.18s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes modalPop { from { opacity: 0; transform: scale(0.97) translateY(6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .modal-header { padding: 13px 18px; background: var(--panel-bg); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
         .modal-header h2 { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
@@ -224,17 +275,57 @@
         @media (max-width: 480px) { .col-span-3 { grid-column: span 6; } }
 
         .bento-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; display: block; }
-        .pres-hero-banner { display: flex; gap: 14px; align-items: center; }
-        .pres-avatar-wrap { position: relative; width: 82px; height: 82px; flex-shrink: 0; }
-        .pres-avatar { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; border: 1px solid var(--border-focus); background: var(--bg-color); }
+        
+        /* RETRATO 9:16 EN INSPECCIÓN / FICHA TÉCNICA */
+        .pres-hero-banner { display: flex; gap: 16px; align-items: stretch; }
+        .pres-avatar-wrap {
+            position: relative;
+            width: 102px;
+            aspect-ratio: 9 / 16;
+            flex-shrink: 0;
+            cursor: zoom-in;
+        }
+        .pres-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 11px;
+            object-fit: cover;
+            object-position: center top;
+            border: 1px solid var(--border-focus);
+            background: var(--bg-color);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+            display: block;
+        }
+        .pres-hero-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+        }
         .pres-meta-pills { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
         .meta-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; background: var(--surface-elevated); border: 1px solid var(--border-subtle); }
 
-        .pres-stats-box { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; text-align: center; }
+        .pres-stats-box {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            text-align: center;
+            background: var(--bg-color);
+            padding: 8px 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+        @media (max-width: 440px) {
+            .pres-hero-banner { flex-direction: column; align-items: center; text-align: center; }
+            .pres-avatar-wrap { width: 126px; }
+            .pres-meta-pills { justify-content: center; }
+        }
         .pres-stat-item { border-right: 1px solid var(--border-subtle); }
         .pres-stat-item:last-child { border-right: none; }
-        .pres-stat-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; display: block; }
-        .pres-stat-val { font-size: 0.92rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .pres-stat-lbl { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; display: block; }
+        .pres-stat-val { font-size: 0.86rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 
         .row-group { background: var(--panel-bg); padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid var(--border-subtle); }
         .row-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
@@ -282,7 +373,7 @@
         .formation-grid { display: grid; grid-template-columns: repeat(3, 48px); gap: 10px; justify-content: center; background: var(--bg-color); padding: 14px; border-radius: 9px; margin-bottom: 12px; border: 1px solid var(--border-subtle); }
         .roster-slot { width: 48px; height: 48px; background: var(--surface-elevated); border: 1px solid var(--border-focus); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 14px; color: var(--text-muted); position: relative; cursor: pointer; }
         .roster-slot:hover { border-color: var(--primary); transform: scale(1.05); }
-        .roster-slot img { width: 100%; height: 100%; object-fit: cover; }
+        .roster-slot img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
         .slot-label { position: absolute; bottom: 0; right: 0; background: var(--panel-bg); color: var(--text-light); font-size: 9px; font-weight: 700; width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-focus); }
 
         .pos-slot { width: 48px; height: 48px; background: var(--surface-elevated); border: 1px dashed var(--border-focus); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-weight: 600; cursor: pointer; }
@@ -293,8 +384,8 @@
         .mini-pos-slot.active { background: var(--success); border-color: #63d49c; }
 
         .hero-multi-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-        .rel-avatar-wrapper { position: relative; width: 38px; height: 38px; }
-        .rel-avatar-wrapper img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-focus); }
+        .rel-avatar-wrapper { position: relative; width: 36px; height: 64px; }
+        .rel-avatar-wrapper img { width: 100%; height: 100%; border-radius: 7px; object-fit: cover; object-position: center top; border: 1px solid var(--border-focus); }
         .rel-avatar-wrapper .remove-btn { position: absolute; top: -4px; right: -4px; background: var(--danger); color: #fff; border-radius: 50%; width: 15px; height: 15px; font-size: 9px; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid var(--bg-color); }
 
         .team-row-header { display: flex; justify-content: space-between; align-items: center; }
@@ -302,7 +393,7 @@
         .preview-popover { display: none; position: absolute; top: -10px; right: 42px; background: var(--surface-elevated); border: 1px solid var(--border-focus); padding: 10px; border-radius: 9px; z-index: 100; box-shadow: 0 12px 30px rgba(0,0,0,0.85); pointer-events: none; }
         .preview-eye:hover .preview-popover { display: block; }
         .preview-matrix { display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(2, 34px); gap: 5px; justify-content: center; }
-        .preview-matrix img { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-focus); object-fit: cover; }
+        .preview-matrix img { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-focus); object-fit: cover; object-position: center top; }
         .empty-slot { width: 34px; height: 34px; border-radius: 50%; border: 1px dashed var(--border-focus); background: var(--bg-color); }
 
         .pres-art-item { display: flex; align-items: center; gap: 8px; background: var(--bg-color); padding: 6px 8px; border-radius: 8px; border: 1px solid var(--border-subtle); margin-bottom: 6px; }
@@ -317,6 +408,19 @@
         .url-input-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
         .url-input-row input { margin-bottom: 0; flex: 1; font-size: 0.78rem; }
         .url-mini-preview { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border-focus); background: var(--bg-color); flex-shrink: 0; }
+
+        /* VISOR DE CAPTURA COMPLETA (AL HACER CLIC EN EL RETRATO DE INSPECCIÓN) */
+        .full-img-modal {
+            display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
+            z-index: 400; justify-content: center; align-items: center; padding: 16px;
+            backdrop-filter: blur(10px); cursor: zoom-out;
+        }
+        .full-img-modal.active { display: flex; }
+        .full-img-modal img {
+            max-width: 100%; max-height: 92vh; aspect-ratio: 9 / 16;
+            object-fit: contain; border-radius: 14px; border: 1px solid var(--border-focus);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.95);
+        }
     </style>
 </head>
 <body>
@@ -497,6 +601,11 @@
         </div>
     </div>
 
+    <!-- VISOR DE IMAGEN COMPLETA 9:16 -->
+    <div class="full-img-modal" id="full-img-modal" onclick="this.classList.remove('active')">
+        <img id="full-img-target" src="" alt="Vista completa">
+    </div>
+
     <!-- MODAL CREAR / EDITAR HÉROE -->
     <div class="modal" id="hero-modal">
         <div class="modal-content">
@@ -509,8 +618,8 @@
                 <div class="row-group">
                     <span class="row-title">Datos Principales</span>
                     <div style="display:flex; flex-direction:column; align-items:center; gap:8px; margin-bottom:10px;">
-                        <img id="h-img-preview" style="width: 76px; height: 96px; border-radius: 10px; object-fit: cover; border: 1px solid var(--border-focus); display:none;">
-                        <div id="h-img-placeholder" style="width: 76px; height: 96px; border-radius: 10px; background:var(--bg-color); border:1px dashed var(--border-focus); display:flex; align-items:center; justify-content:center; font-size:24px;">📸</div>
+                        <img id="h-img-preview" style="width: 72px; aspect-ratio: 9/16; border-radius: 10px; object-fit: cover; object-position: center top; border: 1px solid var(--border-focus); display:none;">
+                        <div id="h-img-placeholder" style="width: 72px; aspect-ratio: 9/16; border-radius: 10px; background:var(--bg-color); border:1px dashed var(--border-focus); display:flex; align-items:center; justify-content:center; font-size:24px;">📸</div>
                         <div class="url-input-row" style="width:100%; margin-bottom:0;">
                             <input type="text" id="h-img-val" placeholder="Pegar URL de foto o elegir de galería..." oninput="syncUrlPreview('h-img')">
                             <button class="btn-export" style="padding:7px 10px;" onclick="openGalleryPicker('heroes', 'h-img')">Galería</button>
@@ -718,16 +827,14 @@
         const iconData = { "Guerrero": { icon: "🛡️", bg: "bg-guerrero" }, "Mago": { icon: "🪄", bg: "bg-mago" }, "Rangers": { icon: "🏹", bg: "bg-ranger" }, "Asaltantes": { icon: "🗡️", bg: "bg-asaltante" }, "Curadores": { icon: "💖", bg: "bg-curador" }, "Caído": { icon: "💀", bg: "bg-caido" }, "Metahumano": { icon: "🦸", bg: "bg-meta" }, "Tecnológico": { icon: "⚙️", bg: "bg-tecno" }, "Natural": { icon: "🌿", bg: "bg-natural" }, "Divino": { icon: "✨", bg: "bg-divino" }, "Dios": { icon: "👑", bg: "bg-dios" } };
         const rankColors = { "S+": "var(--rank-splus)", "S": "var(--rank-s)", "A": "var(--rank-a)", "B": "var(--rank-b)" };
 
-        /* EXTRACTOR Y NORMALIZADOR DE ENLACES (ImgBB HTML, URLs directas y Drive) */
+        /* EXTRACTOR Y NORMALIZADOR DE ENLACES */
         function normalizeImageUrl(rawUrl) {
             if (!rawUrl) return '';
             let url = rawUrl.trim();
-            // Si pegan etiqueta <img src="..."> de ImgBB
             const imgTagMatch = url.match(/src=["']([^"']+)["']/i);
             if (imgTagMatch && imgTagMatch[1]) {
                 url = imgTagMatch[1].trim();
             }
-            // Si pegan enlace de Google Drive
             const driveMatch = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)([a-zA-Z0-9_-]+)/);
             if (driveMatch && driveMatch[1]) {
                 return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
@@ -751,6 +858,12 @@
             }
         }
 
+        function openFullImage(url) {
+            if (!url) return;
+            document.getElementById('full-img-target').src = url;
+            document.getElementById('full-img-modal').classList.add('active');
+        }
+
         /* SINCRONIZACIÓN CON GITHUB (database.json) */
         async function syncFromGitHub(manual = false) {
             const badge = document.getElementById('db-source-badge');
@@ -771,9 +884,7 @@
                         return true;
                     }
                 }
-            } catch (e) {
-                // Sin conexión o en modo archivo local
-            }
+            } catch (e) {}
             badge.innerText = 'Caché Local';
             badge.style.color = 'var(--text-muted)';
             if (manual) alert("⚠️ No se pudo conectar con ./database.json (usando copia local).");
@@ -828,7 +939,6 @@
             
             let added = 0;
             lines.forEach((url, idx) => {
-                // Evita duplicados exactos en la misma carpeta
                 if (!db.gallery[cat].some(item => item.data === url)) {
                     db.gallery[cat].push({ id: 'img_' + Date.now() + '_' + idx, data: url });
                     added++;
@@ -1193,7 +1303,7 @@
 
             const renderRels = (arr, label, color) => {
                 if(!arr || arr.length === 0) return '';
-                const avatars = arr.map(id => { const relH = db.heroes.find(x=>x.id===id); return relH ? `<img src="${relH.image||''}" onclick="openPresentation('${relH.id}')" style="width:32px; height:32px; border-radius:8px; border:1px solid ${color}; object-fit:cover; cursor:pointer;" title="Ver ${relH.name}">` : ''; }).join('');
+                const avatars = arr.map(id => { const relH = db.heroes.find(x=>x.id===id); return relH ? `<img src="${relH.image||''}" onclick="openPresentation('${relH.id}')" style="width:32px; height:56px; border-radius:7px; border:1px solid ${color}; object-fit:cover; object-position:center top; cursor:pointer;" title="Ver ${relH.name}">` : ''; }).join('');
                 return `<div style="margin-bottom:8px;"><span style="font-size:0.7rem; color:${color}; font-weight:600; display:block; margin-bottom:4px;">${label}</span><div style="display:flex; gap:6px; flex-wrap:wrap;">${avatars}</div></div>`;
             };
             const relsHtml = renderRels(h.similars, 'Similares', 'var(--cyan-accent)') + renderRels(h.synergies, 'Mejores Compañeros', '#63d49c') + renderRels(h.counters, 'Counters', '#ff8589');
@@ -1216,26 +1326,28 @@
             document.getElementById('pres-content').innerHTML = `
                 <div class="bento-grid">
                     <div class="bento-box col-span-6 pres-hero-banner">
-                        <div class="pres-avatar-wrap">
-                            <div class="rank-badge" style="background:${rColor}; top:-6px; left:-6px; right:auto;">${h.rank || 'S'}</div>
+                        <div class="pres-avatar-wrap" onclick="openFullImage('${h.image || ''}')" title="Clic para ampliar captura 9:16">
+                            <div class="rank-badge" style="background:${rColor}; top:6px; left:6px; right:auto;">${h.rank || 'S'}</div>
                             <img src="${h.image || ''}" class="pres-avatar">
                         </div>
-                        <div style="flex:1; min-width:0;">
-                            <h2 style="margin:0; font-size:1.2rem; font-weight:700; letter-spacing:-0.02em;">${h.name}</h2>
-                            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;">${h.sub || 'Sin subtítulo'}</div>
-                            <div class="pres-meta-pills">
-                                <span class="meta-pill"><span class="mini-icon ${fac.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.faction)}</span> ${h.faction}</span>
-                                <span class="meta-pill"><span class="mini-icon ${cls.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.hClass)}</span> ${h.hClass}</span>
+                        <div class="pres-hero-info">
+                            <div>
+                                <h2 style="margin:0; font-size:1.25rem; font-weight:700; letter-spacing:-0.02em;">${h.name}</h2>
+                                <div style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;">${h.sub || 'Sin subtítulo'}</div>
+                                <div class="pres-meta-pills">
+                                    <span class="meta-pill"><span class="mini-icon ${fac.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.faction)}</span> ${h.faction}</span>
+                                    <span class="meta-pill"><span class="mini-icon ${cls.bg}" style="width:16px; height:16px; font-size:10px;">${getIconContent(h.hClass)}</span> ${h.hClass}</span>
+                                </div>
+                            </div>
+
+                            <div class="pres-stats-box">
+                                <div class="pres-stat-item"><span class="pres-stat-lbl">Nivel</span><span class="pres-stat-val">${stats.level || '-'}</span></div>
+                                <div class="pres-stat-item"><span class="pres-stat-lbl">Poder</span><span class="pres-stat-val" style="color:var(--cyan-accent);">${stats.power || '-'}</span></div>
+                                <div class="pres-stat-item"><span class="pres-stat-lbl">ATQ</span><span class="pres-stat-val">${stats.atk || '-'}</span></div>
+                                <div class="pres-stat-item"><span class="pres-stat-lbl">Vida</span><span class="pres-stat-val">${stats.hp || '-'}</span></div>
+                                <div class="pres-stat-item"><span class="pres-stat-lbl">Armadura</span><span class="pres-stat-val">${stats.def || '-'}</span></div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="bento-box col-span-6 pres-stats-box">
-                        <div class="pres-stat-item"><span class="pres-stat-lbl">Nivel</span><span class="pres-stat-val">${stats.level || '-'}</span></div>
-                        <div class="pres-stat-item"><span class="pres-stat-lbl">Poder</span><span class="pres-stat-val" style="color:var(--cyan-accent);">${stats.power || '-'}</span></div>
-                        <div class="pres-stat-item"><span class="pres-stat-lbl">ATQ</span><span class="pres-stat-val">${stats.atk || '-'}</span></div>
-                        <div class="pres-stat-item"><span class="pres-stat-lbl">Vida</span><span class="pres-stat-val">${stats.hp || '-'}</span></div>
-                        <div class="pres-stat-item"><span class="pres-stat-lbl">Armadura</span><span class="pres-stat-val">${stats.def || '-'}</span></div>
                     </div>
 
                     <div class="bento-box col-span-2" style="text-align:center;">
@@ -1296,7 +1408,7 @@
         function renderBubbles() { document.getElementById('bubbles-summary').innerHTML = currentSummaries.map((s, i) => `<div class="bubble">${s} <span onclick="removeBubble('summary', ${i})">✕</span></div>`).join(''); document.getElementById('bubbles-attribute').innerHTML = currentAttributes.map((a, i) => `<div class="bubble">${a} <span onclick="removeBubble('attribute', ${i})">✕</span></div>`).join(''); }
 
         function saveTeam() { const name = document.getElementById('team-name').value; const desc = document.getElementById('team-info').value; if(!name) return; let members = []; for(let i=1; i<=6; i++) { members.push(document.getElementById(`ts-${i}-val`).value || null); } db.teams.push({ id: 'team_'+Date.now(), name, info: desc, members }); updateLocalStorage(); renderTeamsList(); document.getElementById('team-name').value = ''; document.getElementById('team-info').value = ''; for(let i=1; i<=6; i++) { document.getElementById(`ts-${i}-val`).value = ''; document.getElementById(`ts-${i}`).innerHTML = `➕<div class="slot-label">${i}</div>`; } }
-        function renderTeamsList() { document.getElementById('teams-list').innerHTML = db.teams.map(t => { const getHImg = (idx) => { let tId = t.members[idx]; if(!tId) return `<div class="empty-slot"></div>`; let hero = db.heroes.find(x => x.id === tId); return hero ? `<img src="${hero.image || ''}">` : `<div class="empty-slot"></div>`; }; let matrixHtml = `<div class="preview-matrix">${getHImg(1)}${getHImg(0)}${getHImg(2)}${getHImg(4)}${getHImg(3)}${getHImg(5)}</div>`; let rawImages = t.members.filter(m => m !== null).map(mId => { let h = db.heroes.find(x => x.id === mId); return h ? `<img src="${h.image || ''}" style="width:38px; height:38px; border-radius:9px; border:1px solid var(--border-focus); object-fit:cover;">` : ''; }).join(' '); return `<div class="row-group"><div class="team-row-header"><strong style="color:var(--text-light); font-size:0.92rem;">${t.name}</strong><div class="preview-eye">👁️<div class="preview-popover">${matrixHtml}</div></div></div><div style="display:flex; gap:6px; margin:8px 0;">${rawImages || '<span style="color:var(--text-dim); font-size:0.78rem;">Equipo vacío</span>'}</div>${t.info ? `<p style="font-size:0.8rem; color:var(--text-muted); margin:0;">"${t.info}"</p>` : ''}</div>`; }).join(''); }
+        function renderTeamsList() { document.getElementById('teams-list').innerHTML = db.teams.map(t => { const getHImg = (idx) => { let tId = t.members[idx]; if(!tId) return `<div class="empty-slot"></div>`; let hero = db.heroes.find(x => x.id === tId); return hero ? `<img src="${hero.image || ''}">` : `<div class="empty-slot"></div>`; }; let matrixHtml = `<div class="preview-matrix">${getHImg(1)}${getHImg(0)}${getHImg(2)}${getHImg(4)}${getHImg(3)}${getHImg(5)}</div>`; let rawImages = t.members.filter(m => m !== null).map(mId => { let h = db.heroes.find(x => x.id === mId); return h ? `<img src="${h.image || ''}" style="width:34px; height:60px; border-radius:7px; border:1px solid var(--border-focus); object-fit:cover; object-position:center top;">` : ''; }).join(' '); return `<div class="row-group"><div class="team-row-header"><strong style="color:var(--text-light); font-size:0.92rem;">${t.name}</strong><div class="preview-eye">👁️<div class="preview-popover">${matrixHtml}</div></div></div><div style="display:flex; gap:6px; margin:8px 0;">${rawImages || '<span style="color:var(--text-dim); font-size:0.78rem;">Equipo vacío</span>'}</div>${t.info ? `<p style="font-size:0.8rem; color:var(--text-muted); margin:0;">"${t.info}"</p>` : ''}</div>`; }).join(''); }
         function clearAllData() { if (confirm("¿Borrar TODO permanentemente?")) { localStorage.clear(); db = { heroes: [], teams: [], library: { artifacts: [], abilities: [] }, gallery: { heroes: [], artifacts: [], talents: [] }, icons: {} }; initAppUI(); } }
     </script>
 </body>
