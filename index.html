@@ -82,6 +82,24 @@
         .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .divider-v { width: 1px; height: 18px; background: var(--border-subtle); margin: 0 4px; }
 
+        .language-select {
+            height: 32px;
+            min-width: 92px;
+            margin: 0;
+            padding: 0 28px 0 10px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 7px;
+            background: var(--surface-elevated);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .language-select:focus { outline: none; border-color: var(--border-focus); }
+        #google_translate_element { display: none; }
+        .goog-te-banner-frame, iframe.skiptranslate { display: none !important; }
+        body { top: 0 !important; }
+
         /* BOTONES */
         .btn-export, .btn-danger, .btn-add {
             font-family: 'Inter', sans-serif;
@@ -564,6 +582,19 @@
             <span class="sync-badge" id="db-source-badge">Cargando...</span>
         </div>
         <div class="header-actions">
+            <select id="language-select" class="language-select" onchange="changeLanguage(this.value)" title="Seleccionar idioma">
+                <option value="es">🇪🇸 Español</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="id">🇮🇩 Indonesia</option>
+                <option value="pt">🇧🇷 Português</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="it">🇮🇹 Italiano</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="zh-CN">🇨🇳 中文</option>
+            </select>
+            <div id="google_translate_element"></div>
             <button class="btn-export" onclick="syncFromGitHub(true)" title="Recargar database.json desde GitHub">🔄 Sync GitHub</button>
             <div class="divider-v"></div>
             <button class="btn-export" onclick="document.getElementById('import-dic').click()" title="Cargar JSON OCR">📂 OCR</button>
@@ -1546,6 +1577,46 @@
         function saveTeam() { const name = document.getElementById('team-name').value; const desc = document.getElementById('team-info').value; if(!name) return; let members = []; for(let i=1; i<=6; i++) { members.push(document.getElementById(`ts-${i}-val`).value || null); } db.teams.push({ id: 'team_'+Date.now(), name, info: desc, members }); updateLocalStorage(); renderTeamsList(); document.getElementById('team-name').value = ''; document.getElementById('team-info').value = ''; for(let i=1; i<=6; i++) { document.getElementById(`ts-${i}-val`).value = ''; document.getElementById(`ts-${i}`).innerHTML = `➕<div class="slot-label">${i}</div>`; } }
         function renderTeamsList() { document.getElementById('teams-list').innerHTML = db.teams.map(t => { const getHImg = (idx) => { let tId = t.members[idx]; if(!tId) return `<div class="empty-slot"></div>`; let hero = db.heroes.find(x => x.id === tId); return hero ? `<img src="${hero.image || ''}">` : `<div class="empty-slot"></div>`; }; let matrixHtml = `<div class="preview-matrix">${getHImg(1)}${getHImg(0)}${getHImg(2)}${getHImg(4)}${getHImg(3)}${getHImg(5)}</div>`; let rawImages = t.members.filter(m => m !== null).map(mId => { let h = db.heroes.find(x => x.id === mId); return h ? `<img src="${h.image || ''}" style="width:34px; height:60px; border-radius:7px; border:1px solid var(--border-focus); object-fit:cover; object-position:center top;">` : ''; }).join(' '); return `<div class="row-group"><div class="team-row-header"><strong style="color:var(--text-light); font-size:0.92rem;">${t.name}</strong><div class="preview-eye">👁️<div class="preview-popover">${matrixHtml}</div></div></div><div style="display:flex; gap:6px; margin:8px 0;">${rawImages || '<span style="color:var(--text-dim); font-size:0.78rem;">Equipo vacío</span>'}</div>${t.info ? `<p style="font-size:0.8rem; color:var(--text-muted); margin:0;">"${t.info}"</p>` : ''}</div>`; }).join(''); }
         function clearAllData() { if (confirm("¿Borrar TODO permanentemente?")) { localStorage.clear(); db = { heroes: [], teams: [], library: { artifacts: [], abilities: [] }, gallery: { heroes: [], artifacts: [], talents: [] }, icons: {} }; initAppUI(); } }
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es',
+                includedLanguages: 'es,en,id,pt,fr,de,it,ja,ko,zh-CN',
+                autoDisplay: false
+            }, 'google_translate_element');
+
+            const savedLanguage = localStorage.getItem('xh_language') || 'es';
+            const selector = document.getElementById('language-select');
+            if (selector) selector.value = savedLanguage;
+            if (savedLanguage !== 'es') {
+                setTimeout(() => changeLanguage(savedLanguage), 300);
+            }
+        }
+
+        function changeLanguage(language) {
+            if (!language) return;
+            localStorage.setItem('xh_language', language);
+            document.documentElement.lang = language;
+
+            const googleSelect = document.querySelector('#google_translate_element select');
+            if (googleSelect) {
+                googleSelect.value = language;
+                googleSelect.dispatchEvent(new Event('change'));
+                return;
+            }
+
+            const cookieValue = language === 'es' ? '' : `/es/${language}`;
+            document.cookie = `googtrans=${cookieValue};path=/`;
+            if (location.hostname) {
+                document.cookie = `googtrans=${cookieValue};domain=${location.hostname};path=/`;
+            }
+
+            if (language === 'es') {
+                document.cookie = 'googtrans=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+            }
+            setTimeout(() => location.reload(), 80);
+        }
     </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
