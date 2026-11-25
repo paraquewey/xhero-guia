@@ -376,7 +376,7 @@
         "hab_1782885461574",
         "hab_1782885937718"
       ],
-      "image": "https://i.ibb.co/5xCKrhjY/Screenshot-20261124-120146-Epic-Heroes.jpg",
+      "image": "https://i.ibb.co/gMNfhSnP/Gemini-Generated-Image-wx3mt6wx3mt6wx3m.jpg",
       "recommendedTeam": [
         "hero_1782891485557",
         "hero_1782929658059",
@@ -508,7 +508,7 @@
         "hab_1782885661074",
         "hab_1782885984435"
       ],
-      "image": "https://i.ibb.co/SXQqkrVF/Screenshot-20261124-120155-Epic-Heroes.jpg",
+      "image": "https://i.ibb.co/gFfhBrcB/Gemini-Generated-Image-3azeh03azeh03aze.jpg",
       "recommendedTeam": [
         "hero_1782928695033",
         "hero_1782886808099",
@@ -1018,6 +1018,7 @@
         "hab_1782885461574",
         "hab_1782885984435"
       ],
+      "image": "https://i.ibb.co/yFw5M4dq/Gemini-Generated-Image-u0suwtu0suwtu0su.jpg",
       "recommendedTeam": [
         "hero_1782931151021",
         "hero_1782928770221",
@@ -2164,7 +2165,7 @@
         "hab_1782885514462",
         "hab_1782885937718"
       ],
-      "image": "https://i.ibb.co/NdFkJVjV/Screenshot-20261124-115830-Epic-Heroes.jpg",
+      "image": "https://i.ibb.co/20mxV6mm/Gemini-Generated-Image-afogwyafogwyafog.jpg",
       "recommendedTeam": [
         "hero_1782928695033",
         "hero_1782886808099",
@@ -14144,6 +14145,22 @@
       {
         "id": "img_1795537813504_128",
         "data": "https://i.ibb.co/dwd43bzx/Screenshot-20261124-121219-Epic-Heroes.jpg"
+      },
+      {
+        "id": "img_1795564515872_0",
+        "data": "https://i.ibb.co/gFfhBrcB/Gemini-Generated-Image-3azeh03azeh03aze.jpg"
+      },
+      {
+        "id": "img_1795564723517_0",
+        "data": "https://i.ibb.co/gMNfhSnP/Gemini-Generated-Image-wx3mt6wx3mt6wx3m.jpg"
+      },
+      {
+        "id": "img_1795564972214_0",
+        "data": "https://i.ibb.co/yFw5M4dq/Gemini-Generated-Image-u0suwtu0suwtu0su.jpg"
+      },
+      {
+        "id": "img_1795565379570_0",
+        "data": "https://i.ibb.co/20mxV6mm/Gemini-Generated-Image-afogwyafogwyafog.jpg"
       }
     ],
     "artifacts": [],
